@@ -41,7 +41,7 @@ This guide defines the default résumé's appearance: a single-column, screening
 
 Use colons to relate company to title and institution to qualification. Use vertical bars to separate list items and inline date fields. Short-form pattern: **Company: Title | Dates:** Brief description, with the whole identifying label, date and colon bold and the description regular. Each employer, role or engagement is its own paragraph.
 
-Remove every unused optional block rather than leaving empty space or placeholders. Before removing Skills, run the [keyword-coverage audit](../../agents/screening-check.md#2-keyword-coverage-before-drafting): keep a concise section if relevant, evidence-backed qualifications would otherwise disappear. A page target alone is not a reason to remove it.
+Remove every unused optional block rather than leaving empty space or placeholders. Before removing Skills, run the [keyword-coverage audit in Stage 2](../../agents/stage-2-resume.md#requirement-coverage-and-selection): keep a concise section if relevant, evidence-backed qualifications would otherwise disappear. A page target alone is not a reason to remove it.
 
 Order every dated list newest first: employers, roles within each employer, short-form entries, education and certifications. Use the end date; where end dates match, put the later start date first. Story priority affects the summary and bullet selection, never entry order. Skills may be ordered by relevance.
 
@@ -70,7 +70,7 @@ Implementation: in HTML, avoid breaks after headings and context and inside indi
 - Use one page if the relevant evidence fits; two when necessary. The reference is a one-page placeholder, not a content budget.
 - Use flowing paragraphs, never fixed coordinates copied from the preview.
 - Print or render US Letter at 100% scale with browser headers and footers off.
-- Render every finished document, inspect every page, check reading order, clipping, headings and dates, and remove every placeholder. Then run the [automatic check](../../agents/screening-check.md#3-automatic-check-before-delivery).
+- Render every finished document, inspect every page, check reading order, clipping, headings and dates, and remove every placeholder. Then run the [automatic check](../../agents/stage-2-resume.md#automatic-check-before-delivery).
 - Save application documents outside templates/ and outside the career record.
 
 ## Contact details
@@ -106,7 +106,7 @@ Formatting only; these add no career evidence.
 - Dated lists run newest first.
 - The gap below every section rule matches (6 pt); the signature rule gap is 3 pt.
 - Every rendered page passes the pagination rules; page one shows the strongest relevant evidence.
-- Extracted text follows reading order. `tools/resume_check.py` automates this and the other text-level checks; see the [screening-software check](../../agents/screening-check.md).
+- Extracted text follows reading order. `tools/resume_check.py` automates this and the other text-level checks; see [Stage 2](../../agents/stage-2-resume.md#automatic-check-before-delivery).
 
 ## Drafting structure for agents
 

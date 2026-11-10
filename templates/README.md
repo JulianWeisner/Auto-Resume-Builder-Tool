@@ -8,7 +8,7 @@ Layouts for the documents the tool produces. Templates define appearance only: t
 | [Cover letter](cover-letter/README.md) | Default one-page letter that matches the résumé, with its [style guide](cover-letter/style-guide.md) |
 | [Custom templates](custom/README.md) | **Optional.** Your own templates, built by your agent from example résumés or letters you like |
 
-Writing rules that apply to every document live in [agents/writing/](../agents/writing/): [plain language](../agents/writing/plain-language.md) (ASD-STE100-informed style and removing formulaic AI phrasing) and [claim wording](../agents/writing/claim-wording.md) (strong, truthful bullets). The [screening-software check](../agents/screening-check.md) runs on every résumé before you see it.
+Writing rules that apply to every document live in [agents/writing/](../agents/writing/): [plain language](../agents/writing/plain-language.md) (ASD-STE100-informed style and removing formulaic AI phrasing) and [claim wording](../agents/writing/claim-wording.md) (strong, truthful bullets). The [screening-software check](../agents/stage-2-resume.md#automatic-check-before-delivery) runs on every résumé before you see it.
 
 ## Which template is used
 

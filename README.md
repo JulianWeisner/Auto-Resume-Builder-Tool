@@ -15,8 +15,10 @@ Early version. What is here today:
 - ✅ **Agent rules for filling your record** from your CV and your story, one question at a time.
 - ✅ **Résumé and cover-letter templates** with style guides, plus a guided way to build **your own template** from résumés you like.
 - ✅ **Writing guides:** plain language (ASD-STE100-informed, with formulaic AI phrasing removed) and claim wording for strong, truthful bullets.
-- ✅ **Screening-software (ATS) check** and the scripts behind it: reading the whole record, validating it, keying job postings verbatim and checking every résumé PDF.
-- 🔜 **The guided application flow:** verdict card, full evaluation, handoff and archive. See [ROADMAP.md](ROADMAP.md).
+- ✅ **The guided application flow:** paste a posting, get a verdict card with a weighted fit estimate, then a full evaluation (asks-and-stories scoring, storyboard, review before build), a tailored résumé, cover letter and portal answers, a handoff of new facts and an archive of what you submitted.
+- ✅ **Screening-software (ATS) check** and the scripts behind it: reading the whole record, validating it, keying job postings verbatim, computing the fit baseline and checking every résumé PDF.
+
+What comes next is in [ROADMAP.md](ROADMAP.md).
 
 ## Get your own private copy
 
@@ -59,7 +61,7 @@ git commit -m "Update tool from upstream"
 | [schema/](schema/experience-schema.md) | How the career record is organized | Tool |
 | [career/](career/README.md) | Your career record: index, story, preferences, vocabulary, contact details and collections of records | **Yours** |
 | [career/_templates/](career/_templates/README.md) | Blank, copyable records | Tool |
-| [agents/](agents/) | Writing guides and the screening-software check the agent follows | Tool |
+| [agents/](agents/) | The agent's modules: Stage 1 evaluation and scoring, Stage 2 résumé and screening check, Stage 3 letters and answers, handoff, archive, information update, and the writing guides | Tool |
 | [templates/](templates/README.md) | Default résumé and cover-letter templates and style guides | Tool |
 | [templates/custom/](templates/custom/README.md) | Your own templates, built from examples you like | **Yours** |
 | [source-material/](source-material/README.md) | Your CV snapshot, evidence journal and document extracts | **Yours** |

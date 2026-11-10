@@ -30,21 +30,59 @@ The default résumé and cover letter are clean, single-column layouts that scre
 
 > Read templates/custom/README.md and build me a custom template from my examples.
 
-## Step 3: apply for jobs
+## Step 3: apply for jobs in three replies
 
-You can already ask for a résumé or cover letter for a job: paste the posting and say "build a résumé for this". The agent uses your record, the templates, the writing guides and the screening-software check.
+Start a new conversation with your agent in the repository folder:
 
-🔜 The guided flow is coming next ([roadmap](ROADMAP.md)):
+> Read START.md and follow it.
 
-1. **Paste a job posting.** You get a verdict card: fit estimate, recommendation, strengths, gaps and up to four questions.
-2. **Decide:** build résumé · full evaluation · pass on this job. Nothing is built until you say so.
-3. **Get a tailored résumé and PDF**, already checked for screening software, plus a cover letter or portal answers if you ask.
-4. **Say "I applied"** and the submitted files are archived in your copy.
+Then:
+
+1. **Paste the job posting.**
+   You get a verdict card: a fit estimate, a recommendation (Pursue, Stretch or Deprioritize), the strengths and gaps behind it, and up to four questions that could change it. The fit estimate weighs every requirement in the posting against the evidence in your record; it is the agent's judgment, not a hiring prediction.
+2. **Decide.** Reply with one of:
+   - **build résumé**: go ahead with the résumé.
+   - **full evaluation**: see the agent's reasoning first (below).
+   - **pass on this job**: stop here; nothing more is built.
+   - Or just answer the questions; the verdict updates.
+3. **Get the résumé.** A tailored résumé and PDF, already checked for screening software. The agent fixes what fails before you see it, then gives you one line, for example "Checked: readable; 9 of 12 job terms covered; 3 have no evidence". Terms with no evidence are left out on purpose and noted for your cover letter or interview.
+
+Nothing is built until you say **build résumé**, so a poor match costs no drafting time.
+
+### When you want to see the reasoning
+
+Reply **full evaluation** after the verdict card to see:
+
+- **Asks and stories:** each thing the job asks for, your best matching story and how strong the match is, scored 0–4.
+- **Storyboard:** the résumé outline the agent plans to write.
+- **Review before build:** what to confirm before the résumé is built, such as title dates or recalled numbers.
+
+If you say **build résumé** without asking for the full evaluation, the agent still does all of this work privately. You see less; the agent does not do less. You can ask for it at any point.
+
+### Things you can say at any time
+
+| Say | You get |
+|---|---|
+| **cover letter** or paste the portal's questions | A cover letter or answers that match the résumé |
+| **agent report** | How the agent worked: evidence used, choices made, what it left out and why |
+| **handoff** | New facts from the conversation, packaged as proposed updates to your record. Nothing changes yet |
+| **update my record** (with the handoff, or in your own words) | The agent applies the updates to your career record, in a separate conversation |
+| **I applied** | The submitted files are archived in applications/ |
+| **[Company] replied** / **rejected** | The reply is logged in that application's archive |
+| anything in your own words | The agent works it out |
+
+Every reply ends with a short footer: **Next** lists the main steps that fit that moment, **Also** the occasional ones, and **Session** says which kind of session you are in.
+
+### Two kinds of session
+
+- **Application session** (the default): evaluates jobs and writes résumés, letters and answers. It reads your record and never changes it. Its only change is archiving an application after you say **I applied**.
+- **Information update session:** adds to or corrects your career record, including filling it the first time and applying a handoff. Start it by saying in words what it may change, for example "apply this handoff to my record".
 
 ## What never happens automatically
 
+- No résumé is built before you say **build résumé**.
 - No application is submitted and no employer is contacted.
-- Nothing in your career record changes unless you ask in words.
+- Nothing in your career record changes during an application, or ever unless you ask in words.
 - No skill or job keyword is claimed without evidence in your record.
 - Your data never leaves your copy of the repository.
 

@@ -37,7 +37,7 @@ Each entry lists: date · upstream revision (short SHA) · what was ported · wh
 | templates/README.md | new | Index; which template is used; tool versus user files |
 | agents/writing/plain-language.md | same | Name removed; short explanation of ASD-STE100; inflated-word examples added |
 | agents/writing/claim-wording.md | same | Personal consulting-name rule replaced by `presentation_note`; employer-specific example made generic; weak/strong bullet table added |
-| agents/screening-check.md | Stage 1 job-description key step and Stage 2 "Requirement coverage" and "Automatic check before delivery" | Extracted into one standalone module so the check works before the full workflow is ported |
+| agents/screening-check.md | Stage 1 job-description key step and Stage 2 "Requirement coverage" and "Automatic check before delivery" | Extracted into one standalone module so the check works before the full workflow is ported; folded back into agents/stage-2-resume.md on 2026-11-10 (second entry) |
 | AGENTS.md | distinct-value test, routing, scripts | Routing table limited to modules that exist here |
 | career/preferences.md | — | New "Documents" section: template, page length, paper size, optional signature |
 | tools/jd_key.py | same | Unchanged |
@@ -47,4 +47,22 @@ Each entry lists: date · upstream revision (short SHA) · what was ported · wh
 | tools/agent_bundle.py | same | Task names read from the routing table instead of a fixed list |
 | tools/README.md | new | Setup and script overview |
 
-**Not ported yet:** Stage 1, Stage 2 and Stage 3 modules, handoff, archive, footer, evaluations procedure.
+**Not ported yet:** Stage 1, Stage 2 and Stage 3 modules, handoff, archive, footer, evaluations procedure (ported below, except evaluations).
+
+## 2026-11-10 (second) · upstream 01bfec7 · application workflow modules
+
+Module names, section headings and stage, extra and footer structure match upstream, so later ports can be compared file for file.
+
+| Here | Upstream source | Changes |
+|---|---|---|
+| agents/stage-1-evaluate.md | same | Scoring, weights (condition tags excluded; About and trait tags at half weight), fit bands (80 / 70 / 60), ±5-point judgment, verdict card, asks-and-stories table, storyboard and review before build kept word for word. Name replaced by "the user"; employer-specific examples replaced with generic ones; current_view.py named as the first read |
+| agents/stage-2-resume.md | same | Kept, with the screening-software explanation and resume_check's part 1 checks from agents/screening-check.md folded into "Automatic check before delivery"; custom template style guide allowed; benchmark section removed |
+| agents/stage-3-copy.md | same | Name removed; salary left blank unless the user records or gives a figure; custom cover-letter template allowed |
+| agents/handoff.md | same | "Repository update" becomes "record update"; applying a handoff is an information update |
+| agents/archive.md | same | Git steps conditional on the user's copy using Git; new "Logging replies" section for the archive-analysis idea |
+| agents/information-update.md | agents/maintenance.md (extra G) | Renamed extra U; scope limited to the user's data, never tool files; organization-specific provenance and validator notes generalized |
+| AGENTS.md | Application mode, Tracking new details, Application workflow (stages, extras, source continuity, transitions, footer, casing, handoff offer), Routing, Working style | Ported; agent names become session names (Application, Information Update); footer label "Tool Mode" becomes "Session"; source continuity works with or without Git; routing adds the custom-template task |
+| tools/agent_bundle.py | same | Task names taken from the routing table (stage-1, stage-2, stage-3, d, h, a, u, template), matching upstream's |
+| START.md | START.md | Upstream's three-reply journey, reasoning view, "things you can say" table and two kinds of session, adapted |
+
+**Not ported:** evaluations/ (benchmark procedure for developing the tool; not needed by users).

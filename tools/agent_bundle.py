@@ -5,11 +5,11 @@ For AI chat tools that cannot open files in a folder (a chat window where you
 upload files, a custom GPT): paste or upload the output instead.
 
     python3 tools/agent_bundle.py                 # list tasks
-    python3 tools/agent_bundle.py resume > bundle.md
+    python3 tools/agent_bundle.py stage-1 > bundle.md
 
 Task names come from the first column of the Routing table in AGENTS.md: the
-first word, lowercased (for example "Résumé formatting" -> "résumé", also
-accepted without accents as "resume"). The routing table is the single source;
+text before the first colon, lowercased with spaces as hyphens (for example
+"Stage 1 (1.1 fit check...): ..." -> "stage-1", "H: handoff" -> "h"). The routing table is the single source;
 this script only reads it. Standard library only.
 """
 import re
@@ -33,7 +33,8 @@ def routing_rows(core):
         if not r.startswith("| ") or r.startswith("| Task") or "---" in r:
             continue
         label = r.split("|")[1].strip()
-        key = plain(re.split(r"[\s:,(]", label, maxsplit=1)[0])
+        head = re.sub(r"\s*\(.*?\)", "", label.split(":", 1)[0])
+        key = re.sub(r"[^\w.]+", "-", plain(head).strip()).strip("-")
         rows[key] = (label, r)
     return rows
 

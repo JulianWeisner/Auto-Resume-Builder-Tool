@@ -14,7 +14,7 @@ Examples can be your own past résumés or ones you admire. If an example is som
 
 ## Instructions for the agent
 
-Work as an information update session limited to templates/custom/ and the "Documents" section of career/preferences.md. Follow the [interviewing rules](../../AGENTS.md#interviewing-the-user): one short question at a time.
+Work as an [information update session](../../agents/information-update.md) limited to templates/custom/ and the "Documents" section of career/preferences.md. Follow the [interviewing rules](../../AGENTS.md#interviewing-the-user): one short question at a time.
 
 ### 1. Read each example
 

@@ -20,4 +20,4 @@ Python 3 scripts that do the mechanical work: reading the whole record, checking
 | [agent_bundle.py](agent_bundle.py) | Prints AGENTS.md plus one task's modules as a single document | For chat tools that cannot open files |
 | [check_skeleton.py](check_skeleton.py) | Fails if career data appears in the public tool repository | Upstream only; your filled copy fails it by design |
 
-See [agents/screening-check.md](../agents/screening-check.md) for how `jd_key.py` and `resume_check.py` work together.
+See [Stage 1](../agents/stage-1-evaluate.md#preparation-always) for how `jd_key.py` keys a posting and scores fit, and [Stage 2](../agents/stage-2-resume.md#automatic-check-before-delivery) for how `resume_check.py` uses that key.

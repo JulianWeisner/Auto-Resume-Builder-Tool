@@ -159,7 +159,7 @@ def check_readable(pdf, text, source, max_pages):
     for h in REQUIRED_HEADINGS:
         add(h.lower() in lines, f"Heading '{h}' on its own line")
     if "skills" not in lines:
-        add(False, "Heading 'Skills' on its own line", "optional; confirm the keyword-coverage audit kept relevant skills (agents/screening-check.md)", warn=True)
+        add(False, "Heading 'Skills' on its own line", "optional; confirm the Stage 2 keyword audit kept relevant skills", warn=True)
 
     kinds = {}
     for m in RANGE.finditer(flat):

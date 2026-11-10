@@ -21,9 +21,9 @@ A personalizable version of a résumé-and-application tool that is being built 
 | 0 | Repository boundary: privacy and skeleton guard, upstream port log | ✅ This version |
 | 1 | Career-record skeleton: index, story, preferences, vocabulary, contact, collections, record templates, source material, archive conventions, schema reference | ✅ This version |
 | 1b | Documents: résumé and cover-letter templates and style guides, custom-template builder, writing guides (plain language with ASD-STE100, claim wording), screening-software check | ✅ This version |
-| 2 | Port the application workflow ("Skateboard"): fit check and verdict card, full evaluation, hidden-not-skipped, résumé build, automatic résumé check, footer, handoff into an information update session | ○ Next |
+| 2 | Port the application workflow ("Skateboard"): fit check and verdict card with weighted fit scoring, full evaluation, hidden-not-skipped, résumé build, automatic résumé check, cover letters and answers, footer, handoff, archive, information update | ✅ This version |
 | 2a | Port the scripts, made collection-agnostic: current view, validator, job-description key, résumé check, agent bundle | ✅ This version |
-| 3 | Fictional sample person and proof run: a small made-up career used as test data, and one full run from posting to checked PDF | ○ With phase 2 |
+| 3 | Fictional sample person and proof run: a small made-up career used as test data, and one full run with an AI agent from posting to checked PDF | ○ Next |
 | 4 | Guided onboarding: CV import script, chronological story prompts, example-driven recall prompts, preference prompts, validation at the end | ◐ Agent guidance exists in AGENTS.md; scripted flow to come |
 | 5 | "Scooter" parity as it matures upstream: answer-bank structure (done), repeated portal answers | ◐ As upstream ships |
 | 6 | Interview preparation (product-line expansion): key stories from the résumé, recall-first rewrite compared with records, optional read-to-refresh, mock interview | ◇ Idea |
