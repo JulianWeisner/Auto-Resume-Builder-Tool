@@ -2,7 +2,7 @@
 
 This file is the operating guide for any AI agent working in this repository: Claude Code, ChatGPT Codex, Gemini CLI or another tool. Tool-specific files (CLAUDE.md, GEMINI.md) only point here. Instructions in this file never depend on one AI product's features.
 
-**Status:** this is an early version. The career-record structure, its rules and the guidance for filling it are complete. The application workflow (fit check, résumé build, automatic check, cover letters, archive) is being ported and is listed in [ROADMAP.md](ROADMAP.md); until it lands, do not improvise those stages from memory of other tools.
+**Status:** this is an early version. Complete: the career-record structure and how to fill it, the résumé and cover-letter templates, the writing guides, the screening-software check and the scripts. Still being ported: the guided application workflow (fit check and verdict card, full evaluation, handoff, archive), listed in [ROADMAP.md](ROADMAP.md). Until it lands, when the user asks for a résumé or letter, follow the [Routing](#routing-read-the-modules-for-the-task) modules and the rules below.
 
 ## What this repository is
 
@@ -10,8 +10,8 @@ Two kinds of content live here, and they are kept apart:
 
 | Area | Folders | Who changes it |
 |---|---|---|
-| **The tool** | AGENTS.md, START.md, schema/, career/_templates/, tools/, and (as they are ported) agents/ and templates/ | Updated from the upstream project |
-| **The user's data** | career/ (except _templates), source-material/, applications/, Curriculum-Vitae.md | Only the user, through an agent they authorize |
+| **The tool** | AGENTS.md, START.md, CLAUDE.md, GEMINI.md, schema/, career/_templates/, agents/, templates/resume/, templates/cover-letter/, tools/ | Updated from the upstream project |
+| **The user's data** | career/ (except _templates), source-material/, applications/, templates/custom/, Curriculum-Vitae.md | Only the user, through an agent they authorize |
 
 The user's data is private. Never copy it into a public location, an issue, a pull request to the upstream project or any message to a third party.
 
@@ -48,7 +48,7 @@ The user's data is private. Never copy it into a public location, an issue, a pu
 
 A handoff is the bridge: the application session proposes, the user agrees, an information update session applies it.
 
-Neither session changes the tool's own files (AGENTS.md, START.md, schema/, career/_templates/, tools/). Those change only when the user pulls a tool update ([README](README.md#getting-tool-updates)).
+Neither session changes the tool's own files (listed under [What this repository is](#what-this-repository-is)). Those change only when the user pulls a tool update ([README](README.md#getting-tool-updates)).
 
 ## Interviewing the user
 
@@ -68,9 +68,41 @@ New users start with an empty skeleton. When the user asks for help filling it, 
 3. **Interview, one question at a time,** as described under [Interviewing the user](#interviewing-the-user), offering kinds of roles, activities, processes, systems, colleagues and situations to react to.
 4. **Record as you go.** Rewrite accounts from what the user says, add scope_and_status limits, propose tags, and add dated clarifications with the user's words. Prioritize questions that change ownership, outcome, chronology or an important number.
 5. **Fill preferences.** Work through the topics in [career/preferences.md](career/preferences.md) one question at a time, including the application-answer table.
-6. **Close the loop.** Update the career index's locator table, write the career story from the records and show the user what was added.
+6. **Close the loop.** Update the career index's locator table, write the career story from the records, run `python3 tools/validate.py` and fix every error, then show the user what was added.
 
 Never invent a fact to fill a template field. Leave it `null` or out.
+
+## Distinct-value test
+
+Apply this when choosing stories for a résumé, report, cover letter or answer. Does this story give important, job-relevant evidence that another selected story does not already show better? Keep overlapping stories only when each adds a meaningful difference in ownership, scope, outcome or a required capability. Otherwise combine them or keep the stronger one.
+
+## Routing: read the modules for the task
+
+This file is always in force. Before producing one of these, read its modules in full; do not work from memory of an earlier session.
+
+| Task | Read in full before producing it |
+|---|---|
+| Résumé formatting: laying out or revising a résumé | [templates/resume/style-guide.md](templates/resume/style-guide.md) (or the custom template's style guide named in [career/preferences.md](career/preferences.md#documents)) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · [career/contact.json](career/contact.json) |
+| Screening: the screening-software and keyword check for a résumé aimed at a job | [agents/screening-check.md](agents/screening-check.md) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) |
+| Cover letter or application answers | [templates/cover-letter/style-guide.md](templates/cover-letter/style-guide.md) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · [career/contact.json](career/contact.json) |
+| Template: building a custom template from the user's examples | [templates/custom/README.md](templates/custom/README.md) · [templates/resume/style-guide.md](templates/resume/style-guide.md) |
+| Information update: adding to or correcting career records | [schema/experience-schema.md](schema/experience-schema.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) |
+
+The full application workflow (fit check, full evaluation, résumé build, handoff, archive) is being ported; see [ROADMAP.md](ROADMAP.md).
+
+If you cannot open linked files (for example in a chat window with uploaded files), ask the user to run `python3 tools/agent_bundle.py <task>` and share the output: it prints this file plus the task's modules as one document.
+
+## Scripts
+
+Python 3 scripts in [tools/](tools/README.md) do the mechanical work so the agent does not retype or eyeball it. Use them whenever you can run code; where you cannot, do the same steps by hand and say so.
+
+| Script | Use it to |
+|---|---|
+| `current_view.py` | Read every career record's current fields at once, before evaluating a job or drafting |
+| `validate.py` | Check the career record after every information update; fix every error before finishing |
+| `jd_key.py` | Copy a job posting's requirements verbatim into tagged keys |
+| `resume_check.py` | Check a rendered résumé PDF for screening software and job-term coverage |
+| `agent_bundle.py` | Bundle these rules for chat tools that cannot open files |
 
 ## Working style
 

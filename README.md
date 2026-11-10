@@ -12,8 +12,11 @@ Early version. What is here today:
 
 - ✅ **The career-record skeleton:** every page and folder the tool needs, empty, each saying what it is for and how it gets filled.
 - ✅ **The record reference and templates:** how roles, experiences, outcomes, projects and skills are stored, with blank copyable records.
-- ✅ **Agent rules for filling your record** from your CV and your story.
-- 🔜 **The application workflow:** fit check, résumé build, automatic screening-software check, cover letters and archive. See [ROADMAP.md](ROADMAP.md).
+- ✅ **Agent rules for filling your record** from your CV and your story, one question at a time.
+- ✅ **Résumé and cover-letter templates** with style guides, plus a guided way to build **your own template** from résumés you like.
+- ✅ **Writing guides:** plain language (ASD-STE100-informed, with formulaic AI phrasing removed) and claim wording for strong, truthful bullets.
+- ✅ **Screening-software (ATS) check** and the scripts behind it: reading the whole record, validating it, keying job postings verbatim and checking every résumé PDF.
+- 🔜 **The guided application flow:** verdict card, full evaluation, handoff and archive. See [ROADMAP.md](ROADMAP.md).
 
 ## Get your own private copy
 
@@ -41,7 +44,7 @@ The tool improves over time. Updates only touch the tool's files, never your dat
 ```bash
 git remote add upstream https://github.com/JulianWeisner/Auto-Resume-Builder-Tool.git   # once, if not already set
 git fetch upstream
-git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates tools
+git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools
 git commit -m "Update tool from upstream"
 ```
 
@@ -56,10 +59,13 @@ git commit -m "Update tool from upstream"
 | [schema/](schema/experience-schema.md) | How the career record is organized | Tool |
 | [career/](career/README.md) | Your career record: index, story, preferences, vocabulary, contact details and collections of records | **Yours** |
 | [career/_templates/](career/_templates/README.md) | Blank, copyable records | Tool |
+| [agents/](agents/) | Writing guides and the screening-software check the agent follows | Tool |
+| [templates/](templates/README.md) | Default résumé and cover-letter templates and style guides | Tool |
+| [templates/custom/](templates/custom/README.md) | Your own templates, built from examples you like | **Yours** |
 | [source-material/](source-material/README.md) | Your CV snapshot, evidence journal and document extracts | **Yours** |
 | [Curriculum-Vitae.md](Curriculum-Vitae.md) | Your working CV | **Yours** |
 | [applications/](applications/README.md) | What you submitted, per application | **Yours** |
-| [tools/](tools/) | Scripts the agent runs (Python 3) | Tool |
+| [tools/](tools/README.md) | Scripts the agent runs (Python 3; [setup](tools/README.md#setup-once)) | Tool |
 
 ## Contributing to the tool
 

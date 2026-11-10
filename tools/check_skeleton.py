@@ -5,7 +5,7 @@ The public tool repository must contain the tool and an EMPTY career skeleton,
 never anyone's career data. This check enforces that:
 
   1. Data areas (career/ except career/_templates/, source-material/,
-     applications/, Curriculum-Vitae.md) contain only the skeleton files listed
+     applications/, templates/custom/, Curriculum-Vitae.md) contain only the skeleton files listed
      in SKELETON_FILES. Any other file there fails: records, CVs, PDFs, archives.
   2. Skeleton pages contain no fenced YAML records.
   3. career/contact.json has every contact value empty.
@@ -31,7 +31,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DATA_AREAS = ["career", "source-material", "applications"]
+DATA_AREAS = ["career", "source-material", "applications", "templates/custom"]
 DATA_FILES = ["Curriculum-Vitae.md"]
 TEMPLATES = "career/_templates"
 
@@ -51,6 +51,7 @@ SKELETON_FILES = {
     "source-material/cv/README.md",
     "source-material/documents/README.md",
     "applications/README.md",
+    "templates/custom/README.md",
 }
 
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".yml", ".yaml", ".py", ".html", ".css", ".js", ".toml", ".cfg", ""}

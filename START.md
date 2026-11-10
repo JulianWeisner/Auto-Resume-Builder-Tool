@@ -6,7 +6,7 @@ This repository holds your career record and the rules an AI agent follows to tu
 
 - Your own **private** copy of this repository on your computer ([how](README.md#get-your-own-private-copy)).
 - An AI coding agent that can read and edit files in that folder: Claude Code, ChatGPT Codex, Gemini CLI or similar.
-- Python 3 (for the checking scripts).
+- Python 3, PyYAML and poppler for the checking scripts ([setup](tools/README.md#setup-once)). Without them the agent works by hand and tells you which checks did not run.
 - Your CV, and if you have them, recent résumés and cover letters.
 
 ## Step 1: fill your career record (once, then keep adding)
@@ -24,9 +24,17 @@ The agent will:
 
 Do it in one long session or several short ones. Everything you add makes every later application better, and you can always add more.
 
-## Step 2: apply for jobs
+## Step 2 (optional): choose how your documents look
 
-🔜 Coming next ([roadmap](ROADMAP.md)). The flow will be:
+The default résumé and cover letter are clean, single-column layouts that screening software reads well ([see them](templates/README.md)). To use your own look instead, put one to three résumés you like in `templates/custom/examples/` and say:
+
+> Read templates/custom/README.md and build me a custom template from my examples.
+
+## Step 3: apply for jobs
+
+You can already ask for a résumé or cover letter for a job: paste the posting and say "build a résumé for this". The agent uses your record, the templates, the writing guides and the screening-software check.
+
+🔜 The guided flow is coming next ([roadmap](ROADMAP.md)):
 
 1. **Paste a job posting.** You get a verdict card: fit estimate, recommendation, strengths, gaps and up to four questions.
 2. **Decide:** build résumé · full evaluation · pass on this job. Nothing is built until you say so.

@@ -75,6 +75,25 @@ Past jobs:
 
 {Your answers.}
 
+## Documents
+
+How your résumé and cover letters look. Defaults apply until you record something here.
+
+Question bank:
+
+- Use the default templates, or one of your own? (see [custom templates](../templates/custom/README.md))
+- Should your résumé fit on one page, or is two fine?
+- US Letter or A4 paper?
+- Would you like a personal signature line at the end? (for example "Engineer • Teacher • Marathoner")
+
+| Setting | Value |
+|---|---|
+| Résumé template | Default: templates/resume/ |
+| Cover-letter template | Default: templates/cover-letter/ |
+| Page length | Not recorded: one page if the evidence fits, otherwise two |
+| Paper size | Not recorded: US Letter |
+| Personal signature | None |
+
 ## Application answers
 
 Standard answers for job-portal questions. They are never career achievements and never appear on a résumé or cover letter. "Not recorded" means the agent asks you each time; it never guesses.
