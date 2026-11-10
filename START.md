@@ -19,7 +19,7 @@ The agent will:
 
 1. **Import your CV** into records, keeping its wording as a starting point.
 2. **Ask you to tell your story in order**, starting earlier than you think. A recruiter's advice: go chronologically, leave no stone unturned, you never know what will connect you to a role.
-3. **Prompt you with examples** to react to (kinds of work, situations, systems, colleagues) instead of blank questions, because examples bring back memories.
+3. **Interview you one short question at a time,** with examples to react to (kinds of work, situations, systems, colleagues), because examples bring back memories. Skip anything you like.
 4. **Record your goals and preferences**, including standard answers to job-portal questions.
 
 Do it in one long session or several short ones. Everything you add makes every later application better, and you can always add more.

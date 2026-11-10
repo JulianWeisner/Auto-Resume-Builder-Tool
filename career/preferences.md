@@ -4,7 +4,7 @@
 
 **Empty until you fill it.** This page holds what you want, not what you have done: goals, motivation, how you like to work and your standard answers to portal questions. Agents use it to judge fit, to write cover-letter openings from your real motivation (never invented enthusiasm) and to fill application forms. Nothing here appears on a résumé as an achievement.
 
-How it gets filled: your agent asks the prompts below, offering examples you can react to rather than blank questions. Each section records when and how you said it, then your words.
+How it gets filled: your agent interviews you **one short question at a time**, using the question bank under each section. It offers the examples in brackets for you to react to, follows up on what you say ("What about it did you like?") and skips anything you want to skip. You never get the whole list at once. Each section then records when you said it and your words.
 
 Record pattern for every section:
 
@@ -14,23 +14,64 @@ Record pattern for every section:
 
 ## Location and working arrangement
 
-{Where you live, where you will work, remote / hybrid / on-site, relocation, travel tolerance.}
+Question bank:
+
+- Where do you live?
+- Would you move for the right role? (where to, or nowhere)
+- Do you prefer remote, hybrid or on-site work?
+- How much travel is OK? (none, occasional, up to half the time)
+
+{Your answers.}
 
 ## What you want next
 
-{Kinds of roles, industries, company stage and size, problems you want to work on.}
+Question bank:
+
+- What kind of role do you want next? (a title, a type of work, a level)
+- Which industries interest you?
+- What size of company suits you? (startup, mid-size, large)
+- Is there a problem you want to work on?
+
+{Your answers.}
 
 ## Motivation
 
-{Why this work matters to you. Cover letters draw on this, so specific reasons beat general ones.}
+Cover letters draw on this, so specific reasons beat general ones.
+
+Question bank:
+
+- What part of your work do you enjoy most?
+- Is there a cause or problem you care about personally?
+- What made you choose your field in the first place?
+
+{Your answers.}
 
 ## What has worked and what has not
 
-Prompts (answer any; examples help you remember):
+The agent asks about one thing at a time, then follows up with "What about it?"
 
-- What roles, activities, processes, systems or co-workers have you liked? What about them?
-- What roles, activities, processes, systems or co-workers have you not liked? What about them?
-- What went well or badly at other jobs: promotion discussions, working with other people, the office setup? Who were you working with?
+Liked:
+
+- Which role have you enjoyed most?
+- Which tasks do you enjoy? (planning, building, analyzing, teaching, selling, fixing things)
+- Which ways of working suit you? (clear process, freedom to experiment, deadlines, long projects)
+- Which tools or systems have you liked using?
+- Which colleague or manager did you work best with?
+
+Not liked:
+
+- Which role did you enjoy least?
+- Which tasks drain you?
+- Which ways of working frustrate you?
+- Which tools or systems have you disliked?
+- What kind of colleague or manager is hard for you to work with?
+
+Past jobs:
+
+- How have promotion conversations gone for you?
+- When has working with other people gone especially well?
+- When has it gone badly?
+- Which workspace suits you? (open plan, quiet office, home)
 
 {Your answers.}
 

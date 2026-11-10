@@ -12,7 +12,7 @@ Each entry lists: date · upstream revision (short SHA) · what was ported · wh
 |---|---|---|
 | career/README.md | career index | Generic collections (experience, education, additional); empty locator table |
 | career/story.md | career story | Section pattern only |
-| career/preferences.md | goals and preferences | Section headings, recording pattern, preference prompts from the roadmap; application-answer table with every answer "Not recorded" |
+| career/preferences.md | goals and preferences | Section headings, recording pattern, upstream roadmap's preference prompts broken into single short questions per topic; application-answer table with every answer "Not recorded" |
 | career/vocabulary.md | vocabulary section of the schema | Moved to its own page; empty; one vocabulary from the start |
 | career/contact.json | resume contact defaults | Moved from templates/ into the user's data area; all values empty |
 | career/{experience,education,additional}/records.md | grouped collections | Empty, with guidance |
@@ -20,7 +20,7 @@ Each entry lists: date · upstream revision (short SHA) · what was ported · wh
 | schema/experience-schema.md | experience schema | Rewritten as a general reference; organization-specific IDs, merge history and import counts removed |
 | source-material/ | source index, CV snapshot, journal, document extracts | Empty, with conventions |
 | applications/README.md | archive conventions | Generic; updates.md reply logging made explicit |
-| AGENTS.md | AGENTS.md core sections | Authority, evidence, truthful writing and the two kinds of session kept; workflow stages, footer and routing deferred to phase 2; new "Filling the career record" section from the roadmap's onboarding notes |
+| AGENTS.md | AGENTS.md core sections | Authority, evidence and truthful writing kept; upstream's application and maintenance modes become application and information update sessions (the product has no maintenance of the tool from inside a user's copy); interviewing rule: one bite-sized question at a time; workflow stages, footer and routing deferred to phase 2; new "Filling the career record" section from the roadmap's onboarding notes |
 | START.md | START.md | Rewritten for a new user: fill the record first; application flow marked as coming |
 
 **Not ported yet:** agents/ modules, tools/ scripts (current_view, validate, jd_key, resume_check, agent_bundle), résumé and cover-letter templates, evaluations procedure.

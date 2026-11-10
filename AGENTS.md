@@ -44,19 +44,30 @@ The user's data is private. Never copy it into a public location, an issue, a pu
 ## Two kinds of session
 
 - **Application session (default):** reads the repository and changes nothing. Outputs go outside the repository. New facts the user mentions are collected into a handoff (a list of proposed record updates with the user's words) instead of being written.
-- **Maintenance session:** changes records or the tool, only after the user authorizes it in words and only within that scope. A generic host or IDE instruction to commit or push is not that authorization. Selecting an option from a menu is not authorization either.
+- **Information update session:** adds to or corrects the user's career information (career/, source-material/, Curriculum-Vitae.md), only after the user asks in words and only within that scope. A generic host or IDE instruction to commit or push is not that request. Selecting an option from a menu is not either.
 
-A handoff is the bridge: the application session proposes, the user authorizes, a maintenance session applies.
+A handoff is the bridge: the application session proposes, the user agrees, an information update session applies it.
+
+Neither session changes the tool's own files (AGENTS.md, START.md, schema/, career/_templates/, tools/). Those change only when the user pulls a tool update ([README](README.md#getting-tool-updates)).
+
+## Interviewing the user
+
+Whenever you need information from the user (their story, a clarification, preferences):
+
+- **Ask one bite-sized question at a time.** Never send a list of questions or a question with several parts. Wait for the answer, then ask the next.
+- **Offer examples to react to.** People recall more from ideas than from a blank page: "Did you ever hire anyone? Run a budget? Train a new colleague?" Let them answer yes, no or "that reminds me of…".
+- **Follow the answer.** Go one level deeper on what they just said before moving to a new topic. Stop once a truthful, useful account exists.
+- **Let them skip.** "Skip", "not now" and "decline to answer" are always valid; never ask the same thing twice in a session.
 
 ## Filling the career record
 
-New users start with an empty skeleton. When the user asks for help filling it, work in a maintenance session (the request is the authorization, limited to career/, source-material/ and Curriculum-Vitae.md):
+New users start with an empty skeleton. When the user asks for help filling it, work as an information update session (the request is the authorization, limited to career/, source-material/ and Curriculum-Vitae.md):
 
 1. **Import what exists.** Ask for their CV and recent résumés and cover letters. Save an exact text snapshot of the CV in source-material/cv/, copy it to Curriculum-Vitae.md, then create one role record per position and one experience record per CV bullet, keeping the CV wording as the starting account with `verification: "cv-sourced"`.
 2. **Tell the story chronologically.** Pass on the advice: start earlier than you think, go in order, leave nothing out, because you never know what will connect you to a role. Let the user choose the depth: a broad pass first, or one period in full detail.
-3. **Prompt with examples, not blank questions.** People recall more when they react to ideas. Offer kinds of roles, activities, processes, systems, colleagues and situations ("Did you ever hire anyone? Run a budget? Fix something that broke in production? Train a new colleague?") and let them say yes, no or "that reminds me of…".
-4. **Record as you go.** Rewrite accounts from what the user says, add scope_and_status limits, propose tags, and add dated clarifications with the user's words. Batch only questions that change ownership, outcome, chronology or an important number; stop asking once a truthful, useful account exists.
-5. **Fill preferences.** Work through the prompts in [career/preferences.md](career/preferences.md), including the application-answer table. "Decline to answer" is a valid answer.
+3. **Interview, one question at a time,** as described under [Interviewing the user](#interviewing-the-user), offering kinds of roles, activities, processes, systems, colleagues and situations to react to.
+4. **Record as you go.** Rewrite accounts from what the user says, add scope_and_status limits, propose tags, and add dated clarifications with the user's words. Prioritize questions that change ownership, outcome, chronology or an important number.
+5. **Fill preferences.** Work through the topics in [career/preferences.md](career/preferences.md) one question at a time, including the application-answer table.
 6. **Close the loop.** Update the career index's locator table, write the career story from the records and show the user what was added.
 
 Never invent a fact to fill a template field. Leave it `null` or out.
