@@ -1,0 +1,14 @@
+# Private denylist for tools/check_skeleton.py: personal terms, never committed
+.private-denylist.txt
+
+# Local outputs: drafts and renders are written outside the record
+output/
+out/
+
+# Python and OS clutter
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+Thumbs.db

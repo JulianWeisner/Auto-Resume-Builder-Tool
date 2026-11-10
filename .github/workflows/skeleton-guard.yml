@@ -1,0 +1,20 @@
+name: Skeleton guard
+
+# Keeps career data out of the public tool repository.
+# Runs only on the upstream repository; users' private copies hold real data and skip it.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  guard:
+    if: github.repository == 'JulianWeisner/Auto-Resume-Builder-Tool'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: No career data in the tool repository
+        run: python3 tools/check_skeleton.py
