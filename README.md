@@ -16,7 +16,8 @@ Early version. What is here today:
 - ✅ **Résumé and cover-letter templates** with style guides, plus a guided way to build **your own template** from résumés you like.
 - ✅ **Writing guides:** plain language (ASD-STE100-informed, with formulaic AI phrasing removed) and claim wording for strong, truthful bullets.
 - ✅ **The guided application flow:** paste a posting, get a verdict card with a weighted fit estimate, then a full evaluation (asks-and-stories scoring, storyboard, review before build), a tailored résumé, cover letter and portal answers, a handoff of new facts and an archive of what you submitted.
-- ✅ **Screening-software (ATS) check** and the scripts behind it: reading the whole record, validating it, keying job postings verbatim, computing the fit baseline and checking every résumé PDF.
+- ✅ **One-command résumé build** that renders the PDF, measures its layout and runs the screening-software (ATS) check, with a one-command setup for any computer or AI tool, and a proof report that traces every résumé line back to your records.
+- ✅ **A made-up sample person** ([examples/sample-person/](examples/sample-person/README.md)) showing what a filled record looks like.
 
 What comes next is in [ROADMAP.md](ROADMAP.md).
 
@@ -46,7 +47,7 @@ The tool improves over time. Updates only touch the tool's files, never your dat
 ```bash
 git remote add upstream https://github.com/JulianWeisner/Auto-Resume-Builder-Tool.git   # once, if not already set
 git fetch upstream
-git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools
+git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools examples
 git commit -m "Update tool from upstream"
 ```
 
@@ -68,6 +69,7 @@ git commit -m "Update tool from upstream"
 | [Curriculum-Vitae.md](Curriculum-Vitae.md) | Your working CV | **Yours** |
 | [applications/](applications/README.md) | What you submitted, per application | **Yours** |
 | [tools/](tools/README.md) | Scripts the agent runs (Python 3; [setup](tools/README.md#setup-once)) | Tool |
+| [examples/](examples/sample-person/README.md) | A made-up sample career, also used by the tests | Tool |
 
 ## Contributing to the tool
 
