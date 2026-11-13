@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Default resume template</title>
+<style>
+@page { size: Letter; margin: .75in; }
+* { box-sizing: border-box; }
+body { margin:0; color:#111; background:white; font-family:Arial,sans-serif; font-size:10.5pt; line-height:13pt; }
+main { max-width:7in; margin:auto; }
+h1 { font-size:22pt; line-height:22pt; margin:0 0 7pt; }
+.contact { font-size:10pt; margin:0 0 9pt; }
+.summary { margin:0 0 2pt; }
+h2 { font-size:13pt; line-height:13pt; margin:10pt 0 6pt; padding-bottom:4pt; border-bottom:.5pt solid #999; break-after:avoid; }
+/* Employer, practice and short-form subgroup headings: caps, 10pt above; standard rule gap when directly after a section rule. */
+h3 { font-size:11.5pt; line-height:12pt; margin:10pt 0 4pt; text-transform:uppercase; letter-spacing:.04em; break-after:avoid; }
+h2 + article > h3:first-child, h2 + h3 { margin-top:0; }
+/* Role and client headings: mixed case, indented 14pt, dates at the right margin. */
+h4 { font-size:10.5pt; line-height:13pt; margin:6pt 0 5pt 14pt; break-after:avoid; }
+.dated { display:flex; justify-content:space-between; align-items:baseline; gap:12pt; font-weight:bold; }
+.dated > span:first-child { min-width:0; }
+.date { flex-shrink:0; white-space:nowrap; font-family:inherit; font-size:inherit; font-weight:inherit; font-style:inherit; }
+.body { margin:0 14pt 4pt; }
+.context { font-style:italic; margin-bottom:7pt; break-after:avoid; }
+ul { margin:0 14pt 4pt; padding-left:12pt; }
+li { padding:0; margin:0 0 4pt; break-inside:avoid; orphans:2; widows:2; }
+/* Allow employers, practices, sections and lists to span pages. Keep only
+   headings/context with following content and individual entries when they fit.
+   Inspect the rendered heading + context + first complete entry; CSS is not proof. */
+section, article, ul { break-inside:auto; }
+article + article { margin-top:7pt; }
+p { orphans:2; widows:2; }
+.short-form, .education-entry { break-inside:avoid; }
+.personal-signature { width:fit-content; max-width:100%; margin:12pt auto 0; border-top:.5pt solid #999; padding:3pt 18pt 0; font-family:Arial,sans-serif; font-size:9.5pt; line-height:12pt; font-weight:normal; text-align:center; break-inside:avoid; }
+.personal-signature span { white-space:nowrap; }
+@media screen { body { background:#eee; padding:24px; } main { background:white; max-width:8.5in; min-height:11in; padding:.75in; box-shadow:0 2px 10px #bbb; } }
+</style></head><body>
+<!-- Layout placeholders only. See style-guide.md. Remove every optional block you do not use, including the personal signature. -->
+<main>
+<header><h1>[FULL NAME]</h1>
+<p class="contact">[City, State] | [Email] | [Phone] | [LinkedIn or Portfolio]</p>
+<p class="summary">[Professional identity and relevant strengths. Connect your background and supported results to the target role in two concise lines.]</p></header>
+<section><h2>Experience</h2>
+<article>
+<h3 class="dated"><span>[Consulting Practice]</span><span class="date">[Mon YYYY - Present]</span></h3>
+<p class="body context">[Brief description of the practice and the clients it serves.]</p>
+<h4 class="dated"><span>[Client Company]: [Selected Functional Title]</span><span class="date">[Mon YYYY - Mon YYYY]</span></h4>
+<ul><li>[Action taken to solve a specific customer or business problem, followed by a supported outcome.]</li><li>[A distinct decision or contribution, with clear ownership and relevant scale.]</li></ul>
+<h4 class="dated"><span>[Optional client case study or earlier role]</span><span class="date">[Supported dates]</span></h4>
+<ul><li>[One relevant contribution. Do not repeat the practice-level result or sum overlapping periods.]</li></ul>
+<h4 class="dated"><span>[Additional Client]: [Selected Functional Title]</span><span class="date">[Mon YYYY - Mon YYYY]</span></h4>
+<ul><li>[Relevant client contribution with an accurate description of your role and the result.]</li></ul>
+</article>
+<article>
+<h3 class="dated"><span>[Company]</span><span class="date">[Mon YYYY - Mon YYYY]</span></h3>
+<p class="body context">[Plain-language description of the organization and relevant scale.]</p>
+<h4 class="dated"><span>[Selected Functional Title]</span><span class="date">[Mon YYYY - Mon YYYY]</span></h4>
+<ul><li>[Specific action and relevant work context. End with a supported result where useful.]</li><li>[A distinct decision or delivery story. Include a meaningful metric when supported.]</li></ul>
+<h4 class="dated"><span>[Earlier Role, if relevant]</span><span class="date">[Mon YYYY - Mon YYYY]</span></h4>
+<ul><li>[Additional contribution that supports the target role without repeating another achievement.]</li></ul>
+</article>
+<h3>[Optional Short-Form Experience]</h3>
+<p class="body short-form"><strong>[Company]: [Selected Functional Title] | [Dates]:</strong> [Brief description of relevant work and responsibilities.]</p>
+<p class="body short-form"><strong>[Independent Role] | [Dates]:</strong> [Brief description of relevant work and responsibilities.]</p>
+</section>
+<section><h2>Education</h2>
+<p class="body education-entry"><strong>[Institution]:</strong> [Exact degree or qualification] | <strong>[Graduation year]</strong></p>
+<p class="body education-entry"><strong>[Institution]:</strong> [Exact degree or qualification] | <strong>[Graduation year]</strong></p>
+</section>
+<section><h2>Skills</h2><p class="body">[Relevant tool or skill] | [Relevant tool or skill] | [Relevant tool or skill]</p></section>
+<p class="personal-signature"><span>[Optional]</span> • <span>[Personal]</span> • <span>[Signature]</span></p>
+</main></body></html>
