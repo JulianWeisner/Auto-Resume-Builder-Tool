@@ -14,6 +14,27 @@ Run `python3 tools/validate.py` and resolve every error before finishing (and be
 
 ## Readable accounts
 
-When revising a relevant experience, apply STE-informed plain language to current_account: short paragraphs, concrete actions, users, mechanisms and results. Keep organization overviews short and navigational. Separate scope_and_status and evidence_notes from the narrative; agents must retrieve these fields and associated role limitations together with the account before drafting. Existing inline qualifications remain authoritative until migrated. Do not rewrite every record merely to enforce the format.
+When revising a relevant experience, apply STE-informed plain language to current_account: short paragraphs, concrete actions, users, mechanisms and results. Keep organization overviews short and navigational. Separate scope_and_status and evidence_notes from the narrative; agents must retrieve these fields and associated role limitations together with the account before drafting. Read any inline qualifications with the account. Do not rewrite every record merely to enforce the format.
 
 Summarize connected work briefly and link related_experiences for its detailed evidence. Avoid duplicate detailed claims, not useful context. Relationships are many-to-many; a broad account can summarize how a related contribution informed decisions without absorbing its detailed evidence. Preserve source history, stable IDs, delivery status, attribution and metric definitions. Do not treat CV schema examples, comment templates, separators or section labels as achievements.
+
+## Information update footer
+
+End every information update reply that finishes a turn with this footer, following the footer rules and casing in [AGENTS.md](../AGENTS.md#application-workflow-stages-and-extras).
+
+```
+---
+
+**Updating:** Career record · Example Co experience  
+**Changes:** ✓ 3 records added · ✓ Validated · ○ Committed  
+**Asked for:** add my Example Co work · not preferences  
+**Reply:** confirm the records · adjust them  
+**Session:** Information Update (changes allowed) · Git 9f8b150  
+Or reply in your own words.
+```
+
+- **Updating:** the area being changed.
+- **Changes:** what this session changed, then whether `validate.py` passed and whether it is committed (✓ or ○). Omit "Committed" when the copy does not use Git.
+- **Asked for:** the scope the user asked for, in their words or as the files it covers, plus the main exclusion. It never widens on its own: ask before touching anything outside it.
+- **Reply:** the actions the user can take next.
+- **Session:** Information Update (changes allowed) · Git and the current short commit SHA, or the date.

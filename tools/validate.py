@@ -199,7 +199,7 @@ for p, t in texts.items():
             err("missing anchor", rel(p), url)
 
 # Agent guide routing: every module is routed from AGENTS.md and says when to load it
-core = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+core = (ROOT / "AGENTS.md").read_text(encoding="utf-8") if (ROOT / "AGENTS.md").is_file() else ""
 routing = core.split("## Routing", 1)[1].split("\n## ", 1)[0] if "## Routing" in core else ""
 if (ROOT / "agents").exists():
     if not routing:

@@ -33,10 +33,11 @@
    failure the key and the errors go to stderr and nothing goes to stdout.
 
 3. Assemble (script):  jd_key.py assemble tags.json [--scores scores.txt] head.md key.md body.md > stage1.md
-   scores.txt (private) gives every tag a 0-4 score, one "TAG SCORE" per line; add
+   scores.txt (private) gives every tag a 0-4 score, one "TAG SCORE" per line, except
+   condition tags, which take pass, fail or unknown ("Cond-1 pass"); add
    "trait" after the score for asks that name a personal trait ("Want-2 2 trait").
    assemble prints the fit baseline: the weighted average / 4 x 100, with Cond tags
-   left out and About and trait tags at half weight.
+   left out and About and trait tags at half weight, then the conditions' pass/fail list.
    assemble checks every tag is scored and prints a private summary to stderr,
    including requirements scored 1 or below; scores never enter the output.
    Concatenates the files and expands placeholders the agent wrote:
@@ -292,19 +293,28 @@ def cmd_render(jd_path, map_path, save=None):
     return 0
 
 
+def is_condition(tag):
+    """Condition tags (Cond-N) are a pass/fail filter, never part of the fit score."""
+    return tag.rsplit("-", 1)[0] == "Cond"
+
+
 def load_scores(path, tags, errors, traits=None):
     scores = {}
     for n, raw in enumerate(load(path), 1):
         raw = raw.split("#", 1)[0].strip()
         if not raw:
             continue
-        m = re.match(rf"^({TAG_RE})\s+([0-4])(\s+trait)?$", raw)
+        m = re.match(rf"^({TAG_RE})\s+([0-4]|pass|fail|unknown)(\s+trait)?$", raw)
         if not m:
-            errors.append(f"scores line {n}: expected 'TAG SCORE [trait]' with SCORE 0-4: {raw}")
+            errors.append(f"scores line {n}: expected 'TAG SCORE [trait]' with SCORE 0-4, "
+                          f"or 'Cond-N pass|fail|unknown' for a condition: {raw}")
         elif m[1] not in tags:
             errors.append(f"scores line {n}: unknown tag {m[1]}")
+        elif is_condition(m[1]) != (not m[2].isdigit()):
+            errors.append(f"scores line {n}: {m[1]}: conditions take pass, fail or unknown; "
+                          f"every other tag takes a 0-4 score")
         else:
-            scores[m[1]] = int(m[2])
+            scores[m[1]] = m[2] if is_condition(m[1]) else int(m[2])
             if m[3] and traits is not None:
                 traits.add(m[1])
     missing = [t for t in tags if t not in scores]
@@ -319,7 +329,7 @@ def fit_baseline(scores, traits):
     total = weight = 0.0
     for tag, sc in scores.items():
         prefix = tag.rsplit("-", 1)[0]
-        if prefix == "Cond":
+        if is_condition(tag):
             continue
         w = 0.5 if (prefix == "About" or tag in traits) else 1.0
         total += w * sc; weight += w
@@ -327,6 +337,8 @@ def fit_baseline(scores, traits):
 
 
 def score_summary(scores, traits=frozenset()):
+    conditions = {t: v for t, v in scores.items() if is_condition(t)}
+    scores = {t: v for t, v in scores.items() if not is_condition(t)}
     groups = OrderedDict()
     for tag, sc in scores.items():
         groups.setdefault(tag.rsplit("-", 1)[0], []).append(sc)
@@ -343,6 +355,11 @@ def score_summary(scores, traits=frozenset()):
         lines.append(f"Fit baseline: {base:.1f}% (Cond left out; About and trait tags at half weight: "
                      + (", ".join(sorted(traits)) or "no traits marked") + "). Final fit = baseline "
                      "adjusted by at most 5 points, with a one-sentence reason.")
+    if conditions:
+        lines.append("Conditions (pass/fail filter, not in the fit): "
+                     + ", ".join(f"{t} {v}" for t, v in conditions.items())
+                     + ". Show each on the card; any fail means Deprioritize, naming it; "
+                     "ask about an unknown when it could change the decision.")
     return "\n".join(lines)
 
 

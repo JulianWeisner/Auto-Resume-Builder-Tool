@@ -110,6 +110,7 @@ These are mandatory reading alongside the account, not optional disclaimers.
 - **formal_title_ids / functional_role_ids:** link a functional role to the formal title it overlapped, and back.
 - **functional_window:** the maximum date range you confirmed for using a functional title on résumés. Narrower windows are allowed; wider never.
 - **functional_labels** and **functional_label_selection:** alternative labels for the same work. `either-or` means pick one per résumé; never concatenate them.
+- **Progression:** when the user confirms that sequential functional titles reflect real growth in responsibility, a résumé may present them as a progression (for example Analyst → Operations Lead), each within its own window. That never claims a formal title change, raise or date the records do not hold. Whether to show separate headings or one combined progression is decided fresh for each résumé.
 - **presentation_note:** a standing decision about how a role appears to employers. It never changes dates or formal titles.
 
 ### Team and status
