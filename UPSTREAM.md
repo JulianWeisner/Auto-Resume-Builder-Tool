@@ -91,3 +91,34 @@ Module names, section headings and stage, extra and footer structure match upstr
 | START.md, README.md, tools/README.md | START.md, README.md | Setup section, conditions on the card, the two reports, aliases; tests and sample documented |
 
 **Not ported:** evaluations/ (timing baseline, story-index comparison); upstream's README rewritten as a personal map; record, journal and source-coverage changes.
+
+## 2026-11-16 · Phase 3 proof runs · changes made here first
+
+Two independent agents ran the product on the made-up sample person in throwaway copies: one filled the record from the blank skeleton using Riley's CV and a script of answers, and one took the filled record from posting to fit check, BUILD OK and proof report. Both followed only the written instructions. Their gap reports led to the changes below.
+
+**Shared with upstream (upstream may want these too):**
+
+| Change | Where |
+|---|---|
+| Reading-order check split right-aligned date spans from heading text; before, every employer heading of five or more words raised a WARN on the default template | tools/resume_check.py |
+| Question example no longer shows scores ("from 2 to 3"), which contradicted "scores never appear in chat" | agents/stage-1-evaluate.md |
+| Condition tags need a shorthand; conditions the posting never mentions are not tagged | agents/stage-1-evaluate.md |
+| The fit check is saved as `fit-check.md` in the application's output folder, the name Stage 2's snapshot command expects | agents/stage-1-evaluate.md |
+| `--max-pages` comes from the page-length preference; the documented command used the 2-page default | agents/stage-2-resume.md |
+| `plan.md` names requirements by tag in plain text; nothing expanded `{…}` placeholders there | agents/stage-2-resume.md |
+| WARN decisions go into `plan.md` before the final build; a decision-file-only change after BUILD OK needs one rebuild to refresh the snapshot | agents/stage-2-resume.md |
+| `sources.md`: one résumé line per line, `->` or `→`, no headings; the proof report skips headings | agents/stage-2-resume.md, tools/proof_report.py |
+| Rule for a formal role that continues after the last functional window: show the formal title, flag it, ask | agents/stage-2-resume.md |
+| A proof report that exposes a decision-file defect: fix, rebuild, tell the user | agents/stage-2-resume.md |
+| Proof report: "Review before build and titles" (not "confirmations"), the plan's check decisions, the page target; untitled records show the start of their account | tools/proof_report.py, tools/build_resume.py |
+| The career view lists collections with no records yet, so "empty" is not mistaken for "not scanned" | tools/current_view.py |
+| The fit card's questions and Stage 2's open questions are the stated exception to one question at a time; a module read in full need not be reread in the same session | AGENTS.md |
+
+**Product only (onboarding):** CV snapshots named by import date, not commit; the import step covers education, the summary and skills lines, metrics and contact details; default depth and order; preferences in two passes and a skip rule; tags registered on first use and confirmed at the end; per-employer review during the interview; a short footer during interviews; a functional-title block in the grouped template; an experience `title` field; the sample's Operations Lead window now runs to the present.
+
+**Open decisions for the upstream owner (fit scoring; not changed here):**
+
+- Nice-to-have tags count at full weight, the same as requirements.
+- One record can satisfy two tags (for example a tool named in both a Want and a Nice bullet), counting twice.
+- The 0–4 key does not say how to score a compound ask that is half met ("returns and reverse logistics") or a verb shift (the record shows measuring, the posting asks to improve).
+- The terms check has no state between covered and unsupported, so partial evidence reads as "no evidence".

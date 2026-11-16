@@ -287,6 +287,9 @@ def source_lines(path):
     raw = Path(path).read_text(encoding="utf-8")
     raw = re.sub(r"(?is)<(script|style|head)\b.*?</\1>", " ", raw)
     raw = re.sub(r"(?i)<br\s*/?>|</(p|li|h[1-6]|div|tr|section)>", "\n", raw)
+    # A right-aligned date is its own text run in the PDF, so it starts its own line here;
+    # otherwise every "Employer ... Mar 2018 - Present" heading reads as a missing passage.
+    raw = re.sub(r"(?i)(<span\b[^>]*\bclass=\"[^\"]*\bdate\b)", "\n\\1", raw)
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
     return [squash(l) for l in text.splitlines() if len(squash(l).split()) >= 5]
 

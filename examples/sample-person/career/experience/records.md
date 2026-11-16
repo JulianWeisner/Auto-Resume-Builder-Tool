@@ -27,6 +27,7 @@ limitations: ["Analyst role: recommendations went to the replenishment manager, 
 ```yaml
 id: "brightway-analyst-2016-EXP-001"
 record_type: "experience"
+title: "Out-of-stock report"
 associated_roles: ["brightway-analyst-2016"]
 associated_projects: []
 functions: ["FN-analytics"]
@@ -69,6 +70,7 @@ capabilities: ["CAP-team-leadership"]
 ```yaml
 id: "summit-bikes-manager-2014-EXP-001"
 record_type: "experience"
+title: "Store team management"
 associated_roles: ["summit-bikes-manager-2014"]
 functions: ["FN-retail"]
 capabilities: ["CAP-team-leadership"]
