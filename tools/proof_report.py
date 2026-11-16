@@ -89,7 +89,8 @@ def claim_section(sources, records):
                 continue
             wording = rec.get("current_account") or rec.get("current_interpretation") or ""
             limits = [str(x) for k in ("limitations", "scope_and_status") for x in (rec.get(k) or [])]
-            cells.append(f"<div class='rec'><b>{esc(rid)}</b> · {esc(rec.get('title', ''))}"
+            title = rec.get("title") or excerpt(wording, 60)  # untitled records show the start of their account
+            cells.append(f"<div class='rec'><b>{esc(rid)}</b> · {esc(title)}"
                          + (f"<div>{esc(excerpt(wording))}</div>" if wording else "")
                          + (f"<div class='limit'>Limits: {esc(excerpt(limits[0], 200))}"
                             + (f" (+{len(limits) - 1} more)" if len(limits) > 1 else "") + "</div>" if limits else "")

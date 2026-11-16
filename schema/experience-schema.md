@@ -55,7 +55,7 @@ Move an employer to this format only when its grouped entry has become hard to n
 | Type | What it is | Main fields |
 |---|---|---|
 | `role` | A position you held: a formal appointment, a functional title or a client engagement | title, organization, dates, role_kind, associated_experiences |
-| `experience` | One thing you did, told as a factual account. The unit a résumé bullet is built from | current_account, associated_roles, functions, capabilities, outcomes, scope_and_status |
+| `experience` | One thing you did, told as a factual account. The unit a résumé bullet is built from | title, current_account, associated_roles, functions, capabilities, outcomes, scope_and_status |
 | `outcome` | A result an experience produced: a metric, a launch, a decision | current_interpretation, measurement_period, legacy_claims |
 | `project` | An editorial grouping of experiences (a workstream or named feature) | title, definition_status, associated_experiences |
 | `education` / `credentials` | Degrees, diplomas, certificates and licenses | title, organization, dates, current_account |

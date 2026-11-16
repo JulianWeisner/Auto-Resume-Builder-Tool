@@ -36,6 +36,7 @@ legacy_metadata: ""
 ```yaml
 id: "{role-id}-EXP-001"
 record_type: "experience"
+title: "{Short title of the experience, for example Returns redesign}"
 associated_roles: ["{role-id}"]
 associated_projects: []
 functions: []
