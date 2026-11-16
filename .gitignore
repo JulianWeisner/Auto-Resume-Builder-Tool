@@ -7,7 +7,7 @@ out/
 
 # Python and OS clutter
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
 venv/
 .DS_Store

@@ -10,7 +10,8 @@ extract a PDF's text, then search it):
   - text extracts, with no replacement or (cid:N) glyphs and all fonts embedded
   - name, email and phone from career/contact.json appear as text (empty fields are skipped)
   - Experience and Education headings appear as their own lines
-  - every month-year date range uses one pattern (case and dash type ignored)
+  - role and education dates use one pattern and one dash (date ranges inside
+    bullets are prose and may differ)
   - page count is within --max-pages
   - with --source, the PDF text keeps the source HTML's reading order
   - résumé voice: no first-person words (I, me, my, mine, myself); bullets
@@ -24,7 +25,8 @@ terms.txt holds one term per line, written by the agent from the job key:
   - Alternatives are other wordings that count as covering it (P&L for financials).
     An alternative must mean the same or something narrower, never broader: "Claude"
     does not cover "Claude Code". An alternative made only of words from the term
-    (a dropped qualifier) is refused.
+    (a dropped qualifier), longer than four words, or adding evidence words
+    ("used by Acme" for "adoption") is refused.
   - A hyphenated term split across two lines still counts as covered, with a note:
     text extraction drops the hyphen at a line wrap ("go-tomarket").
   - Mark a term "unsupported" only after checking the career records hold no
@@ -37,17 +39,182 @@ revises the wording (the records support it) or marks it unsupported.
 Exit 0 on PASS, 1 on FAIL, 2 on usage or tool errors.
 
 The check mirrors common screening-software behavior; it cannot promise how a
-particular employer's system scores a résumé. Standard library plus poppler's
-pdftotext, pdfinfo and pdffonts.
+particular employer's system scores a résumé. It reads PDFs with poppler
+(pdftotext, pdfinfo, pdffonts) when installed, otherwise with the Python
+packages pypdfium2 and pypdf that `python3 tools/build_resume.py --setup`
+installs. RESUME_PDF_READER=poppler or python forces one.
+
+This file also holds the tool environment shared by the other tools: once
+--setup has run, every tool restarts itself inside that environment, so all
+commands use the same pinned packages without PATH changes.
 """
 import argparse
 import html
+import importlib.util
 import json
+import os
+import platform
 import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+# --- Tool environment (created by build_resume.py --setup) -------------------
+
+
+def tool_home():
+    """Where setup keeps its private Python environment and browser: a lasting
+    per-user cache, outside the repository. RESUME_TOOL_HOME overrides it."""
+    if os.environ.get("RESUME_TOOL_HOME"):
+        return Path(os.environ["RESUME_TOOL_HOME"]).expanduser()
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Caches" / "resume-tool"
+    if os.name == "nt":
+        return Path(os.environ.get("LOCALAPPDATA", Path.home())) / "resume-tool"
+    return Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "resume-tool"
+
+
+def tool_python():
+    venv = tool_home() / "venv"
+    py = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    return py if py.is_file() else None
+
+
+def use_tool_env():
+    """Restart this script inside the setup environment when it exists and is not
+    already running. Also points Playwright at setup's browser folder."""
+    browsers = tool_home() / "browsers"
+    if browsers.is_dir():
+        os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(browsers))
+    py = tool_python()
+    if not py or os.environ.get("RESUME_TOOL_ENV") == "off":
+        return
+    if Path(sys.prefix).resolve() == (tool_home() / "venv").resolve():
+        return
+    os.environ["RESUME_TOOL_ENV"] = "off"  # never loop
+    os.execv(str(py), [str(py), *sys.argv])
+
+
+def has(module):
+    return importlib.util.find_spec(module) is not None
+
+
+class SetupError(Exception):
+    """This machine lacks something the tools need (exit 2), not a résumé problem."""
+
+
+# --- PDF reading: poppler, or Python packages -------------------------------
+
+
+class Poppler:
+    name = "poppler"
+
+    @staticmethod
+    def available():
+        return all(shutil.which(t) for t in ("pdftotext", "pdfinfo", "pdffonts"))
+
+    def _run(self, cmd):
+        try:
+            return subprocess.run(cmd, capture_output=True, text=True, check=True).stdout
+        except FileNotFoundError:
+            raise SetupError(f"{cmd[0]} is not installed (poppler)")
+        except subprocess.CalledProcessError as e:
+            raise SetupError(f"{cmd[0]} failed: {e.stderr.strip()}")
+
+    def text(self, pdf):
+        return self._run(["pdftotext", str(pdf), "-"])
+
+    def page_text(self, pdf, n):
+        return self._run(["pdftotext", "-layout", "-f", str(n), "-l", str(n), str(pdf), "-"])
+
+    def pages(self, pdf):
+        return int(re.search(r"Pages:\s+(\d+)", self._run(["pdfinfo", str(pdf)]))[1])
+
+    def unembedded_fonts(self, pdf):
+        rows = self._run(["pdffonts", str(pdf)]).splitlines()[2:]
+        return [l.split()[0] for l in rows if len(l.split()) >= 5 and l.split()[-5] == "no"]
+
+    def previews(self, pdf, prefix):
+        if not shutil.which("pdftoppm"):
+            return False
+        subprocess.run(["pdftoppm", "-r", "60", "-png", str(pdf), str(prefix)], capture_output=True)
+        return True
+
+    def version(self):
+        r = subprocess.run(["pdftotext", "-v"], capture_output=True, text=True)
+        m = re.search(r"version\s+([\d.]+)", r.stderr + r.stdout)
+        return f"poppler {m[1]}" if m else "poppler"
+
+
+class PythonReader:
+    name = "python"
+
+    @staticmethod
+    def available():
+        return has("pypdfium2") and has("pypdf")
+
+    def _doc(self, pdf):
+        import pypdfium2
+        return pypdfium2.PdfDocument(str(pdf))
+
+    def page_text(self, pdf, n):
+        doc = self._doc(pdf)
+        try:
+            return doc[n - 1].get_textpage().get_text_range().replace("\r\n", "\n").replace("\r", "\n")
+        finally:
+            doc.close()
+
+    def text(self, pdf):
+        return "\n\f".join(self.page_text(pdf, n) for n in range(1, self.pages(pdf) + 1))
+
+    def pages(self, pdf):
+        doc = self._doc(pdf)
+        try:
+            return len(doc)
+        finally:
+            doc.close()
+
+    def unembedded_fonts(self, pdf):
+        from pypdf import PdfReader
+        missing = []
+        for page in PdfReader(str(pdf)).pages:
+            fonts = (page.get("/Resources") or {}).get("/Font") or {}
+            for font in fonts.get_object().values():
+                font = font.get_object()
+                if font.get("/Subtype") == "/Type3":
+                    continue
+                desc_font = font["/DescendantFonts"][0].get_object() if "/DescendantFonts" in font else font
+                desc = desc_font.get("/FontDescriptor")
+                desc = desc.get_object() if desc else {}
+                if not any(k in desc for k in ("/FontFile", "/FontFile2", "/FontFile3")):
+                    missing.append(str(font.get("/BaseFont", "?")).lstrip("/"))
+        return sorted(set(missing))
+
+    def previews(self, pdf, prefix):
+        if not has("PIL"):
+            return False
+        doc = self._doc(pdf)
+        try:
+            for i in range(len(doc)):
+                doc[i].render(scale=60 / 72).to_pil().save(f"{prefix}-{i + 1}.png")
+        finally:
+            doc.close()
+        return True
+
+    def version(self):
+        from importlib.metadata import version
+        return f"pypdfium2 {version('pypdfium2')}, pypdf {version('pypdf')}"
+
+
+def pdf_reader():
+    choice = os.environ.get("RESUME_PDF_READER", "auto")
+    for reader in (Poppler, PythonReader):
+        if choice in ("auto", reader.name) and reader.available():
+            return reader()
+    raise SetupError("no PDF reader: run `python3 tools/build_resume.py --setup` "
+                     "(installs pypdfium2 and pypdf), or install poppler")
+
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTACT = ROOT / "career" / "contact.json"
@@ -58,6 +225,8 @@ RANGE = re.compile(
 REQUIRED_HEADINGS = ["Experience", "Education"]
 # Résumé bullets take the candidate as the understood subject (agents/writing/plain-language.md).
 FIRST_PERSON_WORDS = {"me", "my", "mine", "myself"}
+# An alternative is another word for the term, not proof of it ("adoption / used by Acme").
+EVIDENCE_WORDS = {"used", "using", "by", "via", "with", "for", "from", "at", "led", "built", "shipped"}
 
 
 def first_person(line):
@@ -75,15 +244,6 @@ def first_person(line):
                 spans.append(m.span())
         prev = m
     return spans
-
-
-def run(cmd):
-    try:
-        return subprocess.run(cmd, capture_output=True, text=True, check=True).stdout
-    except FileNotFoundError:
-        sys.exit(f"resume_check: {cmd[0]} is not installed (poppler-utils)")
-    except subprocess.CalledProcessError as e:
-        sys.exit(f"resume_check: {cmd[0]} failed: {e.stderr.strip()}")
 
 
 def squash(text):
@@ -131,7 +291,17 @@ def source_lines(path):
     return [squash(l) for l in text.splitlines() if len(squash(l).split()) >= 5]
 
 
-def check_readable(pdf, text, source, max_pages):
+def header_dates(source):
+    """Text of the places a résumé puts its own dates: right-aligned date spans,
+    headings and bold labels (short-form roles, education). Year ranges inside
+    bullets are ordinary prose and are not held to the header pattern."""
+    raw = re.sub(r"(?is)<(script|style|head)\b.*?</\1>", " ", Path(source).read_text(encoding="utf-8"))
+    parts = [m[2] for m in re.finditer(r"(?is)<(h[1-4]|strong|b)\b[^>]*>(.*?)</\1>", raw)]
+    parts += re.findall(r"(?is)<span\b[^>]*class=\"[^\"]*\bdate\b[^\"]*\"[^>]*>(.*?)</span>", raw)
+    return "\n".join(html.unescape(re.sub(r"<[^>]+>", " ", p)) for p in parts)
+
+
+def check_readable(reader, pdf, text, source, max_pages):
     results = []  # (status, label, detail) with status PASS / WARN / FAIL
 
     def add(ok, label, detail="", warn=False):
@@ -142,8 +312,7 @@ def check_readable(pdf, text, source, max_pages):
         f"{len(flat)} characters" if len(flat) >= 200 else "little or no text: the PDF may be an image")
     bad = len(re.findall(r"\(cid:\d+\)|�", text))
     add(bad == 0, "No unreadable characters", f"{bad} unreadable glyphs" if bad else "")
-    fonts = run(["pdffonts", str(pdf)]).splitlines()[2:]
-    unembedded = [l.split()[0] for l in fonts if len(l.split()) >= 5 and l.split()[-5] == "no"]
+    unembedded = reader.unembedded_fonts(pdf)
     add(not unembedded, "All fonts embedded", ", ".join(unembedded))
 
     contact = json.loads(CONTACT.read_text(encoding="utf-8"))
@@ -161,17 +330,21 @@ def check_readable(pdf, text, source, max_pages):
     if "skills" not in lines:
         add(False, "Heading 'Skills' on its own line", "optional; confirm the Stage 2 keyword audit kept relevant skills", warn=True)
 
+    # Role and education dates: from the source's date places when given, else
+    # PDF lines that end in a date range (right-aligned header dates).
+    dated = header_dates(source) if source else "\n".join(
+        l for l in text.splitlines() if re.search(RANGE.pattern + r"\s*$", l.strip(), re.I))
     kinds = {}
-    for m in RANGE.finditer(flat):
+    for m in RANGE.finditer(squash(dated)):
         kinds.setdefault(date_kind(m), []).append(m.group(0))
-    if not kinds:
+    if not RANGE.search(flat):
         add(False, "Date ranges found", "no date ranges detected")
-    else:
-        add(len(kinds) == 1, "Date ranges use one pattern",
+    elif kinds:
+        add(len(kinds) == 1, "Role and education dates use one pattern",
             "; ".join(f"{k}: {len(v)} (e.g. {v[0]})" for k, v in kinds.items()))
-    dashes = {m["dash"] for m in RANGE.finditer(text)}
+    dashes = {m["dash"] for m in RANGE.finditer(dated)}
     if len(dashes) > 1:
-        add(False, "Date ranges use one dash", " and ".join(sorted(repr(d) for d in dashes)), warn=True)
+        add(False, "Role and education dates use one dash", " and ".join(sorted(repr(d) for d in dashes)), warn=True)
 
     hits = []
     for line in text.splitlines():
@@ -180,7 +353,7 @@ def check_readable(pdf, text, source, max_pages):
     add(not hits, "No first-person words",
         f"{len(hits)} found, first: \"{hits[0]}\"; rewrite with the candidate as the understood subject" if hits else "")
 
-    pages = int(re.search(r"Pages:\s+(\d+)", run(["pdfinfo", str(pdf)]))[1])
+    pages = reader.pages(pdf)
     add(pages <= max_pages, "Page count within target", f"{pages} of at most {max_pages}")
 
     if source:
@@ -223,6 +396,12 @@ def check_terms(flat, tags_path, terms_path):
                           "use the employer's own wording first, alternatives after a slash")
             continue
         tw = set(p for p in re.split(r"[\s-]+", squash(options[0])) if p)
+        evidence = [o for o in options[1:] if len(o.split()) > 4 or
+                    ({p for p in re.split(r"[\s-]+", squash(o)) if p} - tw) & EVIDENCE_WORDS]
+        if evidence:
+            errors.append(f"terms line {n}: '{evidence[0]}' reads as evidence, not another word for "
+                          f"'{options[0]}'; list only synonyms, abbreviations or narrower forms (at most four words)")
+            continue
         broader = [o for o in options[1:] if set(p for p in re.split(r"[\s-]+", squash(o)) if p) < tw]
         if broader:
             errors.append(f"terms line {n}: '{broader[0]}' is broader than '{options[0]}', so a match "
@@ -250,12 +429,14 @@ def main():
     a = ap.parse_args()
     if bool(a.tags) != bool(a.terms):
         ap.error("--tags and --terms go together")
-    if not shutil.which("pdftotext"):
-        sys.exit("resume_check: pdftotext is not installed (poppler-utils)")
-
-    text = run(["pdftotext", a.pdf, "-"])
-    flat = squash(text)
-    readable = check_readable(a.pdf, text, a.source, a.max_pages)
+    try:
+        reader = pdf_reader()
+        text = reader.text(a.pdf)
+        flat = squash(text)
+        readable = check_readable(reader, a.pdf, text, a.source, a.max_pages)
+    except SetupError as e:
+        print(f"resume_check: {e}", file=sys.stderr)
+        return 2
     terms, term_errors = check_terms(flat, a.tags, a.terms) if a.tags else ([], [])
     if term_errors:
         print("\n".join(term_errors), file=sys.stderr)
@@ -300,4 +481,5 @@ def main():
 
 
 if __name__ == "__main__":
+    use_tool_env()
     sys.exit(main())

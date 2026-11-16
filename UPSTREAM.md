@@ -66,3 +66,28 @@ Module names, section headings and stage, extra and footer structure match upstr
 | START.md | START.md | Upstream's three-reply journey, reasoning view, "things you can say" table and two kinds of session, adapted |
 
 **Not ported:** evaluations/ (benchmark procedure for developing the tool; not needed by users).
+
+## 2026-11-13 · upstream 29e0121 (PRs #13–#21) · build, reports, conditions and setup
+
+| Here | Upstream source | Changes |
+|---|---|---|
+| tools/build_resume.py | new | One-command render, layout measurement, check and snapshot; `--setup` and `--check-setup`. Contact read from career/contact.json; the readiness test uses placeholders while that file is empty; the approval prompt asks "the user" |
+| tools/resume_check.py | same | Python PDF reader fallback and the shared tool environment; header-only date check; stricter term alternatives. Contact path changed; employer example replaced |
+| tools/proof_report.py | new | Name removed |
+| tools/current_view.py | same | Upstream `--search`, `--index` and `--ids … --related` merged into the product's automatic collection discovery; result cue words generalized; roles with start/end fields show dates in the index |
+| tools/jd_key.py | same | Unchanged: conditions take pass, fail or unknown |
+| tools/agent_bundle.py | same | `d <stage>` added to the product's routing-table task names |
+| tools/test_build_resume.py, tools/test_current_view.py | same | Rewritten to run on a temporary copy of the new sample person instead of upstream's own records; a test that the sample validates |
+| examples/sample-person/ | new | A made-up career (grouped and organization collections, limits, outcomes, a title progression, conditions in preferences) and a sample posting |
+| tools/validate.py | same | Runs without AGENTS.md (for the tests) |
+| tools/check_skeleton.py | — | Allows the fictional 555-01xx phone range used by the sample |
+| agents/stage-1-evaluate.md, agents/stage-1-full-evaluation.md | same | Re-ported: conditions as a pass/fail filter with a Conditions line on the card; 1.2–1.4 split into their own module. Name and personal examples replaced |
+| agents/stage-2-resume.md | same | Re-ported: plan.md, build and check, when the build cannot run, build snapshot as the private record, reasoning and proof reports. Screening-software explanation kept; custom template allowed; benchmark removed |
+| agents/archive.md, applications/README.md, agents/writing/plain-language.md | same | Snapshot and reports archived; two plain-language bullets |
+| agents/information-update.md | maintenance.md product-agent footer | The information update footer moves here, as upstream moved its product-agent footer |
+| AGENTS.md | same | Tool kit without a local copy, one build path, PDF-pending footer state, reasoning and proof report options, aliases, read only the current step's modules, `d <stage>` bundles, current_view helpers |
+| templates/resume/ | style-guide.md, layout-reference.md, resume.html, README.md | Style guide split into guide and layout reference; `.keep` class; title progression and presentation preferences, generalized |
+| career/preferences.md, schema/experience-schema.md | upstream's personal Résumé presentation preferences and its employer roles guidance | Generalized into a "Résumé presentation" question bank (title progression, credentials always or by relevance, years-of-experience counted from a stored start date and never stored as a number) and a schema rule for title progression |
+| START.md, README.md, tools/README.md | START.md, README.md | Setup section, conditions on the card, the two reports, aliases; tests and sample documented |
+
+**Not ported:** evaluations/ (timing baseline, story-index comparison); upstream's README rewritten as a personal map; record, journal and source-coverage changes.

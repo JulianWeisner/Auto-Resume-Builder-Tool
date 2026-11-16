@@ -1,0 +1,9 @@
+{
+  "name": "Riley Example",
+  "location": "Columbus, OH",
+  "phone": "(614) 555-0142",
+  "website": "rileyexample.example.com",
+  "linkedin": "",
+  "email": "riley@example.com",
+  "provenance": {"source": "fictional sample", "recorded_on": "2026-11-01", "verification": "user-confirmed", "notes": "Made-up contact details for the sample person."}
+}

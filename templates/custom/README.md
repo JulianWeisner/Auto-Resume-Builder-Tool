@@ -35,7 +35,7 @@ And the **information hierarchy**:
 
 ### 2. Check it against screening software
 
-Compare the design with the "Screening-software safety" rules in the [default style guide](../resume/style-guide.md#implementation-and-delivery). Flag anything that commonly breaks text extraction: multiple columns, sidebars, tables used for layout, text boxes, icons or images carrying text, contact details in a page header or footer, unusual section names. Keep the look where it is safe; propose a safe equivalent where it is not (for example a single column with the same type scale instead of a sidebar).
+Compare the design with the "Screening-software safety" rules in the [layout reference](../resume/layout-reference.md#implementation-and-delivery). Flag anything that commonly breaks text extraction: multiple columns, sidebars, tables used for layout, text boxes, icons or images carrying text, contact details in a page header or footer, unusual section names. Keep the look where it is safe; propose a safe equivalent where it is not (for example a single column with the same type scale instead of a sidebar).
 
 ### 3. Show the user what you found
 
@@ -46,12 +46,14 @@ Give a short summary of the design criteria and hierarchy, the screening-softwar
 Create `custom/<template-name>/` with the same files as the default:
 
 - `resume.html` (or `cover-letter.html`): flowing HTML with bracketed placeholders, semantic headings (h1 name, h2 sections, h3 employers, h4 roles) and print CSS for the page size and margins. No example text.
-- `style-guide.md`: a copy of the [default style guide](../resume/style-guide.md) with its "Page and typography", "Alignment and spacing" and "Structure and punctuation" sections rewritten to match the new design. Keep the pagination, delivery, screening-software and verification rules.
+- `style-guide.md`: a copy of the [default style guide](../resume/style-guide.md) with its "Structure and punctuation" section rewritten to match the new design. Keep the pagination, contact and signature rules.
+- `layout-reference.md`: a copy of the [default layout reference](../resume/layout-reference.md) with its "Page and typography" and "Alignment and spacing" sections rewritten to match the new design. Keep the implementation, screening-software and verification rules.
+- Keep the `.keep` class from the default template's CSS (`.keep { break-inside: avoid; }`): the build tells agents to use it when a heading is stranded.
 - `resume.pdf` and `preview.png`, rendered from the HTML with placeholder text.
 
 ### 5. Test it
 
-Fill a copy of the HTML with the user's own name and contact details and some placeholder bullets, render it to PDF, and run `python3 tools/resume_check.py <pdf> --source <html>`. Fix every FAIL. Show the user the preview.
+Fill a copy of the HTML with the user's own name and contact details and some placeholder bullets, then run `python3 tools/build_resume.py <html> --previews`. Fix every listed problem until it prints BUILD OK, and show the user the page preview.
 
 ### 6. Make it the default (if the user agrees)
 

@@ -10,7 +10,7 @@ Two kinds of content live here, and they are kept apart:
 
 | Area | Folders | Who changes it |
 |---|---|---|
-| **The tool** | AGENTS.md, START.md, CLAUDE.md, GEMINI.md, schema/, career/_templates/, agents/, templates/resume/, templates/cover-letter/, tools/ | Updated from the upstream project |
+| **The tool** | AGENTS.md, START.md, CLAUDE.md, GEMINI.md, schema/, career/_templates/, agents/, templates/resume/, templates/cover-letter/, tools/, examples/ | Updated from the upstream project |
 | **The user's data** | career/ (except _templates), source-material/, applications/, templates/custom/, Curriculum-Vitae.md | Only the user, through an agent they authorize |
 
 The user's data is private. Never copy it into a public location, an issue, a pull request to the upstream project or any message to a third party.
@@ -18,7 +18,7 @@ The user's data is private. Never copy it into a public location, an issue, a pu
 ## Read only what the task needs
 
 1. Read [START.md](START.md) for the user's view of the tool.
-2. Read the [career index](career/README.md), then the collections relevant to the task.
+2. Read the [career index](career/README.md), then the collections relevant to the task. Where you can run Python, `python3 tools/current_view.py` is the default Stage 1 read: it prints every record's current fields and the user's preferences, without legacy metadata. Optional helpers: `--search "phrase" "alternative"` lists records containing those words; `--ids ID ... --related` prints chosen records with their linked roles and outcomes; `--index` prints one line per story with a limits note, for scanning only, never as evidence. Raw record files stay authoritative. The scripts need Python 3 and PyYAML; `python3 tools/build_resume.py --setup` installs them with the build tools.
 3. For each selected record, read its limitations, scope_and_status, evidence_notes and dated clarifications with the account. They hold the record's limits and open questions.
 4. Read the [schema](schema/experience-schema.md) before adding or editing records.
 5. Open source material selectively; never read source-material/ or applications/ wholesale. Do not read applications/ when evaluating a job or drafting new application copy.
@@ -91,17 +91,21 @@ Three stages produce application deliverables. Extras are optional outputs avail
 | Stage | Input / trigger | Output | Boundary |
 |---|---|---|---|
 | 1 — Evaluate (optional): 1.1 Fit check · 1.2–1.4 Full evaluation | One or more job descriptions | 1.1: fit estimate, verdict and the questions that could change it. 1.2–1.4 on request: asks-and-stories table, storyboard and review before build. Rank alternatives when comparing roles | Stop after 1.1 for go/no-go unless more was requested |
-| 2 — Build the résumé | Selected role, go-ahead and any additional or clarifying information | Tailored résumé, rendered PDF, automatic check and compact private report | Clarification is optional; do not invent missing facts |
+| 2 — Build the résumé | Selected role, go-ahead and any additional or clarifying information | Tailored résumé, rendered PDF and a build snapshot of its decisions; reports on request | Clarification is optional; do not invent missing facts |
 | 3 — Supporting application copy (optional) | Cover-letter request or application-specific questions | Requested cover letter and/or answers, within stated limits | No automatic submission or employer contact |
 
 | Extra | Output | Boundary |
 |---|---|---|
-| D — Agent report | Full story inventory, requirement map, selection board, skills audit and retrieval log for the current stage | On request |
+| D — Reports | **Reasoning report** (why this résumé: requirements and stories, choices, storyboard, gaps) and **proof report** (claim sources, fact confirmations, term evidence, check, build log); the detailed report extends them | On request only; never written at delivery |
 | A — Archive application | Exact submitted materials and history ([archive](agents/archive.md)) | The user's confirmation of submission grants archive-only authorization; never submits an application |
 | H — Handoff | Application history and proposed record updates ([handoff](agents/handoff.md)) | Producing it changes nothing |
 | U — Information update | Changes to the career record ([information update](agents/information-update.md)) | Only after the user asks in words; selecting U from a menu is not the request |
 
-**Source continuity:** At the start of a new application run, record which version of the record you are using. If the repository is a Git clone, note the full commit SHA (`git rev-parse HEAD`) and whether there are uncommitted changes; if the user keeps a remote copy in sync and says so, fetch it first. If it is not a Git repository, record the date instead. Use that version through the run, distinguishing later user clarifications from repository facts. Use the whole relevant career record; a fresh run does not inherit prior drafts or job-specific selection choices unless requested.
+**Source continuity:** At the start of a new application run, record which version of the record you are using. If the repository is a Git clone, note the full commit SHA (`git rev-parse HEAD`) and whether there are uncommitted changes; if the user keeps a remote copy in sync and says so, fetch it first. If it is not a Git repository, record the date instead. Without a local copy (for example, reading through a GitHub connector), record the commit you read and say it came from the connector, not a checkout. Use that version through the run, distinguishing later user clarifications from repository facts. Use the whole relevant career record; a fresh run does not inherit prior drafts or job-specific selection choices unless requested.
+
+**Tool kit without a local copy:** If you can run commands but the repository is not on disk, copy these files from the recorded commit into your working folder, keeping their paths: `tools/jd_key.py`, `tools/build_resume.py`, `tools/resume_check.py`, `templates/resume/resume.html` and `career/contact.json`, plus `tools/proof_report.py` for a proof report. Then run the tools as written. Read career records through the connector as raw files.
+
+**One build path:** The résumé PDF comes only from `tools/build_resume.py`. Never make it another way: no other PDF library, no renderer of your own, no font, size or margin changes outside the template. If the build cannot run, follow [When the build cannot run](agents/stage-2-resume.md#when-the-build-cannot-run).
 
 **Transitions:** Run requested stages in order without pausing between them. A job description alone starts the 1.1 fit check; stop after it for the user's go/no-go decision, and continue with 1.2–1.4 or Stage 2 on request. Run 1.1–1.4 in one pass when the user asks for the full Stage 1. If the user supplies clarifications without asking for a résumé, update the assessment and storyboard and keep the gate. Once Stage 2 is authorized, incorporate clarifications without another go-ahead. If Stage 2 starts before 1.2–1.4 have run, build them privately first, as [Stage 2](agents/stage-2-resume.md#hidden-not-skipped) requires: the short path hides the full evaluation; it never skips it. The user may skip unanswered questions and proceed with supported evidence. Stages and extras are available on request without repeating completed stages. Do not ask for information already supplied.
 
@@ -121,43 +125,26 @@ Or reply in your own words.
 ```
 
 - **Role(s):** company · role title exactly as the posting writes it. Separate several roles with semicolons.
-- **Stage:** Fit check · Résumé · Cover letter or answers, each marked ✓ when delivered and ○ when not started. Add "✓ Full evaluation" after Fit check only when the user has seen 1.2–1.4.
+- **Stage:** Fit check · Résumé · Cover letter or answers, each marked ✓ when delivered and ○ when not started. Add "✓ Full evaluation" after Fit check only when the user has seen 1.2–1.4. When the PDF build could not run, write "▸ Résumé drafted · PDF pending" ([Stage 2](agents/stage-2-resume.md#when-the-build-cannot-run)).
 - **Next** and **Also:** each option says what it does, and only options that fit this point appear. Next holds the main steps; Also holds the occasional ones.
 
   | Point | Next | Also |
   |---|---|---|
   | After the fit check | build résumé · full evaluation · pass on this job | answer the questions above · handoff |
-  | After the full evaluation | build résumé · pass on this job | answer the questions above · agent report · handoff |
-  | After the résumé | revise · cover letter or answers · I applied | agent report · handoff |
-  | After a cover letter or answers | revise · I applied | agent report · handoff |
+  | After the full evaluation | build résumé · pass on this job | answer the questions above · handoff |
+  | After the résumé | revise · cover letter or answers · I applied | reasoning report · proof report · handoff |
+  | After a cover letter or answers | revise · I applied | reasoning report · proof report · handoff |
 
-  - **build résumé** = Stage 2 · **full evaluation** = 1.2–1.4 · **pass on this job** = stop; nothing more is built · **agent report** = the detailed report (D): how the agent worked, not the job · **I applied** = archive (A).
+  - **build résumé** = Stage 2 · **full evaluation** = 1.2–1.4 · **pass on this job** = stop; nothing more is built · **reasoning report** = why this résumé (D) · **proof report** = whether each claim is backed and the build ran correctly (D); "agent report" asks for both · **I applied** = archive (A).
   - Drop "answer the questions above" when no questions are open. Show handoff only when the session holds new details, with the count, for example "handoff (3 new details)"; it stays available on request.
 - **Session:** Application (read-only) · Git and the short commit SHA, or the date when there is no Git.
 - When submission is confirmed, add **Application:** Submitted · Archive: Pending / Incomplete / Packaged locally / Complete, with a link when available.
 
-Information update session:
-
-```
----
-
-**Updating:** Career record · Example Co experience  
-**Changes:** ✓ 3 records added · ✓ Validated · ○ Committed  
-**Asked for:** add my Example Co work · not preferences  
-**Reply:** confirm the records · adjust them  
-**Session:** Information Update (changes allowed) · Git 9f8b150  
-Or reply in your own words.
-```
-
-- **Updating:** the area being changed.
-- **Changes:** what this session changed, then whether `validate.py` passed and whether it is committed (✓ or ○). Omit "Committed" when the copy does not use Git.
-- **Asked for:** the scope the user asked for, in their words or as the files it covers, plus the main exclusion. It never widens on its own: ask before touching anything outside it.
-- **Reply:** the actions the user can take next.
-- **Session:** Information Update (changes allowed) · Git and the current short commit SHA, or the date.
+Information update session: use the layout in [information update](agents/information-update.md#information-update-footer).
 
 **Casing:** Title Case for labels and session names; lowercase for descriptors in parentheses; sentence case for stage steps and change items; reply words as the user would type them; role titles exactly as posted.
 
-The stage numbers and letters (1.1, 1.2–1.4, 2, 3, D, H, A, U) and the short reply words go, more detail and skip remain accepted: the user may type them, but the footer uses the words above. List only actions the current session permits; an application session offers the handoff instead of changing records.
+Accept stage numbers, extra letters and reply aliases such as "go," "more detail," "skip," "agent report" and "detailed report." Use the labels above in the footer. List only actions the current session permits; an application session offers the handoff instead of changing records.
 
 **Handoff offer:** Offer the handoff once per session, in the response body, the first time any of these occurs while new details remain uncaptured: the user calls the résumé or answers final, approved or ready; a rendered PDF is delivered and the next message requests no revision; Stage 3 copy is delivered; or the user starts another job or ends the session. Users often download output without declaring it final, so the footer count keeps the option visible afterwards.
 
@@ -169,14 +156,14 @@ Apply this when choosing stories for a résumé, report, cover letter or answer.
 
 ## Routing: read the modules for the task
 
-This file is always in force. Before producing one of these, read its modules in full; do not work from memory of an earlier session.
+This file is always in force. Before producing one of these, read its modules in full; do not work from memory of an earlier session. Read only the current step's modules: a fit check does not read the full-evaluation or Stage 2 modules.
 
 | Task | Read in full before producing it |
 |---|---|
-| Stage 1 (1.1 fit check, 1.2–1.4 full evaluation): evaluate, compare or storyboard | [agents/stage-1-evaluate.md](agents/stage-1-evaluate.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) |
-| Stage 2: résumé, PDF, automatic check and private report | [agents/stage-2-resume.md](agents/stage-2-resume.md) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · [templates/resume/style-guide.md](templates/resume/style-guide.md) (or the custom template's style guide named in the [Documents preferences](career/preferences.md#documents)) · [contact defaults](career/contact.json) |
+| Stage 1: 1.1 fit check, evaluate or compare; 1.2–1.4 full evaluation only when the user asks | [agents/stage-1-evaluate.md](agents/stage-1-evaluate.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · for 1.2–1.4, [agents/stage-1-full-evaluation.md](agents/stage-1-full-evaluation.md) |
+| Stage 2: résumé, PDF and build snapshot, after the user says build résumé | [agents/stage-2-resume.md](agents/stage-2-resume.md) · [agents/stage-1-full-evaluation.md](agents/stage-1-full-evaluation.md) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · [templates/resume/style-guide.md](templates/resume/style-guide.md) (or the custom template's style guide named in the [Documents preferences](career/preferences.md#documents)) · [contact defaults](career/contact.json) |
 | Stage 3: cover letter or answers | [agents/stage-3-copy.md](agents/stage-3-copy.md) · [agents/writing/claim-wording.md](agents/writing/claim-wording.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) · for a cover letter, [templates/cover-letter/style-guide.md](templates/cover-letter/style-guide.md) and [contact defaults](career/contact.json) |
-| D: agent report | [agents/stage-2-resume.md](agents/stage-2-resume.md#private-development-report) plus the current stage's modules |
+| D: reasoning, proof or detailed report | [agents/stage-2-resume.md](agents/stage-2-resume.md#private-development-report) plus the current stage's modules |
 | H: handoff | [agents/handoff.md](agents/handoff.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) |
 | A: archive application | [agents/archive.md](agents/archive.md) · [applications/README.md](applications/README.md) |
 | U: information update, including filling the record and applying a handoff | [agents/information-update.md](agents/information-update.md) · [schema](schema/experience-schema.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) when revising accounts |
@@ -184,7 +171,7 @@ This file is always in force. Before producing one of these, read its modules in
 
 List the modules you loaded in the private report or run log.
 
-If you cannot open linked files (for example in a chat window with uploaded files), ask the user to run `python3 tools/agent_bundle.py <task>` (for example `stage-1`) and share the output: it prints this file plus the task's modules as one document.
+If you cannot open linked files (for example in a chat window with uploaded files), ask the user to run `python3 tools/agent_bundle.py <task>` (for example `stage-1`) and share the output: it prints this file plus the task's modules as one document. For a report, name the stage, for example `python3 tools/agent_bundle.py d stage-1`.
 
 ## Scripts
 
@@ -192,10 +179,12 @@ Python 3 scripts in [tools/](tools/README.md) do the mechanical work so the agen
 
 | Script | Use it to |
 |---|---|
-| `current_view.py` | Read every career record's current fields at once, before evaluating a job or drafting |
+| `build_resume.py` | Render the résumé PDF, measure its layout, run the screening check and save the build snapshot, in one step; `--setup` and `--check-setup` ready a machine |
+| `current_view.py` | Read every career record's current fields at once; `--search`, `--index` and `--ids … --related` for finding stories |
 | `validate.py` | Check the career record after every information update; fix every error before finishing |
 | `jd_key.py` | Copy a job posting's requirements verbatim into tagged keys, assemble the Stage 1 report and compute the fit baseline from private scores |
-| `resume_check.py` | Check a rendered résumé PDF for screening software and job-term coverage |
+| `resume_check.py` | The screening-software and job-term check; `build_resume.py` runs it for you |
+| `proof_report.py` | Build the proof report from a résumé's snapshot |
 | `agent_bundle.py` | Bundle these rules for chat tools that cannot open files |
 
 ## Working style

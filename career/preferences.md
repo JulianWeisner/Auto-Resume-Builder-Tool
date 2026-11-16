@@ -75,6 +75,24 @@ Past jobs:
 
 {Your answers.}
 
+## Résumé presentation
+
+How your experience is presented, as opposed to what it is. These are presentation choices, not career facts; they never change a date, title window or record.
+
+Question bank:
+
+- When your titles grew at one employer, should a résumé show them as one progression ("Analyst → Lead") or as separate headings, or decide per job?
+- Which degrees or credentials should always appear?
+- Which should appear only when they help the job? (for example a certificate from another field)
+- Do you want your years of experience in a field stated in your summary? If so, from what month and year do you count, and what work counts toward it?
+
+| Setting | Value |
+|---|---|
+| Title progression | Not recorded: decide fresh for each résumé |
+| Always include | Not recorded: include every relevant degree |
+| Include only when relevant | Not recorded |
+| Years-of-experience count | Not recorded: no figure. When recorded, store the start date and what counts, never a fixed number; work the figure out at each build |
+
 ## Documents
 
 How your résumé and cover letters look. Defaults apply until you record something here.

@@ -15,7 +15,8 @@ Saying "I applied" twice never creates a duplicate.
 
 - **resume.pdf:** the exact submitted file, not a re-render.
 - **job-description.md:** YAML frontmatter (company, role, location, posting_url, posting_id, application_date, timezone, submission_status, submission_basis, archived_on, source_commit, archive_status), then the full posting. Unknown fields stay null.
-- **detailed-report.md:** the evaluation, storyboard, record IDs used, evidence left out, clarifications and checks actually run.
+- **The build snapshot** (`<name>-snapshot/`): the decision files, HTML, PDF, check output and manifest saved by the build.
+- **reasoning-report.md** and **proof.html**, when the user asked for them. Otherwise the snapshot is the record of how the résumé was made.
 - **cover-letter** and **application-answers.md**, when used.
 - **updates.md:** dated replies and status changes ("interview invite", "rejected"). Logging replies is what makes later analysis possible.
 - **supporting/:** optional editable or draft files, labeled as not submitted.

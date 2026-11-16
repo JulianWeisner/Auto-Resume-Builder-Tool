@@ -10,7 +10,7 @@ Follow [Archive application](#archive-application-extra-a) and [archive conventi
 
 ## Archive application (extra A)
 
-Trigger: the user confirms they applied. Follow [applications/README.md](../applications/README.md) to preserve the exact submitted resume PDF, full JD/metadata, submitted cover letter/answers when applicable, and detailed report. Never regenerate submitted artifacts or assume the latest draft was submitted.
+Trigger: the user confirms they applied. Follow [applications/README.md](../applications/README.md) to preserve the exact submitted resume PDF, full JD/metadata, submitted cover letter/answers when applicable, the build snapshot, and any reasoning or proof report written. Never regenerate submitted artifacts or assume the latest draft was submitted.
 
 Use the actual application date in the user's timezone, not the drafting or archive date. Ask when unknown. Verify the company/role and submitted version; ask only if ambiguous. Prepare the package before writing. If essential files are unavailable, request them and label the archive incomplete; do not manufacture replacements. A newly compiled report must be labeled retrospective, separating observed history from unavailable data.
 

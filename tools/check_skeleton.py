@@ -10,7 +10,9 @@ never anyone's career data. This check enforces that:
   2. Skeleton pages contain no fenced YAML records.
   3. career/contact.json has every contact value empty.
   4. No text file anywhere contains an email address, phone number or LinkedIn
-     profile URL (example.com, example.org and noreply addresses are allowed).
+     profile URL (example.com, example.org and noreply addresses, and the
+     fictional 555-0100 to 555-0199 phone range, are allowed; the sample person
+     in examples/ uses them).
   5. Optional private denylist: one term per line (names, employers, record ID
      prefixes). Read from --denylist PATH, the ARB_DENYLIST environment variable,
      or .private-denylist.txt at the repository root (git-ignored). Matching is
@@ -129,8 +131,11 @@ def main(argv):
             for m in EMAIL.finditer(line):
                 if not ALLOWED_EMAIL.search(m.group(0)):
                     errors.append(f"{path}:{n}: email address")
-            if PHONE.search(line):
-                errors.append(f"{path}:{n}: phone number")
+            for m in PHONE.finditer(line):
+                digits = re.sub(r"\D", "", m.group(0))[-7:]
+                if not (digits.startswith("555") and digits[3:5] == "01"):
+                    errors.append(f"{path}:{n}: phone number")
+                    break
             if LINKEDIN.search(line):
                 errors.append(f"{path}:{n}: LinkedIn profile URL")
             low = line.lower()

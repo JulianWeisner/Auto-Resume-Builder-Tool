@@ -19,6 +19,7 @@ ASD-STE100 (Simplified Technical English) is a controlled-language standard firs
 
 Readers and recruiters now recognize the habits of generated text. Edit them out in context; this is not a mechanical word blacklist.
 
+- Start with the action, evidence or point. Cut stock lead-ins such as "Let's dive in" and rhetorical questions that the next sentence answers.
 - State the action or point directly. Avoid dramatic contrasts such as "It's not just X, it's Y" and "It's not about X, it's about Y." A necessary factual comparison is fine; do not invent an opposing claim for emphasis.
 - Remove atmospheric adverb-led openings such as "quietly commanding," "effortlessly blending" or "seamlessly connecting." Keep modifiers that convey a supported technical or operational distinction.
 - Replace "a testament to" and similar praise with the concrete evidence.
@@ -26,4 +27,5 @@ Readers and recruiters now recognize the habits of generated text. Edit them out
 - Avoid decorative adjective pairs and forced three-part lists. Use the number of items the evidence requires; genuine lists of three are fine.
 - Avoid anthropomorphism and ornamental metaphors such as "the city breathes," "a symphony of flavors" or "weaves a story." Describe what people or systems actually do.
 - Avoid inflated verbs and nouns that say nothing specific: "spearheaded," "leveraged," "synergies," "passionate," "dynamic," "results-driven." Use the plain verb for what happened (led, used, built, cut).
+- Keep exact job terms when the evidence supports them and they help a recruiter or screener find a qualification. The summary can name a broad capability when an experience bullet shows the action, scope or result behind it.
 - Preserve technical accuracy, concrete evidence and the user's own direct voice. Do not rewrite historical quotations or source documents to satisfy style rules.
