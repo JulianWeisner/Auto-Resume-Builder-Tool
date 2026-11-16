@@ -82,7 +82,7 @@ for p, t in texts.items():
             err("frontmatter", rel(p), e)
     if is_template(p) or not rel(p).startswith("career/"):
         continue
-    fm_rev = re.search(r'^source_revision: "(\w+)"', t, re.M)
+    fm_rev = re.search(r'^source_revision: "([\w-]+)"', t, re.M)
     for i, block in enumerate(YAML_BLOCK.findall(t)):
         try:
             d = yaml.safe_load(block)
@@ -163,7 +163,8 @@ for p, t in texts.items():
 # CV source lines resolve against the snapshot named by their revision
 snapshots = {}
 for snap in SNAPSHOT_DIR.glob("Curriculum-Vitae.*.md"):
-    snapshots[snap.name.split(".")[1]] = snap.read_text(encoding="utf-8").splitlines()
+    # Curriculum-Vitae.<YYYY-MM-DD>.md (or an older commit-named snapshot): the name between the dots
+    snapshots[snap.name[len("Curriculum-Vitae."):-len(".md")]] = snap.read_text(encoding="utf-8").splitlines()
 for rid, (p, d) in records.items():
     lines = d.get("source_lines") or []
     rev = str(d.get("source_revision") or d.get("_rev") or "")
@@ -171,7 +172,7 @@ for rid, (p, d) in records.items():
         continue
     snap = next((v for k, v in snapshots.items() if rev.startswith(k)), None)
     if snap is None:
-        err("no CV snapshot for source_revision", rid, rev[:7], "(expected source-material/cv/Curriculum-Vitae.<short-sha>.md)")
+        err("no CV snapshot for source_revision", rid, rev, "(expected source-material/cv/Curriculum-Vitae.<YYYY-MM-DD>.md)")
         continue
     for n in lines:
         if not (1 <= n <= len(snap)) or not snap[n - 1].strip():

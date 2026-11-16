@@ -20,7 +20,7 @@ metadata_dates: {"start": "{MM/YYYY}", "end": "{MM/YYYY or present}"}
 date_precision: "month"
 verification: "{user-confirmed | cv-sourced | source-supported | unverified}"
 source_path: "{Curriculum-Vitae.md or another source}"
-source_revision: "{commit SHA of the CV snapshot, if imported}"
+source_revision: "{date of the CV snapshot, YYYY-MM-DD, if imported}"
 source_lines: []
 associated_experiences: ["{role-id}-EXP-001"]
 functions: []
@@ -30,6 +30,26 @@ current_team_context: null
 limitations: []
 current_clarifications: []
 legacy_metadata: ""
+```
+
+<a id="{functional-role-id}"></a>
+### {Organization} — {Functional title} (optional)
+
+Add this block only when the work outgrew the formal title. It links to the formal role above and has its own date window. An experience shared by both roles keeps the ID it was first given and is listed in both roles' `associated_experiences`.
+
+```yaml
+id: "{functional-role-id}"
+record_type: "role"
+title: "{Functional title}"
+organization: "{Organization}"
+role_kind: "functional"
+title_status: "functional label for work performed; not a formal appointment"
+formal_title_ids: ["{role-id}"]
+functional_window: {"start": "{YYYY-MM}", "end": "{YYYY-MM or present}"}
+functional_labels: []
+functional_label_selection: null
+associated_experiences: []
+verification: "user-confirmed"
 ```
 
 <a id="{role-id}-exp-001"></a>

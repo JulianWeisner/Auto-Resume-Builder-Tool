@@ -80,7 +80,7 @@ class CurrentViewTests(unittest.TestCase):
         # A record's own scope notes appear as a limits note.
         self.assertIn("limits:", lines["NW-EXP-002"])
         # Dictionary date windows and start/end fields print as readable months.
-        self.assertIn("Mar 2019 - Jun 2024", lines["NW-ROLE-003"])
+        self.assertIn("Mar 2019 - Present", lines["NW-ROLE-003"])
         self.assertIn("Mar 2018 - Present", lines["NW-ROLE-001"])
         self.assertNotIn("{", index)
 

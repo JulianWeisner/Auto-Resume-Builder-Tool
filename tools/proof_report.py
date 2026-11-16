@@ -9,10 +9,10 @@ user asks for a "proof report". Sections:
   1. Claim sources: each résumé line from sources.md, the records it names and
      each record's current wording and limitations (when the career records
      are on disk; otherwise the IDs alone).
-  2. Fact confirmations: the plan's Review before build and title lines.
+  2. Review before build and titles: the plan's lines, as recorded (open or resolved).
   3. Term evidence: each job term, the requirement it comes from and how the
      check found it.
-  4. Automatic check: the full readability and voice results.
+  4. Automatic check: the full readability and voice results, and the plan's check decisions.
   5. Sources and build log: the plan's source line, tool versions, file hashes.
 
 The reasoning behind the résumé (story choices, storyboard, gaps) is the
@@ -75,7 +75,7 @@ def claim_section(sources, records):
     rows = []
     for line in sources.splitlines():
         line = line.strip().lstrip("-* ").strip()
-        if not line:
+        if not line or line.startswith("#"):  # headings are not résumé lines
             continue
         parts = re.split(r"\s*(?:->|→)\s*", line, maxsplit=1)
         claim, refs = (parts[0], parts[1]) if len(parts) == 2 else (line, line)
@@ -143,6 +143,7 @@ def build(folder):
         tags = {}
     records = load_records()
     confirmations = plan_lines(plan, "review before build") + plan_lines(plan, "titles")
+    decisions = plan_lines(plan, "check decisions")
     source = plan_lines(plan, "source")
     tools = manifest.get("tools", {})
     files = manifest.get("files", {})
@@ -165,11 +166,13 @@ code {{ font-size:12px; word-break:break-all; }} @media (max-width:640px) {{ tab
 <h1>Proof report</h1>
 <p class="muted">{esc(pdf)} · built {esc(manifest.get('built_at', 'time unknown'))} · assembled from the build snapshot by script; the reasoning behind choices is in the reasoning report.</p>
 <h2>1. Claim sources</h2>{claim_section(read(folder, 'sources.md'), records)}
-<h2>2. Fact confirmations</h2>{"<ul>" + "".join(f"<li>{esc(c)}</li>" for c in confirmations) + "</ul>" if confirmations else "<p class='muted'>None recorded in plan.md.</p>"}
+<h2>2. Review before build and titles</h2>{"<ul>" + "".join(f"<li>{esc(c)}</li>" for c in confirmations) + "</ul>" if confirmations else "<p class='muted'>None recorded in plan.md.</p>"}
 <h2>3. Term evidence</h2>{terms_section(check, tags)}
 <h2>4. Automatic check</h2>{check_section(check) or "<p class='muted'>No check output in this snapshot.</p>"}
+{"<p><b>Check decisions</b></p><ul>" + "".join(f"<li>{esc(d)}</li>" for d in decisions) + "</ul>" if decisions else ""}
 <h2>5. Sources and build log</h2><ul>
 {"".join(f"<li>{esc(s)}</li>" for s in source) or "<li class='muted'>No source line in plan.md.</li>"}
+{f"<li>page target: {esc(manifest['max_pages'])}</li>" if manifest.get('max_pages') else ""}
 {"".join(f"<li>{esc(k)}: {esc(v)}</li>" for k, v in tools.items())}
 </ul><table><tr><th>File</th><th>SHA-256</th></tr>{"".join(f"<tr><td>{esc(n)}</td><td><code>{esc(h)}</code></td></tr>" for n, h in files.items())}</table>
 </body></html>

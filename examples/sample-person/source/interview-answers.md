@@ -5,7 +5,7 @@
 These answers deliberately correct or qualify the CV in places, as real users do.
 
 ## Northwind Logistics
-- The formal title never changed: Operations Specialist the whole time. From Mar 2018 to Feb 2019 the work was analysis, so "Operations Analyst" fits. From Mar 2019 to Jun 2024 I ran operations day to day, so "Operations Lead" fits; "Warehouse Operations Lead" also works. I'd call that real growth in responsibility, but it was never a promotion.
+- The formal title never changed: Operations Specialist the whole time. From Mar 2018 to Feb 2019 the work was analysis, so "Operations Analyst" fits. Since Mar 2019 I've run operations day to day, and still do, so "Operations Lead" fits; "Warehouse Operations Lead" also works. I'd call that real growth in responsibility, but it was never a promotion.
 - Returns: I led a redesign with three shift supervisors in the first half of 2021: one inspection station, a reason code at intake and a daily restock run. Average days from a return reaching the dock to its restock decision went from five to two. That's from the WMS, main site only; the second site wasn't measured. The CV's "60%" was my rounding.
 - I didn't lead supervisors across two sites. I trained the three supervisors at the main site on the new returns process. Three people reported to me directly.
 - Dock-to-stock: I wrote the SQL reports in Manhattan WMS; they're reports, not dashboards. The site director used them in the weekly operations review.

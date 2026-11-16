@@ -49,6 +49,17 @@ def collections():
 
 
 COLLECTIONS = collections()
+
+
+def empty_collections():
+    """Collection files in career/ subfolders that hold no records yet, so an agent can tell
+    "empty" from "not scanned"."""
+    out = []
+    for p in sorted(CAREER.glob("*/*.md")) if CAREER.is_dir() else []:
+        rel = p.relative_to(ROOT).as_posix()
+        if "_templates" not in p.parts and rel not in COLLECTIONS:
+            out.append(rel)
+    return out
 # Prose pages with user-confirmed content that is not stored as YAML records.
 # Printed verbatim after the records in a full (unfiltered) view.
 PROSE_PAGES = [
@@ -124,6 +135,8 @@ def limit_notes(rec, by_id):
 
 
 def print_index(catalog, paths, queries):
+    if empty_collections():
+        print("No records yet in: " + ", ".join(empty_collections()))
     print("Story index: discovery excerpts only. Load full records with --ids ID ... --related before scoring or drafting.")
     print("An absent match is unexamined. Search the current records and check likely collections before declaring a gap.")
     print("Role dates and labels are navigation; verify functional_window and limitations in the full records.")
@@ -232,6 +245,8 @@ def main():
             text = (ROOT / path).read_text(encoding="utf-8")
             text = "\n".join(l for l in text.splitlines() if not l.startswith("[Career index]"))
             out.append(f"\n##### {path} (verbatim)\n\n{text.strip()}\n")
+    if empty_collections() and not (args.file or args.ids):
+        out.insert(0, "\nNo records yet in: " + ", ".join(empty_collections()) + "\n")
     print("Current view: drafting fields only. Legacy metadata, source lines and evidence paths are omitted;"
           " open the raw files for those. career/story.md is a narrative for people, not evidence; use the"
           " records below for claims. For functional roles, functional_window is the user-confirmed maximum"

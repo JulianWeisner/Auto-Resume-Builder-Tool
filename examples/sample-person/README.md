@@ -13,5 +13,6 @@ This folder shows what a filled career record looks like: compare it with the em
 | [career/vocabulary.md](career/vocabulary.md) | A small tag vocabulary |
 | [career/preferences.md](career/preferences.md) | Conditions, motivation and portal answers |
 | [postings/](postings/example-freight.txt) | A made-up job posting to try the workflow on |
+| [source/](source/Riley-Example-CV.md) | Riley's made-up CV, with the usual problems, and [answers](source/interview-answers.md) for a simulated onboarding interview that correct them |
 
 To try the tool on Riley without touching your own record, copy this folder's `career/` over the empty one in a scratch copy of the repository.

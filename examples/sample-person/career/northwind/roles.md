@@ -54,7 +54,7 @@ title: "Operations Lead"
 role_kind: "functional"
 title_status: "functional label for work performed; not a formal appointment"
 formal_title_ids: ["NW-ROLE-001"]
-functional_window: {"start": "2019-03", "end": "2024-06"}
+functional_window: {"start": "2019-03", "end": "present"}
 functional_labels: ["Operations Lead", "Warehouse Operations Lead"]
 functional_label_selection: "either-or"
 associated_experiences: ["NW-EXP-002"]
