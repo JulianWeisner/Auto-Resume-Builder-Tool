@@ -1,0 +1,13 @@
+From: Example Freight Co. Careers <careers@example.com>
+To: riley@example.com
+Date: 2026-11-10T16:15:00-05:00 (2026-11-10T21:15:00Z)
+Subject: We received your application
+Gmail-Message-ID: sample-0001
+Gmail-Thread-ID: sample-0001
+Body: plain-text body as returned by the Gmail connector, unedited
+
+Hi Riley,
+
+Thanks for applying for Operations Manager. Our team will review your application and reply within two weeks.
+
+Example Freight Co. Careers

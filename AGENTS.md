@@ -10,8 +10,8 @@ Two kinds of content live here, and they are kept apart:
 
 | Area | Folders | Who changes it |
 |---|---|---|
-| **The tool** | AGENTS.md, START.md, CLAUDE.md, GEMINI.md, schema/, career/_templates/, agents/, templates/resume/, templates/cover-letter/, tools/, examples/ | Updated from the upstream project |
-| **The user's data** | career/ (except _templates), source-material/, applications/, templates/custom/, Curriculum-Vitae.md | Only the user, through an agent they authorize |
+| **The tool** | AGENTS.md, START.md, CLAUDE.md, GEMINI.md, schema/, career/_templates/, agents/, templates/resume/, templates/cover-letter/, tools/, tracker/README.md, examples/ | Updated from the upstream project |
+| **The user's data** | career/ (except _templates), source-material/, applications/, tracker/events/, templates/custom/, Curriculum-Vitae.md | Only the user, through an agent they authorize |
 
 The user's data is private. Never copy it into a public location, an issue, a pull request to the upstream project or any message to a third party.
 
@@ -43,7 +43,7 @@ The user's data is private. Never copy it into a public location, an issue, a pu
 
 ## Two kinds of session
 
-- **Application session (default):** evaluates jobs and writes résumés, letters and answers. It reads the repository and changes nothing, except to archive a submitted application. New facts the user mentions are collected into a handoff instead of being written.
+- **Application session (default):** evaluates jobs and writes résumés, letters and answers. It reads the repository and changes nothing, except to archive a submitted application and log its replies in the tracker. New facts the user mentions are collected into a handoff instead of being written.
 - **Information update session:** adds to or corrects the user's career information (career/, source-material/, Curriculum-Vitae.md and templates/custom/), only after the user asks in words and only within that scope. Follow [agents/information-update.md](agents/information-update.md).
 
 A handoff is the bridge: the application session proposes, the user agrees, an information update session applies it. Work passes from the first to the second only through a handoff and the user's request in words. The footer names which session is working.
@@ -171,6 +171,7 @@ This file is always in force. Before producing one of these, read its modules in
 | D: reasoning, proof or detailed report | [agents/stage-2-resume.md](agents/stage-2-resume.md#private-development-report) plus the current stage's modules |
 | H: handoff | [agents/handoff.md](agents/handoff.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) |
 | A: archive application | [agents/archive.md](agents/archive.md) · [applications/README.md](applications/README.md) |
+| T: tracker: log a reply, show my applications | [agents/archive.md](agents/archive.md#logging-replies) · [tracker/README.md](tracker/README.md) |
 | U: information update, including filling the record and applying a handoff | [agents/information-update.md](agents/information-update.md) · [schema](schema/experience-schema.md) · [agents/writing/plain-language.md](agents/writing/plain-language.md) when revising accounts |
 | Template: building a custom template from the user's examples | [templates/custom/README.md](templates/custom/README.md) · [templates/resume/style-guide.md](templates/resume/style-guide.md) |
 
@@ -191,6 +192,7 @@ Python 3 scripts in [tools/](tools/README.md) do the mechanical work so the agen
 | `evaluation.py` | The shared fit engine (policy `shared-2`) and label rule; `jd_key.py` calls it, you do not run it yourself |
 | `resume_check.py` | The screening-software and job-term check; `build_resume.py` runs it for you |
 | `proof_report.py` | Build the proof report from a résumé's snapshot |
+| `tracker.py` | Record archived applications and their replies; `status` lists them, `validate` checks them |
 | `agent_bundle.py` | Bundle these rules for chat tools that cannot open files |
 
 ## Working style
