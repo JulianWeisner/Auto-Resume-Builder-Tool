@@ -142,12 +142,19 @@ def print_index(catalog, paths, queries):
     print("Role dates and labels are navigation; verify functional_window and limitations in the full records.")
     print("A 'limits' note means the claim has qualifications: never use a number or outcome from an excerpt without them.")
     by_id = {rec["id"]: rec for recs in catalog.values() for rec in recs}
+    # Searches match whole words or phrases ("lab" does not match "collaborated"); only collections with hits print.
+    patterns = [re.compile(r"(?<!\w)" + re.escape(q) + r"(?!\w)", re.I) for q in queries or []]
+    hits = 0
     for path in paths:
-        print(f"\n##### {path}")
+        header = False
         for rec in catalog[path]:
             searchable = " ".join(str(rec.get(key, "")) for key in SHOWN)
-            if queries and not any(query.casefold() in searchable.casefold() for query in queries):
+            if patterns and not any(p.search(searchable) for p in patterns):
                 continue
+            if not header:
+                print(f"\n##### {path}")
+                header = True
+            hits += 1
             if rec.get("record_type") in ("role", "education"):
                 dates = date_range(rec.get("functional_window") or rec.get("current_dates") or rec.get("display_dates")
                                    or {k: rec[k] for k in ("start", "end") if rec.get(k)})
@@ -175,6 +182,8 @@ def print_index(catalog, paths, queries):
             if note:
                 parts.append(note)
             print(" | ".join(part for part in parts if part))
+    if patterns and not hits:
+        print(f"\nNo current record matches {', '.join(repr(q) for q in queries)} as a whole word or phrase.")
 
 
 def main():

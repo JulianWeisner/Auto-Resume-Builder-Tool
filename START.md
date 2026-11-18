@@ -53,7 +53,7 @@ Start a new conversation with your agent in the repository folder:
 Then:
 
 1. **Paste the job posting.**
-   You get a verdict card: a pass/fail check of the job's conditions (location, schedule, travel, work authorization) against your preferences, a fit estimate, a recommendation (Pursue, Stretch or Deprioritize), the strengths and gaps behind it, and up to four questions that could change it. The fit estimate weighs every requirement in the posting against the evidence in your record; it is the agent's judgment, not a hiring prediction. A failed condition means Deprioritize, whatever the fit.
+   You get a verdict card: a pass/fail check of the job's conditions (location, schedule, travel, work authorization) against your preferences, a fit estimate, a label (Promising, Stretch or Deprioritize), how many of the stated requirements you meet, the strengths and gaps behind it, and up to four questions that could change it. The fit estimate weighs every requirement in the posting against the evidence in your record; it is the agent's judgment, not a hiring prediction. A failed condition means Deprioritize, whatever the fit.
 2. **Decide.** Reply with one of:
    - **build résumé**: go ahead with the résumé.
    - **full evaluation**: see the evidence and résumé plan first (below).

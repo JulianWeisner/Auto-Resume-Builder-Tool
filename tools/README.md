@@ -19,7 +19,8 @@ Without setup, the scripts use what the machine already has: poppler or the Pyth
 | [proof_report.py](proof_report.py) | Writes `proof.html` from a build snapshot: each résumé line with the records behind it, term evidence, the check and the build log | When the user asks for a proof report |
 | [current_view.py](current_view.py) | Prints every record's current, drafting-relevant fields plus your preferences, without historical metadata. Finds every collection under career/ automatically. `--search "words"`, `--index` and `--ids ID ... --related` help find stories | Before evaluating a job or drafting |
 | [validate.py](validate.py) | Checks the record: YAML, unique IDs and anchors, unfinished placeholders, relationship backlinks, registered vocabulary tags, CV source lines, links. An empty skeleton passes | After every information update |
-| [jd_key.py](jd_key.py) | Numbers a job posting, then copies the passages you tag into a verbatim key, rejecting anything that does not match word for word; assembles the fit check and computes the fit baseline from private scores (conditions as pass, fail or unknown) | When keying a job description |
+| [jd_key.py](jd_key.py) | Numbers a job posting, then copies the passages you tag into a verbatim key, rejecting anything that does not match word for word; assembles the fit check and computes the fit, label and requirements met from private scores (conditions as pass, fail or unknown) with the shared engine | When keying a job description |
+| [evaluation.py](evaluation.py) | The shared evaluation engine, policy `shared-2`: credit per score, weights, the bounded adjustment, and the Promising / Stretch / Deprioritize label ([standard](../agents/evaluation.md)) | Called by `jd_key.py assemble` |
 | [agent_bundle.py](agent_bundle.py) | Prints AGENTS.md plus one task's modules as a single document (`d stage-1` for a report on one stage) | For chat tools that cannot open files |
 | [check_skeleton.py](check_skeleton.py) | Fails if career data appears in the public tool repository | Upstream only; your filled copy fails it by design |
 
@@ -27,4 +28,4 @@ Without setup, the scripts use what the machine already has: poppler or the Pyth
 
 `python3 -B -m unittest discover -s tools -p 'test_*.py'` runs the regression tests. They work on a temporary copy of the made-up [sample person](../examples/sample-person/README.md), never your own record. Build tests skip themselves on machines without a renderer and PDF reader.
 
-See [Stage 1](../agents/stage-1-evaluate.md#preparation-always) for how `jd_key.py` keys a posting and scores fit, and [Stage 2](../agents/stage-2-resume.md#build-and-check-before-delivery) for how `resume_check.py` uses that key.
+See [Stage 1](../agents/stage-1-evaluate.md#preparation-always) for how `jd_key.py` keys a posting, [the shared evaluation standard](../agents/evaluation.md) for how fit is scored, and [Stage 2](../agents/stage-2-resume.md#build-and-check-before-delivery) for how `resume_check.py` uses that key.

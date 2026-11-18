@@ -85,6 +85,7 @@ Question bank:
 - Which degrees or credentials should always appear?
 - Which should appear only when they help the job? (for example a certificate from another field)
 - Do you want your years of experience in a field stated in your summary? If so, from what month and year do you count, and what work counts toward it?
+- When you remember a figure about how the work ran (team size, how long something took, how many, how often), should a résumé state your best figure plainly ("a team of 10") or keep "about" ("a team of about 10")?
 
 | Setting | Value |
 |---|---|
@@ -92,6 +93,7 @@ Question bank:
 | Always include | Not recorded: include every relevant degree |
 | Include only when relevant | Not recorded |
 | Years-of-experience count | Not recorded: state no year count. When recorded, store the start date and what counts, never a fixed number; work the figure out at each build |
+| Recalled working figures | Not recorded: keep "about" and other qualifiers as the record words them |
 
 ## Documents
 

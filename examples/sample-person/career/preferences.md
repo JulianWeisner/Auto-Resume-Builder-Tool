@@ -24,6 +24,7 @@ Recorded 2026-11-01 from Riley's firsthand statement. User-confirmed, not indepe
 | Always include | BA, Economics |
 | Include only when relevant | Certified Warehouse Professional (warehouse and logistics roles) |
 | Years-of-experience count | Not recorded |
+| Recalled working figures | Not recorded |
 
 ## Documents
 

@@ -1,14 +1,14 @@
 # Stage 1 — Full evaluation (1.2–1.4)
 
-Part of the [agent guide](../AGENTS.md). **Load when:** the user asks for the full evaluation, and before Stage 2 plans a résumé (`plan.md` uses the 1.3 and 1.4 definitions). **Also read:** the [fit check rules](stage-1-evaluate.md), which hold the job-description key, the scores and the score key, and [plain language](writing/plain-language.md).
+Part of the [agent guide](../AGENTS.md). **Load when:** the user asks for the full evaluation, and before Stage 2 plans a résumé (`plan.md` uses the 1.3 and 1.4 definitions). **Also read:** the [fit check rules](stage-1-evaluate.md), which hold the job-description key and the scores; [the shared evaluation standard](evaluation.md), which holds the score key; and [plain language](writing/plain-language.md).
 
 **1.2 Asks-and-stories table.** Build it in this order:
-1. **Score key**, printed above the table: the score key from the [fit check rules](stage-1-evaluate.md#preparation-always), with its colors.
+1. **Score key**, printed above the table: the [evidence rubric](evaluation.md#evidence-rubric) from the shared evaluation standard, with its colors.
 2. **Table.** Use exactly **Their wording (job description) | What they're really asking | Your best story (plain English) | Score | Your records**.
    - Column 1: shorthand placeholders for the asks the row covers, for example `{Do-1'} {Want-3'}` (or tags plus short verbatim quotes when typing the key by hand). Full-quote placeholders (`{Do-1}`) belong only in the key; `assemble` rejects them elsewhere.
-   - Column 2: the plain-English ask. Merge redundant bullets; this is not a one-to-one rewrite. Label each ask **(must)** for core responsibilities and stated requirements, **(important)** for secondary ones, **(nice-to-have)** for anything the job description marks as preferred, ideal or nice to have, or **(context, not stated)** for company or domain context the description implies, such as the customers served. Context rows also carry inferred hiring expectations: secondary expectations the description implies but does not state. Never score them as mandatory.
+   - Column 2: the plain-English ask. Merge redundant bullets; this is not a one-to-one rewrite. Label explicit qualifications **(required)**, work to be done **(responsibility)**, secondary asks **(important)**, **(nice-to-have)** for anything the job description marks as preferred, ideal or nice to have, or **(context, not stated)** for company or domain context the description implies, such as the customers served. Context rows also carry inferred hiring expectations: secondary expectations the description implies but does not state. Never score them as mandatory.
    - Column 3: at most two plain sentences covering the situation, what the user did and the result. Keep essential qualifiers such as shared ownership, recalled metrics or unlaunched status. Merge context rows that share a story; use at most two context rows.
-   - Column 4: the score with its color: your judgment of how well the row's best story meets the ask, as a reference for the user. It may differ from the private per-tag scores.
+   - Column 4: the score with its color: your judgment of how well the row's best story meets the ask, as a reference for the user. Use the shared competency score from the assessment. If new evidence changes a rating, update the assessment and fit first; do not keep a second, table-only rating.
    - Column 5: record IDs.
    - Keep rows that score 0 in the table, and say what is missing. A gap in the record is not proof that the user lacks the experience.
 3. **Not mapped.** List every tag not used in the table or storyboard, with a reason. `assemble` prints the unused tags.
