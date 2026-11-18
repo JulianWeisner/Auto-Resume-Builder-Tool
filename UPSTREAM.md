@@ -142,4 +142,6 @@ Upstream made one scoring standard for its batch job search and Stage 1. This po
 
 **Settled upstream from the 2026-11-16 open decisions:** nice-to-haves at half weight; one record satisfying two tags counts once when the tags are grouped as restatements. Still open: half-met compound asks and verb shifts, and partial evidence in the terms check.
 
-**Not ported:** the "confident figures" rule (claim wording, Stage 2 report): it is a presentation preference of the upstream owner, and a candidate for the preferences' Résumé presentation questions. The rule that test material is never career evidence waits for the search tests.
+**Confident figures, made a choice:** upstream states recalled working figures (team size, durations, counts) without "about" for its owner. Here it is a question in the preferences' Résumé presentation section ("Recalled working figures"); claim wording, AGENTS.md and the Stage 2 report apply it only when the user chooses it, and the default keeps the record's qualifiers. Dropped qualifiers are listed in `plan.md`, not `sources.md`, because every `sources.md` line is read as a résumé line.
+
+**Not ported:** the rule that test material is never career evidence waits for the search tests.

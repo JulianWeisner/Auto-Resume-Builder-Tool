@@ -71,7 +71,7 @@ Two reports, each only on request, both compiled from the résumé's `<name>-sna
 
 1. **Assessment:** verdict, fit and the drivers, briefly.
 2. **Requirements and stories:** one table; each row starts with the requirement's quoted wording (from `tags.json`), then evidence strength in words (same work, same work in another setting, related, thin, none), the story chosen and the résumé line that carries it, or "not used" and why. Show each requirement with thin or no evidence in its own row.
-3. **Story choices:** only real decisions: chosen over what, and why (including the distinct-value test).
+3. **Story choices:** only real decisions: chosen over what, and why (including the distinct-value test). When the user chose [confident figures](writing/claim-wording.md#confident-figures), list every dropped qualifier (record wording → résumé wording).
 4. **Storyboard, titles and chronology:** order, the functional label chosen from each alternative set and why. Do not join alternatives with a slash or semicolon.
 5. **Gaps and how to cover them:** unsupported terms and Not covered asks, each marked for the cover letter or the interview.
 6. **Open questions:** only material ones.

@@ -36,7 +36,7 @@ The user's data is private. Never copy it into a public location, an issue, a pu
 
 - Use the most accurate supported functional title within its recorded window. Never invent an appointment, extend a title beyond its window or sum overlapping roles or teams.
 - Distinguish personal ownership from shared work and team or business outcomes; plans and experiments from delivered results; built from deployed, launched and commercially successful.
-- Preserve units, populations, periods and approximations. Forecasts are not results; device recipients are not active users.
+- Preserve units, populations, periods and approximations. One exception, only when the user chooses it under [Recalled working figures](career/preferences.md#résumé-presentation): employer-facing copy may state the record's single best figure for how the work ran, without "about" ([confident figures](agents/writing/claim-wording.md#confident-figures)). Forecasts are not results; device recipients are not active users.
 - Strong qualitative outcomes need no invented numbers.
 - Skills and job keywords appear only with evidence. Repetition across sources or past résumés does not establish a fact.
 - Keep confidential context internal: personnel judgments, departure details, source paths and internal uncertainty notes stay out of employer-facing output.
