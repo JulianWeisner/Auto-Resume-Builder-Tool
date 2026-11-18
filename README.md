@@ -1,10 +1,70 @@
 # Auto-Resume-Builder-Tool
 
+**New here? Read [START.md](START.md).**
+
+## Why this product exists
+
+### The problem: cold applications cost a lot and rarely pay off
+
+Cold applications are applications with no referral and no personal contact. Most job applications are cold, and their response and interview rates are low: often in the single-digit percentages, or less. Three things drive this:
+
+- **Ghost jobs:** roles that will never be filled. Some are posted by companies that will only hire internally. Others are posted to make a company look like it is growing.
+- **Applicant tracking systems (ATS):** they filter applications heavily before a person reads them.
+- **AI:** it has changed the market on both sides. Applicants send more applications, and employers filter them harder.
+
+Each good application must be specific to the job. It needs a tailored résumé, a cover letter, and answers to the employer's questions. That costs time, energy and emotion. The cost per application is high, but the chance of a reply is low. **This imbalance is the problem.**
+
+### The common responses
+
+Job seekers usually respond in one of two ways, and both fail:
+
+- **Send many generic applications.** The cost goes down, but the applications lose quality and personality, and screening filters them out. LinkedIn's Easy Apply works this way: you choose one of a few saved résumés and send it to many roles.
+- **Send a few polished applications.** The quality goes up, but you produce too few applications, too slowly, to get replies.
+
+A polished application is expensive for another reason. You must recall evidence that your CV and earlier résumés do not hold: your stories, numbers, context, and what you liked or did not like in your work. So each tailored application starts with remembering and rewriting from the beginning.
+
+### The solution: less work, higher quality
+
+This product decreases the time, energy and emotion that each application costs. It keeps what makes an application work: quality, your own personality, a human touch, and truth. Every claim comes from your own record.
+
+You stay in control. The tool does not build an application until you say yes, and it never submits anything without your approval. No AI résumé slop: the tool builds résumés tailored to each job, at a low human cost.
+
+## What the product is
+
+The product has three layers.
+
+### Layer 1: a career database
+
+The database goes far beyond a CV. You talk to an AI agent, and the agent sorts your experiences, skills, results and preferences into a structured record. Both AI agents and code can read that record and extract from it.
+
+### Layer 2: application tools
+
+These tools use the database to do the work for each job:
+
+- **Career informed search:** find jobs that match your career.
+- **Job match analysis:** a fit score and a verdict card before any work starts.
+- **Tailored résumé:** built from your record and checked so screening software can read it.
+- **Cover letters and application answers:** in your own voice.
+- **Interview preparation:** the stories most likely to come up, practiced from memory. It starts when an employer asks you for an interview.
+
+### Layer 3: job search management
+
+These tools work across many jobs over time:
+
+- **Application tracking and insights:** an archive of each job description and the files you sent, the replies you received, and patterns in what works.
+- **Application queue:** review postings quickly, and say yes or no to each. A yes queues the application.
+
+### How the layers work together
+
+The layers form a loop. During each application, agents ask you questions to improve your résumé, and those details go back into the database. As you apply, you log the replies you get, and the system shows which applications work. So the database, and each application built from it, improves with use.
+
+All three layers rest on the same rules: claims trace to your record, your data stays in your own copy, and the tool works with any AI tool.
+
+## How you use it
+
 A free, personalizable system for turning your whole career into tailored job applications with the AI coding agent you already use: Claude Code, ChatGPT Codex, Gemini CLI or any tool that can read files in a folder.
 
 You keep your career as a structured, truthful record. The agent reads it and, for each job, judges the fit, then writes a résumé, cover letter and portal answers that only claim what your record supports.
-
-**New here? Read [START.md](START.md).**
 
 ## Status
 
