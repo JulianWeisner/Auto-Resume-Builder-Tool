@@ -64,7 +64,7 @@ These rules govern agent behavior; they do not change file permissions. Where th
 
 ## Interviewing the user
 
-Whenever you need information from the user (their story, a clarification, preferences):
+Whenever you interview the user (their story, a clarification, preferences). The fit check's up to four questions and Stage 2's open questions are the exception: they appear together, numbered, so the user can answer any or none.
 
 - **Ask one bite-sized question at a time.** Never send a list of questions or a question with several parts. Wait for the answer, then ask the next.
 - **Offer examples to react to.** People recall more from ideas than from a blank page: "Did you ever hire anyone? Run a budget? Train a new colleague?" Let them answer yes, no or "that reminds me of…".
@@ -73,14 +73,19 @@ Whenever you need information from the user (their story, a clarification, prefe
 
 ## Filling the career record
 
-New users start with an empty skeleton. When the user asks for help filling it, work as an information update session (the request is the authorization, limited to career/, source-material/ and Curriculum-Vitae.md):
+New users start with an empty skeleton. When the user asks for help filling it, work as an information update session (the request is the authorization, limited to career/, source-material/ and Curriculum-Vitae.md). The [sample person](examples/sample-person/README.md) shows the finished structure; use it as a pattern for structure only and never copy its content.
 
-1. **Import what exists.** Ask for their CV and recent résumés and cover letters. Save an exact text snapshot of the CV in source-material/cv/, copy it to Curriculum-Vitae.md, then create one role record per position and one experience record per CV bullet, keeping the CV wording as the starting account with `verification: "cv-sourced"`.
-2. **Tell the story chronologically.** Pass on the advice: start earlier than you think, go in order, leave nothing out, because you never know what will connect you to a role. Let the user choose the depth: a broad pass first, or one period in full detail.
-3. **Interview, one question at a time,** as described under [Interviewing the user](#interviewing-the-user), offering kinds of roles, activities, processes, systems, colleagues and situations to react to.
-4. **Record as you go.** Rewrite accounts from what the user says, add scope_and_status limits, propose tags, and add dated clarifications with the user's words. Prioritize questions that change ownership, outcome, chronology or an important number.
-5. **Fill preferences.** Work through the topics in [career/preferences.md](career/preferences.md) one question at a time, including the application-answer table.
-6. **Close the loop.** Update the career index's locator table, write the career story from the records, run `python3 tools/validate.py` and fix every error, then show the user what was added.
+1. **Import what exists.** Ask for their CV and recent résumés and cover letters.
+   - Save an exact text snapshot of the CV as `source-material/cv/Curriculum-Vitae.<YYYY-MM-DD>.md`, dated the day of import, and use that date as each imported record's `source_revision`. Never edit the snapshot.
+   - Copy the CV to `Curriculum-Vitae.md`, keeping one line above it that says the career records take precedence and links the snapshot.
+   - Create one role record per position, one experience record per CV bullet (each with a short `title`) and one education or credentials record per degree or certificate. Keep the CV wording as the starting account with `verification: "cv-sourced"`. Metrics stay inside the account text until the user explains them; then create outcome records with the CV wording in `legacy_claims`.
+   - The CV's summary and skills lines are claims, not records. Add a skill or tool to a record only when the user ties it to that work. List the claims nothing supports yet under "Source coverage" in the career index, and ask about each one during the interview.
+   - Fill `career/contact.json` from the CV header and ask the user to confirm it.
+2. **Tell the story chronologically.** Pass on the advice: start earlier than you think, go in order, leave nothing out, because you never know what will connect you to a role. Let the user choose the depth: a broad pass first, or one period in full detail. If they do not choose, take a broad pass, oldest first.
+3. **Interview, one question at a time,** as described under [Interviewing the user](#interviewing-the-user), offering kinds of roles, activities, processes, systems, colleagues and situations to react to. Show the rewritten accounts for each employer before moving to the next, so the user can correct the wording while it is fresh.
+4. **Record as you go.** Rewrite accounts from what the user says, add scope_and_status limits and add dated clarifications with the user's words. Prioritize questions that change ownership, outcome, chronology or an important number. Register a new tag in the vocabulary when a record first needs it, and list new tags at the end for the user to confirm or rename. When a role is still open but the user's account stops at a date, say so in the role's `limitations` and ask whether the latest functional title still applies.
+5. **Fill preferences.** First the sections applications need: location and working arrangement, what you want next, motivation and the application-answer table. The other sections can wait for a later session; offer one. Ask one question at a time, and close a section after two skips in a row.
+6. **Close the loop.** Remove the "Empty until you fill it" line from each page you filled and write "Not recorded" for skipped items. Update the career index's locator table, write the career story from the records, run `python3 tools/validate.py` and fix every error. Then show the user a short summary: records added per employer, what changed from the CV, new tags to confirm and open questions.
 
 Never invent a fact to fill a template field. Leave it `null` or out.
 
@@ -156,7 +161,7 @@ Apply this when choosing stories for a résumé, report, cover letter or answer.
 
 ## Routing: read the modules for the task
 
-This file is always in force. Before producing one of these, read its modules in full; do not work from memory of an earlier session. Read only the current step's modules: a fit check does not read the full-evaluation or Stage 2 modules.
+This file is always in force. Before producing one of these, read its modules in full; do not work from memory of an earlier session. Read only the current step's modules: a fit check does not read the full-evaluation or Stage 2 modules. A module already read in full in this session need not be read again.
 
 | Task | Read in full before producing it |
 |---|---|
@@ -189,7 +194,7 @@ Python 3 scripts in [tools/](tools/README.md) do the mechanical work so the agen
 
 ## Working style
 
-- Move toward real applications rather than an exhaustive interview. Stage 2 produces a full tailored résumé unless a narrower scope is requested. Batch only questions that materially change ownership, outcome, chronology or an important number, and stop once a truthful, useful bullet is possible; unresolved details can be omitted or qualified.
+- Move toward real applications rather than an exhaustive interview. Stage 2 produces a full tailored résumé unless a narrower scope is requested. Ask only questions that materially change ownership, outcome, chronology or an important number, and stop once a truthful, useful bullet is possible; unresolved details can be omitted or qualified.
 - Do not promote plans, metadata keywords or product performance into personal completed outcomes.
 - Do not scaffold new folders, databases or taxonomies for a narrow edit.
 - The user's words govern actions. Drafting or approval never authorizes submitting an application, contacting an employer, changing the record or publishing anything. Honor existing authorization without asking again.

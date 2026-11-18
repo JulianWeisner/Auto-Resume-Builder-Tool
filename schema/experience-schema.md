@@ -55,7 +55,7 @@ Move an employer to this format only when its grouped entry has become hard to n
 | Type | What it is | Main fields |
 |---|---|---|
 | `role` | A position you held: a formal appointment, a functional title or a client engagement | title, organization, dates, role_kind, associated_experiences |
-| `experience` | One thing you did, told as a factual account. The unit a résumé bullet is built from | current_account, associated_roles, functions, capabilities, outcomes, scope_and_status |
+| `experience` | One thing you did, told as a factual account. The unit a résumé bullet is built from | title, current_account, associated_roles, functions, capabilities, outcomes, scope_and_status |
 | `outcome` | A result an experience produced: a metric, a launch, a decision | current_interpretation, measurement_period, legacy_claims |
 | `project` | An editorial grouping of experiences (a workstream or named feature) | title, definition_status, associated_experiences |
 | `education` / `credentials` | Degrees, diplomas, certificates and licenses | title, organization, dates, current_account |
@@ -77,7 +77,7 @@ Relationships are **many-to-many**. One experience can belong to two roles; one 
 - **current_interpretation:** what an outcome means today and its limits for external use.
 - **legacy_claims:** original outcome wording, kept exactly. Historical only; never overrides the current interpretation.
 - **legacy_metadata:** original CV metadata kept verbatim as text, so nothing from an import is lost. Metadata-only claims are never silently promoted to reviewed outcomes.
-- **source_path / source_revision / source_lines:** where a record was first extracted from. Line numbers refer to the unchanged snapshot in [source-material/cv/](../source-material/cv/README.md), not the editable top-level CV.
+- **source_path / source_revision / source_lines:** where a record was first extracted from. Line numbers refer to the unchanged snapshot in [source-material/cv/](../source-material/cv/README.md), not the editable top-level CV; `source_revision` names that snapshot by its date (`Curriculum-Vitae.<YYYY-MM-DD>.md`).
 - **evidence:** repository-relative paths (optionally with anchors) to supporting sources.
 
 ### Qualifications that travel with the story
@@ -106,7 +106,7 @@ These are mandatory reading alongside the account, not optional disclaimers.
 ### Titles
 
 - **role_kind:** `formal` (an appointment you held) or `functional` (work you performed under another title).
-- **title_status:** how the title is established, for example "formal appointment confirmed" or "CV label; appointment not established".
+- **title_status:** how the title is established, for example "formal appointment confirmed" or "CV label; appointment not established". `role_kind` says what kind of title the record claims; `title_status` says how well that is established, so a freshly imported CV title is `formal` with "CV label; appointment not established".
 - **formal_title_ids / functional_role_ids:** link a functional role to the formal title it overlapped, and back.
 - **functional_window:** the maximum date range you confirmed for using a functional title on résumés. Narrower windows are allowed; wider never.
 - **functional_labels** and **functional_label_selection:** alternative labels for the same work. `either-or` means pick one per résumé; never concatenate them.

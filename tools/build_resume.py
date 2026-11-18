@@ -373,7 +373,7 @@ def measure(reader, pdf, source, max_pages):
     return pages, problems
 
 
-def snapshot(files, pdf, html_path, versions):
+def snapshot(files, pdf, html_path, versions, max_pages=None):
     """One snapshot per résumé (<name>-snapshot/), replaced by each passing build so
     revisions do not pile up. Written beside it first, so a failure keeps the old one."""
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H%M%SZ")
@@ -383,7 +383,7 @@ def snapshot(files, pdf, html_path, versions):
     folder.mkdir()
     manifest = {"built_at": stamp, "note": "Decisions as they stood when this résumé was built. "
                 "A report written later is compiled from these files and labeled as compiled after the build.",
-                "tools": versions, "files": {}}
+                "max_pages": max_pages, "tools": versions, "files": {}}
     for f in [*files, str(html_path), str(pdf), str(pdf.with_suffix(".check.txt"))]:
         src = Path(f)
         if not src.is_file():
@@ -458,7 +458,7 @@ def main():
     if a.snapshot:
         if ok:
             extra = [f for f in (a.tags, a.terms) if f and Path(f).name not in {Path(x).name for x in a.snapshot}]
-            print(f"Decisions saved: {snapshot([*a.snapshot, *extra], pdf, html_path, tool_versions(renderer, reader)).name}/")
+            print(f"Decisions saved: {snapshot([*a.snapshot, *extra], pdf, html_path, tool_versions(renderer, reader), a.max_pages).name}/")
         else:
             print("Snapshot not saved: fix the problems first, so the snapshot matches the delivered résumé.")
     return 0 if ok else 1

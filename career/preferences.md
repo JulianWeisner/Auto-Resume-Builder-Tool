@@ -91,7 +91,7 @@ Question bank:
 | Title progression | Not recorded: decide fresh for each résumé |
 | Always include | Not recorded: include every relevant degree |
 | Include only when relevant | Not recorded |
-| Years-of-experience count | Not recorded: no figure. When recorded, store the start date and what counts, never a fixed number; work the figure out at each build |
+| Years-of-experience count | Not recorded: state no year count. When recorded, store the start date and what counts, never a fixed number; work the figure out at each build |
 
 ## Documents
 

@@ -2,7 +2,7 @@
 
 [Career index](README.md)
 
-Riley Example (fictional) runs warehouse operations. Riley started in retail, moved into grocery supply analysis and spent six years at Northwind Logistics, growing from analyst to operations lead. The records win if this page and a record disagree.
+Riley Example (fictional) runs warehouse operations. Riley started in retail, moved into grocery supply analysis and has been at Northwind Logistics since 2018, growing from analyst to operations lead. The records win if this page and a record disagree.
 
 | Period | Organization | Work |
 |---|---|---|

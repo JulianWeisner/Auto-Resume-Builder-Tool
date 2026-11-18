@@ -38,3 +38,5 @@ Or reply in your own words.
 - **Asked for:** the scope the user asked for, in their words or as the files it covers, plus the main exclusion. It never widens on its own: ask before touching anything outside it.
 - **Reply:** the actions the user can take next.
 - **Session:** Information Update (changes allowed) · Git and the current short commit SHA, or the date.
+
+During an interview, where each question finishes a turn, a one-line footer is enough until a section is finished: `**Session:** Information Update · <section> · question <n>`. Use the full footer when a section ends, when records change and at the end of the session.
