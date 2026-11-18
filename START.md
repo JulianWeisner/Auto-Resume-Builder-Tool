@@ -1,6 +1,6 @@
 # Start here
 
-This repository holds your career record and the rules an AI agent follows to turn it into job applications. You do not need to read anything else to use it.
+This repository holds your career record and the rules an AI agent follows to turn it into job applications. You use it by talking to your AI assistant in this folder: every step below is something you say in the conversation, and the results appear there. You do not need to read anything else to use it.
 
 ## What you need
 
