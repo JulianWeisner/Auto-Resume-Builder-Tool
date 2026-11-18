@@ -33,11 +33,17 @@
    failure the key and the errors go to stderr and nothing goes to stdout.
 
 3. Assemble (script):  jd_key.py assemble tags.json [--scores scores.txt] head.md key.md body.md > stage1.md
-   scores.txt (private) gives every tag a 0-4 score, one "TAG SCORE" per line, except
-   condition tags, which take pass, fail or unknown ("Cond-1 pass"); add
-   "trait" after the score for asks that name a personal trait ("Want-2 2 trait").
-   assemble prints the fit baseline: the weighted average / 4 x 100, with Cond tags
-   left out and About and trait tags at half weight, then the conditions' pass/fail list.
+   scores.txt (private) gives every tag a 0-4 score, one "TAG SCORE [trait] [RECORD,...]" per
+   line, except condition tags, which take pass, fail or unknown ("Cond-1 pass"). Add "trait"
+   after the score for asks that name a personal trait ("Want-2 2 trait"). Every score above 0
+   cites the career record IDs behind it, comma-separated ("Want-1 3 NW-EXP-001,NW-OUT-001"),
+   the shared evaluation standard's evidence rule; unknown IDs are rejected.
+   assemble uses shared-2: credit score/4, with conditions left out and context, traits and
+   nice-to-haves at half weight. --groups groups.json merges restatement tags into unique
+   competencies. --adjustment POINTS requires --adjustment-reason for nonzero values (bounded
+   to ±5). --stale marks a posting older than three weeks.
+   --assessment-out FILE records policy, baseline, adjustment, reason, final fit, the label
+   (Promising, Stretch or Deprioritize), requirements met and the grouped asks.
    assemble checks every tag is scored and prints a private summary to stderr,
    including requirements scored 1 or below; scores never enter the output.
    Concatenates the files and expands placeholders the agent wrote:
@@ -57,6 +63,10 @@ import json
 import re
 import sys
 from collections import OrderedDict
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import evaluation
 
 BULLET = re.compile(r"^\s*(?:[*\-•●▪–]|\d+[.)])\s+")
 TAG_RE = r"[A-Za-z][\w&]*-\d+[a-z]?"
@@ -188,6 +198,8 @@ def cmd_render(jd_path, map_path, save=None):
             continue
         rest = (m["rest"] or "").strip()
         if m["tag"] == "skip":
+            if not rest:
+                errors.append(f"map line {mn}: skip needs a reason")
             skips.append((a, b, rest or "(no reason given)"))
             for n in range(a, b + 1):
                 covered[n].append((0, len(lines[n - 1])))
@@ -298,16 +310,22 @@ def is_condition(tag):
     return tag.rsplit("-", 1)[0] == "Cond"
 
 
-def load_scores(path, tags, errors, traits=None):
+def load_scores(path, tags, errors, traits=None, records=None, known_ids=None):
     scores = {}
     for n, raw in enumerate(load(path), 1):
         raw = raw.split("#", 1)[0].strip()
         if not raw:
             continue
-        m = re.match(rf"^({TAG_RE})\s+([0-4]|pass|fail|unknown)(\s+trait)?$", raw)
+        m = re.match(rf"^({TAG_RE})\s+([0-4]|pass|fail|unknown)(\s+trait)?(?:\s+(\S+))?$", raw)
         if not m:
-            errors.append(f"scores line {n}: expected 'TAG SCORE [trait]' with SCORE 0-4, "
+            errors.append(f"scores line {n}: expected 'TAG SCORE [trait] [RECORD,...]' with SCORE 0-4, "
                           f"or 'Cond-N pass|fail|unknown' for a condition: {raw}")
+        elif m[2].isdigit() and int(m[2]) > 0 and not m[4]:
+            errors.append(f"scores line {n}: {m[1]} scores {m[2]} but cites no career record; "
+                          f"every score above 0 needs record IDs (score 0 when nothing is recorded)")
+        elif m[4] and known_ids is not None and [i for i in m[4].split(",") if i not in known_ids]:
+            errors.append(f"scores line {n}: unknown record IDs "
+                          + ", ".join(i for i in m[4].split(",") if i not in known_ids))
         elif m[1] not in tags:
             errors.append(f"scores line {n}: unknown tag {m[1]}")
         elif is_condition(m[1]) != (not m[2].isdigit()):
@@ -317,6 +335,8 @@ def load_scores(path, tags, errors, traits=None):
             scores[m[1]] = m[2] if is_condition(m[1]) else int(m[2])
             if m[3] and traits is not None:
                 traits.add(m[1])
+            if records is not None:
+                records[m[1]] = m[4].split(",") if m[4] else []
     missing = [t for t in tags if t not in scores]
     if missing:
         errors.append("unscored tags (score every tag in the key): " + ", ".join(missing))
@@ -324,19 +344,11 @@ def load_scores(path, tags, errors, traits=None):
 
 
 def fit_baseline(scores, traits):
-    """Weighted average of 0-4 scores as a percentage: Cond tags left out (gates);
-    About tags and trait-marked tags at half weight; all others full weight."""
-    total = weight = 0.0
-    for tag, sc in scores.items():
-        prefix = tag.rsplit("-", 1)[0]
-        if is_condition(tag):
-            continue
-        w = 0.5 if (prefix == "About" or tag in traits) else 1.0
-        total += w * sc; weight += w
-    return (total / weight / 4 * 100) if weight else None
+    """Shared search/Stage 1 baseline, including nice-to-have half weight."""
+    return evaluation.assess(evaluation.from_tags(scores, traits))["baseline_fit"]
 
 
-def score_summary(scores, traits=frozenset()):
+def score_summary(scores, traits=frozenset(), assessment=None):
     conditions = {t: v for t, v in scores.items() if is_condition(t)}
     scores = {t: v for t, v in scores.items() if not is_condition(t)}
     groups = OrderedDict()
@@ -350,11 +362,18 @@ def score_summary(scores, traits=frozenset()):
     if low:
         lines.append("Scored 1 or below (in 1.1, weigh these for the verdict's main gaps; in 1.2-1.4, show each "
                      "in its own table row or under Not covered, not hidden in a merged row): " + ", ".join(low))
-    base = fit_baseline(scores, traits)
+    assessment = assessment or evaluation.assess(evaluation.from_tags(scores, traits))
+    base = assessment["baseline_fit"]
     if base is not None:
-        lines.append(f"Fit baseline: {base:.1f}% (Cond left out; About and trait tags at half weight: "
-                     + (", ".join(sorted(traits)) or "no traits marked") + "). Final fit = baseline "
-                     "adjusted by at most 5 points, with a one-sentence reason.")
+        lines.append(f"Policy {assessment['evaluation_policy']}: baseline {base:.4f}% · adjustment {assessment['adjustment']:+g} points · "
+                     f"final fit {assessment['functional_fit']}%. Context, traits and nice-to-haves have half weight; conditions are gates.")
+        if assessment["adjustment_reason"]:
+            lines.append("Adjustment reason: " + assessment["adjustment_reason"])
+        if assessment.get("label"):
+            met = assessment["requirements_met"]
+            lines.append(f"Label: {assessment['label']} · requirements met {met['met']} of {met['total']}"
+                         + (" · stale posting" if assessment.get("stale_posting") else "")
+                         + ". Copy the label into the verdict line; it is the shared search and Stage 1 rule.")
     if conditions:
         lines.append("Conditions (pass/fail filter, not in the fit): "
                      + ", ".join(f"{t} {v}" for t, v in conditions.items())
@@ -363,12 +382,29 @@ def score_summary(scores, traits=frozenset()):
     return "\n".join(lines)
 
 
-def cmd_assemble(tags_path, paths, scores_path=None):
+def cmd_assemble(tags_path, paths, scores_path=None, groups_path=None, adjustment=0, adjustment_reason=None,
+                 assessment_out=None, stale=False):
     with open(tags_path, encoding="utf-8") as f:
         tags = json.load(f)
     errors, used = [], set()
-    traits = set()
-    scores = load_scores(scores_path, tags, errors, traits) if scores_path else None
+    traits, records = set(), {}
+    scores = load_scores(scores_path, tags, errors, traits, records, evaluation.career_ids()) if scores_path else None
+    assessment = None
+    if scores is not None and not errors:
+        try:
+            groups = json.loads(Path(groups_path).read_text()) if groups_path else None
+            asks = evaluation.from_tags(scores, traits, groups)
+            for ask in asks:
+                ask["record_ids"] = sorted({r for t in ask["source_tags"] for r in records.get(t, [])})
+            assessment = evaluation.assess(asks, adjustment, adjustment_reason)
+            conditions = {t: v for t, v in scores.items() if is_condition(t)}
+            assessment.update(evaluation.decide(asks, assessment["functional_fit"], conditions.values(), stale=stale))
+            assessment["requirements"] = asks
+            assessment["conditions"] = conditions
+        except (ValueError, TypeError) as e:
+            errors.append(str(e))
+    elif groups_path or adjustment or assessment_out:
+        errors.append("groups, adjustment and assessment output require --scores")
 
     def render_group(m):
         parts, names = [], []
@@ -393,9 +429,8 @@ def cmd_assemble(tags_path, paths, scores_path=None):
     for p in paths:
         with open(p, encoding="utf-8") as f:
             out.append(GROUP.sub(render_group, f.read()))
-    sys.stdout.write("\n".join(t.rstrip("\n") + "\n" for t in out))
-    if scores is not None:
-        print(score_summary(scores, traits), file=sys.stderr)
+    if assessment:
+        print(score_summary(scores, traits, assessment), file=sys.stderr)
     unused = [t for t in tags if t not in used]
     if unused:
         print("Not referenced in the table or storyboard (list each under Not mapped with a reason): "
@@ -403,6 +438,9 @@ def cmd_assemble(tags_path, paths, scores_path=None):
     if errors:
         print("\n".join(sorted(set(errors))), file=sys.stderr)
         return 1
+    if assessment_out and assessment:
+        Path(assessment_out).write_text(json.dumps(assessment, indent=2) + "\n")
+    sys.stdout.write("\n".join(t.rstrip("\n") + "\n" for t in out))
     return 0
 
 
@@ -413,12 +451,25 @@ def main(argv):
         save = argv[argv.index("--save") + 1] if "--save" in argv else None
         return cmd_render(argv[2], argv[3], save)
     if len(argv) >= 4 and argv[1] == "assemble":
-        args, scores = argv[2:], None
-        if "--scores" in args:
-            i = args.index("--scores"); scores = args[i + 1]; del args[i:i + 2]
-        return cmd_assemble(args[0], args[1:], scores)
+        args, options = argv[2:], {}
+        for flag, key in (("--scores", "scores_path"), ("--groups", "groups_path"),
+                          ("--adjustment", "adjustment"), ("--adjustment-reason", "adjustment_reason"),
+                          ("--assessment-out", "assessment_out")):
+            if flag in args:
+                i = args.index(flag)
+                if i + 1 == len(args):
+                    print(f"{flag} needs a value", file=sys.stderr); return 2
+                options[key] = args[i + 1]; del args[i:i + 2]
+        try:
+            options["adjustment"] = float(options.get("adjustment", 0))
+            if "--stale" in args:
+                args.remove("--stale"); options["stale"] = True
+            return cmd_assemble(args[0], args[1:], **options)
+        except ValueError as e:
+            print(str(e), file=sys.stderr); return 1
     print(__doc__); return 2
 
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
+

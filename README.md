@@ -122,7 +122,7 @@ git commit -m "Update tool from upstream"
 | [schema/](schema/experience-schema.md) | How the career record is organized | Tool |
 | [career/](career/README.md) | Your career record: index, story, preferences, vocabulary, contact details and collections of records | **Yours** |
 | [career/_templates/](career/_templates/README.md) | Blank, copyable records | Tool |
-| [agents/](agents/) | The agent's modules: Stage 1 evaluation and scoring, Stage 2 résumé and screening check, Stage 3 letters and answers, handoff, archive, information update, and the writing guides | Tool |
+| [agents/](agents/) | The agent's modules: the shared evaluation standard, Stage 1 evaluation, Stage 2 résumé and screening check, Stage 3 letters and answers, handoff, archive, information update, and the writing guides | Tool |
 | [templates/](templates/README.md) | Default résumé and cover-letter templates and style guides | Tool |
 | [templates/custom/](templates/custom/README.md) | Your own templates, built from examples you like | **Yours** |
 | [source-material/](source-material/README.md) | Your CV snapshot, evidence journal and document extracts | **Yours** |

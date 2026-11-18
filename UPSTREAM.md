@@ -122,3 +122,24 @@ Two independent agents ran the product on the made-up sample person in throwaway
 - One record can satisfy two tags (for example a tool named in both a Want and a Nice bullet), counting twice.
 - The 0–4 key does not say how to score a compound ask that is half met ("returns and reverse logistics") or a verb shift (the record shows measuring, the posting asks to improve).
 - The terms check has no state between covered and unsupported, so partial evidence reads as "no evidence".
+
+## 2026-11-18 · upstream 682eb59 (PRs #22–#24 and the Stage 1 parts of later PRs) · shared evaluation standard
+
+Upstream made one scoring standard for its batch job search and Stage 1. This port brings the standard and the Stage 1 changes; search, the tracker and the application queue follow separately.
+
+| Here | Upstream source | Changes |
+|---|---|---|
+| agents/evaluation.md | same | Rubric, classifying asks, restatement groups, the `shared-2` calculation, requirements met and the Promising / Stretch / Deprioritize label kept. Name and personal examples removed. Search-only fields (coverage hashes, deferred tags, L1, calibration set) left out until search is ported. Conditions are judged against the user's preferences instead of upstream's fixed location rules and checker. Pay is shown, not gated. The source guard (`jd_ingest.py`) left out; the key is built with `jd_key.py` as before |
+| tools/evaluation.py | same | Docstring generalized; `career_ids` skips career/_templates/, whose placeholder IDs are not records |
+| tools/jd_key.py | same | Unchanged apart from the docstring: sample-person record IDs, "older than three weeks" for `--stale` |
+| tools/current_view.py | same | Whole-word search, and a line saying when nothing matches |
+| tools/test_evaluation.py | same | Command-line checks run on a temporary copy of the sample person; a check that the shipped skeleton holds no record IDs |
+| agents/stage-1-evaluate.md | same | Tags classified by the shared rules; step 2 becomes "Shared evaluation" (record IDs on every score above 0, groups, assessment.json); the verdict shows baseline, adjustment, requirements met and the computed label; comparisons use "Label". The product's own Phase 3 changes (condition shorthands, no scores in questions, fit-check.md) kept |
+| agents/stage-1-full-evaluation.md | same | Score key from the shared rubric; required / responsibility labels; one rating per competency |
+| AGENTS.md, START.md, README.md, tools/README.md | same | Routing reads agents/evaluation.md for Stages 1 and 2; tool kit adds evaluation.py and the career files; labels renamed |
+
+**Changed for users:** fits move. Nice-to-haves now count at half weight, restatements count once, and the bands are 75 / 60 instead of 80 / 70 / 60. "Pursue" becomes "Promising". Earlier fit checks are not recalculated.
+
+**Settled upstream from the 2026-11-16 open decisions:** nice-to-haves at half weight; one record satisfying two tags counts once when the tags are grouped as restatements. Still open: half-met compound asks and verb shifts, and partial evidence in the terms check.
+
+**Not ported:** the "confident figures" rule (claim wording, Stage 2 report): it is a presentation preference of the upstream owner, and a candidate for the preferences' Résumé presentation questions. The rule that test material is never career evidence waits for the search tests.
