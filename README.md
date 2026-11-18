@@ -1,6 +1,20 @@
 # Auto-Resume-Builder-Tool
 
-**New here? Read [START.md](START.md).**
+**This is not an app you install.** It is a folder of rules, templates and scripts that the AI assistant you already use reads and runs: Claude Code, ChatGPT Codex, Gemini CLI or any assistant that can read and edit files in a folder. You do not open this repository to use it. You talk to your assistant, and the assistant does the work in the conversation:
+
+| You say to your assistant | You get, in the conversation |
+|---|---|
+| "Help me fill my career record. Here is my CV." | An interview, one question at a time, that turns your CV and your story into a structured career record |
+| *Paste a job posting* | A verdict card: the job's conditions against your preferences, a fit estimate, a label, and the questions that could change it |
+| "build résumé" | A tailored, checked résumé PDF that claims only what your record supports |
+| "cover letter" or *paste the portal's questions* | A cover letter and answers in your own voice |
+| "I applied" | An archive of the posting and the files you sent |
+
+The assistant is the interface. The repository is where your career record lives and where the rules are written down, so every assistant follows the same rules and your data stays in your own private copy. Nothing is built until you say yes, and nothing goes to an employer without your approval.
+
+Job search and an application queue are on the way ([roadmap](roadmap/2026-11-18-roadmap.md)). Their review cards and queue board also appear in the conversation where the assistant can draw them, and open as a page in your browser where it cannot.
+
+**New here? Read [START.md](START.md).** It takes you from an empty copy to your first application.
 
 ## Why this product exists
 
@@ -59,12 +73,6 @@ These tools work across many jobs over time:
 The layers form a loop. During each application, agents ask you questions to improve your résumé, and those details go back into the database. As you apply, you log the replies you get, and the system shows which applications work. So the database, and each application built from it, improves with use.
 
 All three layers rest on the same rules: claims trace to your record, your data stays in your own copy, and the tool works with any AI tool.
-
-## How you use it
-
-A free, personalizable system for turning your whole career into tailored job applications with the AI coding agent you already use: Claude Code, ChatGPT Codex, Gemini CLI or any tool that can read files in a folder.
-
-You keep your career as a structured, truthful record. The agent reads it and, for each job, judges the fit, then writes a résumé, cover letter and portal answers that only claim what your record supports.
 
 ## Status
 
