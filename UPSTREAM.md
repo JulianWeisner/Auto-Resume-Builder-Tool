@@ -145,3 +145,22 @@ Upstream made one scoring standard for its batch job search and Stage 1. This po
 **Confident figures, made a choice:** upstream states recalled working figures (team size, durations, counts) without "about" for its owner. Here it is a question in the preferences' Résumé presentation section ("Recalled working figures"); claim wording, AGENTS.md and the Stage 2 report apply it only when the user chooses it, and the default keeps the record's qualifiers. Dropped qualifiers are listed in `plan.md`, not `sources.md`, because every `sources.md` line is read as a résumé line.
 
 **Not ported:** the rule that test material is never career evidence waits for the search tests.
+
+## 2026-11-18 · upstream 682eb59 (PRs #33, #34, #36, #38) · application tracker
+
+Upstream's tracker follows every job from queue to last reply, one event file per event. This port brings the tracker for archived applications and their replies. The queue side (board rows, Build résumé and Drop, `update-queue`, `import-queue`) is ported as code but waits for career informed search.
+
+| Here | Upstream source | Changes |
+|---|---|---|
+| tools/tracker.py | same | Event types, the one-file-per-event store, derived status, validation, `add-archive`, `add-event`, `save-email`, `status`, `board` and the queue commands kept. Name removed; the `julian` source becomes `user`. Dates use the computer's local time zone, or `TRACKER_TZ`, instead of New York. PyYAML falls back to the setup environment like the other scripts. Staleness defaults to 21 days when there are no search criteria. The board's buttons tell "your assistant", not Claude. Without search, the board explains the empty queue and `update-queue` stops with a clear message |
+| tracker/README.md | same | Rewritten for a user: what is theirs, rules, event schema, what to say in a conversation, commands, a `save-email` path for pasted emails and other mail services, email scope. The queue board described as coming with search |
+| tracker/events/README.md | new | Marks the folder as the user's data, empty until they apply |
+| tools/test_tracker.py | same | Runs on a temporary copy of the sample person's archive and tracker instead of upstream's own events; queue tests use made-up queued entries; new checks for the empty-queue message, the 21-day default, `update-queue` without search and the sample email's hash |
+| examples/sample-person/applications/, examples/sample-person/tracker/events/ | new | Riley's made-up application to the sample posting, an acknowledgment email saved by `save-email`, and three events made by the tool |
+| agents/archive.md | same | `add-archive` after archiving; the product's "Logging replies" section now writes tracker events (`save-email` for an email, `add-event` for a reply the user reports); updates.md kept as a mirror |
+| applications/README.md | same | Correspondence section; updates.md mirrors the tracker |
+| AGENTS.md | same | Tracker events are the user's data; the application session may log replies; routing row T; scripts table |
+| tools/check_skeleton.py | — | tracker/events/ is a data area; only its README may ship |
+| .gitignore, README.md, START.md, tools/README.md | same | Board page ignored; tracker in the status list, the data table and the update command; "show my applications" and pasted replies in START.md |
+
+**Not ported yet:** the search-side tracker steps in agents/job-search.md ("update queue", Drop authorization) and the queue routing row; they come with career informed search.

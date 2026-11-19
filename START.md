@@ -82,15 +82,16 @@ If you say **build résumé** without asking for the full evaluation, the agent 
 | **proof report** | Whether it can be trusted: each résumé line with the records behind it, the facts confirmed, the screening check and how it was built. Ready in seconds |
 | **handoff** | New facts from the conversation, packaged as proposed updates to your record. Nothing changes yet |
 | **update my record** (with the handoff, or in your own words) | The agent applies the updates to your career record, in a separate conversation |
-| **I applied** | The submitted files are archived in applications/ |
-| **[Company] replied** / **rejected** | The reply is logged in that application's archive |
+| **I applied** | The submitted files are archived in applications/, and the [tracker](tracker/README.md) records the application |
+| **[Company] replied** / **rejected**, or paste the employer's email | The reply is logged in the tracker; a pasted or forwarded email is saved unedited with the application |
+| **show my applications** | Every application and where it stands: applied, acknowledged, in process, rejected and so on |
 | anything in your own words | The agent works it out |
 
 Every reply ends with a short footer: **Next** lists the main steps that fit that moment, **Also** the occasional ones, and **Session** says which kind of session you are in. You can also say **go**, **more detail** or **skip**.
 
 ### Two kinds of session
 
-- **Application session** (the default): evaluates jobs and writes résumés, letters and answers. It reads your record and never changes it. Its only change is archiving an application after you say **I applied**.
+- **Application session** (the default): evaluates jobs and writes résumés, letters and answers. It reads your record and never changes it. Its only changes are archiving an application after you say **I applied** and logging the replies you report.
 - **Information update session:** adds to or corrects your career record, including filling it the first time and applying a handoff. Start it by saying in words what it may change, for example "apply this handoff to my record".
 
 ## What never happens automatically

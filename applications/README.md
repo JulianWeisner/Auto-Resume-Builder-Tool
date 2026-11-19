@@ -18,10 +18,15 @@ Saying "I applied" twice never creates a duplicate.
 - **The build snapshot** (`<name>-snapshot/`): the decision files, HTML, PDF, check output and manifest saved by the build.
 - **reasoning-report.md** and **proof.html**, when the user asked for them. Otherwise the snapshot is the record of how the résumé was made.
 - **cover-letter** and **application-answers.md**, when used.
-- **updates.md:** dated replies and status changes ("interview invite", "rejected"). Logging replies is what makes later analysis possible.
+- **updates.md:** dated replies and status changes ("interview invite", "rejected"), mirroring the [tracker](../tracker/README.md) so the archive reads on its own.
+- **correspondence/:** employer emails about this application, saved unedited by `tools/tracker.py save-email`.
 - **supporting/:** optional editable or draft files, labeled as not submitted.
 
 List every file with its submitted or supporting status and SHA-256 hash, plus anything missing.
+
+## Correspondence and the tracker
+
+Email about an application is saved unedited in its `correspondence/` folder, with the message ID in a short header, by `tools/tracker.py save-email`. An email that cannot be matched to one of several same-day roles goes in the shared company folder. Status and replies are logged in the [tracker](../tracker/README.md), which is what later analysis is built on. Inventories keep the files as archived; later correspondence is listed in the tracker with its hash and noted in `updates.md`.
 
 ## Rules
 

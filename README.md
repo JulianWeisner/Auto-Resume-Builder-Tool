@@ -8,7 +8,8 @@
 | *Paste a job posting* | A verdict card: the job's conditions against your preferences, a fit estimate, a label, and the questions that could change it |
 | "build résumé" | A tailored, checked résumé PDF that claims only what your record supports |
 | "cover letter" or *paste the portal's questions* | A cover letter and answers in your own voice |
-| "I applied" | An archive of the posting and the files you sent |
+| "I applied" | An archive of the posting and the files you sent, recorded in your application tracker |
+| *Paste an employer's reply*, or "show my applications" | The reply logged against that application; a list of where each application stands |
 
 The assistant is the interface. The repository is where your career record lives and where the rules are written down, so every assistant follows the same rules and your data stays in your own private copy. Nothing is built until you say yes, and nothing goes to an employer without your approval.
 
@@ -85,6 +86,7 @@ Early version. What is here today:
 - ✅ **Writing guides:** plain language (ASD-STE100-informed, with formulaic AI phrasing removed) and claim wording for strong, truthful bullets.
 - ✅ **The guided application flow:** paste a posting, get a verdict card with a weighted fit estimate, then a full evaluation (asks-and-stories scoring, storyboard, review before build), a tailored résumé, cover letter and portal answers, a handoff of new facts and an archive of what you submitted.
 - ✅ **One-command résumé build** that renders the PDF, measures its layout and runs the screening-software (ATS) check, with a one-command setup for any computer or AI tool, and a proof report that traces every résumé line back to your records.
+- ✅ **Application tracker:** every application you archive is recorded, with the replies you report or paste (saved unedited) and a status worked out from those events, ready for later analysis.
 - ✅ **A made-up sample person** ([examples/sample-person/](examples/sample-person/README.md)) showing what a filled record looks like.
 
 What comes next is in [ROADMAP.md](ROADMAP.md).
@@ -115,7 +117,7 @@ The tool improves over time. Updates only touch the tool's files, never your dat
 ```bash
 git remote add upstream https://github.com/JulianWeisner/Auto-Resume-Builder-Tool.git   # once, if not already set
 git fetch upstream
-git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools examples
+git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools tracker/README.md examples
 git commit -m "Update tool from upstream"
 ```
 
@@ -136,6 +138,8 @@ git commit -m "Update tool from upstream"
 | [source-material/](source-material/README.md) | Your CV snapshot, evidence journal and document extracts | **Yours** |
 | [Curriculum-Vitae.md](Curriculum-Vitae.md) | Your working CV | **Yours** |
 | [applications/](applications/README.md) | What you submitted, per application | **Yours** |
+| [tracker/](tracker/README.md) | The application tracker's rules | Tool |
+| [tracker/events/](tracker/events/README.md) | Your applications' events: applied, replies, interviews | **Yours** |
 | [tools/](tools/README.md) | Scripts the agent runs (Python 3; [setup](tools/README.md#setup-once)) | Tool |
 | [examples/](examples/sample-person/README.md) | A made-up sample career, also used by the tests | Tool |
 
