@@ -1,0 +1,6 @@
+description = "Show the job queue board - see .agents/skills/queue/SKILL.md"
+prompt = """
+Follow .agents/skills/queue/SKILL.md in this repository: show the user's queue board.
+Gemini CLI cannot draw HTML in the chat, so use step 2 (or step 3 in a cloud session).
+{{args}}
+"""

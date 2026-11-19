@@ -1,0 +1,78 @@
+This role requires a hybrid schedule and will be based in our South Charlotte, NC or New York, NY office.
+
+Red Ventures Growth and Transformation empowers partners through a unique blend of high-scale proprietary distribution, data models, AI-enabled applications, and strategic client partnerships. We help our clients unlock significant and sustainable growth across the home services and financial services ecosystems, ranging from telecommunications and deregulated energy to credit cards and deposits. As a Red Ventures company, we have more than 20 years of experience building strategic, long-standing relationships with some of the world's most powerful brands across industries like financial services, retail, real estate, and entertainment.
+
+We believe the next phase of advantage will come from integrated operating systems that connect decisioning, execution, intelligence, and governance into a shared foundation that improves over time. RVGT is investing in that future through our Growth Operating System, a set of reusable workflows, agents, context layers, and governance mechanisms designed to help our teams and our partners drive growth more efficiently, more intelligently, and at greater scale.
+
+At the center of that system is our enterprise AI agent platform, the layer our teams and partners use to build, govern, deploy, and operate AI agents, including inside some of the largest institutions in the country. The platform is not a single application. It is the foundation that lets every application be built faster and run more safely, anchored in three commitments: governance by default (security, privacy, and compliance built into every agent and every tool connection), codified learning that compounds time to value across teams, and lab-agnostic AI management so our partners are never locked into a single model provider or agent framework.
+
+We are seeking a Director of AI Product Management, Platform, to own the platform's product strategy and roadmap. You will lead a team defining the core capabilities that every agent depends on: agent authoring and promotion workflows, tool and data connectivity through MCP, identity and access, policy and governance controls, observability and cost management, and deployment models that meet the requirements of regulated enterprise clients. Your customers are the product and engineering teams building on the platform, the client stakeholders who must approve it, and the business leaders who need to see measurable impact from it.This role carries significant visibility across our client services division and with our partners. You will help stakeholders understand what the platform is and why it matters and drive adoption that turns platform investment into business outcomes.
+
+What You’ll Do:
+• Identify & drive initiatives: Generate the product roadmap for the client partnership and lead multiple AI product initiatives, ensuring alignment with product leadership, partner objectives, customer needs, and broader RVGT strategy. Develop business cases and assess feasibility, impact, and ROI in partnership with business and client stakeholders.
+• Translate vision into action: Turn high-level strategy into actionable workstreams, defining sequencing, resourcing, and execution plans in partnership with product team members and cross-functional leads. Create clarity and alignment.
+• Own outcomes: Own the business impact of your initiatives, communicating progress, ROI, risks, and opportunities to leadership and client partners, shaping the go-forward for each workstream to ensure it’s positioned to deliver meaningful impact, getting hands-on where necessary to unblock our hardest tasks and hurdles.
+• Advance the Operating System: Collect qualitative and technical feedback from agentic workflows running through the platform and use that to lift all boats and advance the fundamental feature set of enabling technology.
+• Develop talent: Manage and develop a team of product managers at various levels, creating specific plans, providing hands-on product and analytical support, delegating appropriate work, and instilling a performance-driven environment through clear expectations, regular feedback, and recognition of achievements.
+
+What We’re Looking For:
+• Commercially grounded: You bring an entrepreneurial mindset paired with strong commercial instincts, identifying where platform investments unlock measurable efficiency across teams, and connecting delivery wins to the platform’s long-term compounding value.
+• Relationship-driven: You build durable relationships with internal leaders, understanding their motivations and constraints, and using these partnerships to shape decisions, secure alignment, and accelerate impact.
+• Technical fluency:  You are deeply technical and architecturally fluent, understanding how modern agent systems actually work (models, harnesses, tool protocols, memory, evaluation, and runtime infrastructure) well enough to make sound tradeoffs alongside engineering and recognize which layers the platform should own versus abstract. You translate complex technical concepts for non-technical stakeholders and leverage modern AI tools to accelerate product development.
+• Customer centric: High-level empathy for the teams who build on and depend on the platform, with a sharp sense for developer experience and governance design - able to thread the needle between customer enablement and necessary friction for governance.
+• Deeply curious: You have a genuine drive to understand how the world is changing and how emerging AI capabilities can be applied in practice. You invest time in staying close to new developments, forming clear opinions on what makes systems effective, and bringing that perspective into product strategy, team leadership, and execution.
+• Systems and governance minded: You design governance-by-default infrastructure, so partners can build and deploy safely without re-solving the same problem each time.You bring strong platform product judgment, knowing which abstractions will hold, when to standardize versus stay flexible, and you're willing to say no to one-off requests in service of a platform that scales.
+
+Experiences You've Had:
+• End-to-end ownership: Experience driving AI/ML products from concept through iteration, guiding a team through delivery, and owning the outcomes and business impact of the work.
+• Driving complex decision-making: Experience influencing cross-functional leaders, navigating competing priorities across internal teams and regulated client requirements, and making high-impact platform decisions in ambiguous, fast-moving environments.
+• Built from experience: You’ve worked hands-on with production-grade AI systems, whether evaluating model behavior, running analyses (sql, python), building agent infrastructure, and codifying that work into reusable capabilities that compound time-to-value across teams. You're comfortable operating close to the details, whether that's diagnosing a runtime issue, reading an architecture review, or sitting with a client's security team to work through a compliance question.
+• Partner engagement: Experience serving as a strategic partner to both internal delivery teams and external client stakeholders who must approve what's deployed into their environment, leading discovery, validating opportunities, and aligning teams around shared goals, particularly in regulated or enterprise contexts.
+• People leader: Managed teams of product managers, including being a manager of managers - providing feedback and encouragement with direct responsibility for the team’s contributions.
+
+Compensation:
+
+Total Cash Compensation Range: $215,0000 – $305,000 per year
+
+New York City Total Cash Compensation Range: $268,750 – $381,250 per year
+
+This role is also eligible for Equity, which is offered separately from the total cash compensation listed above. Actual compensation varies based on location, experience, and qualifications.
+
+Additionally, the following benefits are provided by Red Ventures, subject to eligibility requirements.
+• Health Insurance Coverage (medical, dental, and vision)
+• Life Insurance
+• Short and Long-Term Disability Insurance
+• Flexible Spending Accounts
+• Holiday Pay
+• 401(k) with match
+• Employee Assistance Program
+• Paid Parental Bonding Benefit Program
+• Flexible Paid Time Off (PTO): We believe time to rest and recharge is essential.  That’s why we offer a generous and flexible PTO policy.  Full-time employees accrue 20 days of PTO for a full calendar year annually, with an increase to 25 days after five years of service.
+
+Who We Are:
+
+Red Ventures is a global portfolio of high-growth companies — spanning several U.S. businesses, a joint venture in the health services industry, and strategic investments in Europe. Their businesses include The Points Guy, Lonely Planet, Bankrate, the Allconnect Platform, RV Home Client Growth, RV Growth & Transformation, Sage Home Loans Corporation, and more. Across the portfolio, Red Ventures businesses deliver seamless digital experiences for consumers, help Fortune 100 clients solve large-scale digital growth challenges, and create world-class experiences and opportunities for employees. Learn more at redventures.com and follow @RedVentures on LinkedIn and Instagram.
+
+At Red Ventures, we believe diverse, inclusive teams are better. To help you better understand our core values and beliefs, we encourage you to watch this brief YouTube video: Our Belief Statements. This will give you insight into the principles that guide our work and our commitment to fostering an inclusive environment.
+
+ We offer competitive salaries and a comprehensive benefits program for full-time employees, including medical, dental and vision coverage, paid time off, life insurance, disability coverage, employee assistance program, 401(k) plan and a paid parental leave program.
+
+Red Ventures is an equal opportunity employer that does not discriminate against any employee or applicant because of race, creed, color, religion, gender, sexual orientation, gender identity/expression, national origin, disability, age, genetic information, veteran status, marital status, pregnancy or any other basis protected by law. Employment at Red Ventures is based solely on a person's merit and qualifications.
+
+We are committed to providing equal employment opportunities to qualified individuals with disabilities. This includes providing reasonable accommodation where appropriate. Should you require a reasonable accommodation to apply or participate in the job application or interview process, please contact accommodation@redventures.com.
+
+If you are based in California, we encourage you to read this important information for California residents linked here.
+
+
+
+#LI-KS1 #LI-HYBRID
+
+At Red Ventures, we believe in real human connection. That’s why we do not hire someone through text, social media, or email only. As part of the hiring process, you should expect live conversations with RV teammates before any offer is made. Also, keep an eye on the sender: we only use official @redventures.com email addresses at the portfolio level or business specific email addresses (e.g., @thepointsguy.com), not ones like “redventurescareer.com.” We will never ask candidates to send money, buy equipment, or share financial account info during your journey with us. You can always find our open roles on redventures.com— if you receive a message that seems suspicious, please use redventures.com to verify the opportunity.
+
+For more, the U.S. Federal Trade Commission has published helpful articles to help individuals learn more about protecting themselves from recruiter scams. If you think you’ve been targeted, feel free to report it to your local authorities. Stay safe out there!
+
+Click here for more details regarding the employee privacy policy: https://www.redventures.com/legal/us-emp-privacy-notice
+
+Questions about this Privacy Notice can be directed to employeerights@red
+
+…(truncated — read the full posting at https://hiringcafe.com/job/director-of-ai-product-management-platform-red-ventures-charlotte-n74ybfyjvq7jwsrt?utm_source=claude&utm_medium=llm-app&utm_campaign=mcp)

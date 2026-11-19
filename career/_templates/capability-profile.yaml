@@ -1,0 +1,30 @@
+# Capability profile: a retrieval aid for search screening, written by the agent from your career records.
+# Copy to career/capability-profile.yaml at your first search; `pipeline.py check-profile` checks it.
+#
+# It lists strengths (score 3-4) and partial capabilities (score 2) that the records positively support,
+# each with the record IDs behind it. There are no "no" entries: when nothing matches an ask, the agent
+# searches the records (python3 tools/current_view.py --search ...) and scores by the rubric in
+# agents/evaluation.md. Where a strength has a boundary that postings often probe, write it as a limit.
+#
+# The records stay authoritative; this file is not career evidence. Refresh it when the records change
+# (check-profile warns when they have since career_commit).
+schema_version: "1.1"
+career_commit: null             # the full 40-character commit the profile was built from
+built_from: null                # "tools/current_view.py at career_commit; reviewed YYYY-MM-DD"
+
+tenure:
+  as_of_rule: "Compute at screening time from the start dates; never store a fixed number."
+  # field: {start: YYYY-MM, rule: "what counts toward it"}
+
+strengths: []
+  # - id: short-id
+  #   label: What the records show, in plain words
+  #   score: 4                    # 4 with a stated result, 3 without
+  #   record_ids: [ORG-EXP-001]
+  #   limits: "What the records do not show; never infer past it."
+
+partials: []
+  # - id: short-id
+  #   label: Related work that shows the capability indirectly
+  #   score: 2
+  #   record_ids: [ORG-EXP-002]

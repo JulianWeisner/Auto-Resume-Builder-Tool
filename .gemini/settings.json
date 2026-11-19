@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "hiringcafe": {
+      "httpUrl": "https://hiringcafe.com/api/mcp"
+    }
+  }
+}

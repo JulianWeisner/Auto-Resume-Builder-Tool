@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Application Queue",
+  "description": "Handoff from batch search and select to the application stage (pipeline.py export). One record per job the user marked Interested, self-contained: it carries the posting text. decision (interest) and application_status (progress) are separate fields; a receiving tool updates application_status and never changes the screening record.",
+  "type": "object",
+  "required": [
+    "export_version",
+    "kind",
+    "exported_on",
+    "source",
+    "jobs"
+  ],
+  "properties": {
+    "export_version": {
+      "const": "1.0"
+    },
+    "kind": {
+      "const": "application_queue"
+    },
+    "exported_on": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "run_date",
+        "source_commit",
+        "completion"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "run_date": {
+          "type": "string"
+        },
+        "source_commit": {
+          "type": "string",
+          "description": "Career-record commit the screening used"
+        },
+        "completion": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed",
+            "not checked"
+          ]
+        }
+      }
+    },
+    "counts": {
+      "type": "object"
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "job_id",
+          "company",
+          "title",
+          "posting_url",
+          "decision",
+          "application_status",
+          "screening",
+          "posting"
+        ],
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "Stable across runs (provider:id); use it to merge exports"
+          },
+          "company": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "posting_url": {
+            "type": "string"
+          },
+          "provider": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "provider_job_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "workplace": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "compensation": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "posted_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "deadline": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decision": {
+            "const": "interested"
+          },
+          "application_status": {
+            "enum": [
+              "not_started",
+              "resume_ready",
+              "applied",
+              "closed"
+            ]
+          },
+          "screening": {
+            "type": "object",
+            "description": "Batch screening result. Not a Stage 1 fit check."
+          },
+          "card": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "must_haves": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "posting": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              },
+              "completeness": {
+                "type": "string"
+              },
+              "source_type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "choices_imported": {
+      "type": "boolean",
+      "description": "False when no choices were imported with pipeline.py decide; the queue is then not the user's selection."
+    }
+  }
+}

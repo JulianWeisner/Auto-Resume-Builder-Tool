@@ -1,0 +1,21 @@
+{
+  "run_date": "2026-11-16",
+  "jobs": {
+    "hiringcafe:d83uuiidimiciiq0": [
+      "evaluation_error"
+    ],
+    "hiringcafe:zrbm4teerxql6oib": [
+      "eligible",
+      "needs_verification"
+    ],
+    "hiringcafe:hdbrlfvsrdsrck70": [
+      "excluded"
+    ],
+    "hiringcafe:94yr3y0bm60oa0w4": [
+      "needs_verification"
+    ],
+    "hiringcafe:53ay582qrnrfrelq": [
+      "evaluation_error"
+    ]
+  }
+}

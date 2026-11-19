@@ -1,0 +1,8 @@
+{
+  "content": [{"type": "text", "text": "Found 12 matching jobs; 1 result is ready for display."}],
+  "structuredContent": {
+    "count": 1,
+    "jobs": [{"id": "example", "title": "Product Manager", "company": "Example", "location": "New York, NY", "workplaceType": "Hybrid", "datePosted": "2026-11-10T12:00:00Z"}],
+    "active_filters": [{"key": "location", "value": "East New York, NY, US"}]
+  }
+}

@@ -1,12 +1,12 @@
 # Application tracker
 
-The tracker follows every job you apply to, from the day you say **I applied** to the last reply. Each event is one small file in [events/](events/README.md); a job is the events that share its ID. Status, replies and, later, patterns in who replies all come from these events. The tool is [tools/tracker.py](../tools/tracker.py), and your agent runs it for you.
+The tracker follows every job from the moment you mark it Interested in a search, or say **I applied**, to the last reply. Each event is one small file in [events/](events/README.md); a job is the events that share its ID. Status, replies and, later, patterns in who replies all come from these events. The tool is [tools/tracker.py](../tools/tracker.py), and your agent runs it for you.
 
 The tracker describes your job search, not your career. It is never career evidence, and agents do not read it when they evaluate jobs or draft résumés, letters or answers (the same rule as [applications/](../applications/README.md)).
 
 This README is part of the tool. The events in `events/` are **yours**: they stay in your private copy, and tool updates never touch them. The [sample person](../examples/sample-person/tracker/events/) shows a small filled tracker.
 
-**Coming with career informed search:** a queue of jobs you marked Interested, shown as a board in the conversation with **Build résumé** and **Drop** on each job. The tool already has the commands for it (`board`, `update-queue`, `import-queue`); until search arrives, the board shows only your Applied count.
+Jobs you mark Interested in a [search](../agents/job-search.md) join your **queue**: a board with Applied and Queued counts and the queued jobs best fit first, each with **Build résumé** and **Drop**.
 
 ## Rules
 
@@ -45,7 +45,48 @@ Any event may also carry the job's details: `company`, `role`, `posting_id`, `po
 - `closed`: a job that went quiet past the company's stated reply window, or whose posting was removed. You decide it; the tool never closes a job on its own.
 - `screen`, `assessment` and `interview` all count as "in process".
 
-## Working with the tracker in a conversation
+## The queue board
+
+The board shows only what helps you choose the next application:
+
+- **Applied** and **Queued** counts.
+- **The queue, best fit first:** Promising before Stretch, then highest fit. The rank shows priority and how many jobs are left; fit and label stay on each row from the search.
+- **Old postings** get a "posted N days ago" tag after `stale_after_days` in your search criteria (21 days by default), the same cutoff the search uses.
+- **Expand a row** for the business, what you would own, location, workplace, pay and age, the top three asks and the main gap, all from the search's queue export, and a link to the posting.
+- **Build résumé** and **Drop** on each job.
+
+Replies, rejections and waiting time stay off the board; the tracker still records them for later analysis.
+
+## Working the queue in a conversation
+
+When you ask to see your queue ("show my queue", "what's next?"), the agent shows the board the first way that works in your AI tool:
+
+1. **The chat can draw HTML** (Claude apps): `python3 tools/tracker.py board --fragment`, drawn unchanged. Its buttons send "Build a résumé for …" and "Drop … from the queue" into the chat.
+2. **The AI tool runs on your own computer** (Claude Code, Codex CLI, Gemini CLI): `python3 tools/tracker.py serve` and the address it prints. See [the local board](#local-board-trackerpy-serve).
+3. **A cloud session** (Claude Code on the web, Codex cloud): `python3 tools/tracker.py board` writes `tracker/board.html`, which the agent sends you to open in a browser. Its buttons copy the request for you to paste back. A `127.0.0.1` address from a cloud session would point at the cloud machine, so the agent never gives one there.
+
+The agent never retypes, summarizes or re-ranks the jobs.
+
+- **Drop:** your Drop, or "drop *company*" in your own words, authorizes only `python3 tools/tracker.py add-event "COMPANY · ROLE" dropped YYYY-MM-DD --note "REASON"` and committing the one new file it writes in `tracker/events/`. Your reason is used if you give one; none is invented.
+- **Build résumé:** starts the normal application workflow in [AGENTS.md](../AGENTS.md) at Stage 2 for that job. The full posting is `posting.text` for its `job_id` in the run's `application_queue.json`. Nothing changes in the tracker until you say you applied; the archive step then turns the queued job into the application (`add-archive`).
+
+## Local board: `tracker.py serve`
+
+`python3 tools/tracker.py serve` opens the board at `http://127.0.0.1:8765/` in your browser, from any AI tool or none. On that page **Drop** (with an optional reason) saves its event straight into `tracker/events/`; **Build résumé** copies the request to paste into your AI tool, because building is the agent's work. `--run RUN` also serves that search's review cards at `/cards`, with an **Update queue** button that saves your choices into the run folder and runs `update-queue`.
+
+The server runs on your computer only: it answers only requests addressed to `127.0.0.1` or `localhost`, refuses saves from other sites and anything that is not JSON, and writes files without committing them (commit them afterwards, or ask the agent to). If port 8765 is busy it uses the next free one and prints the address. `--no-open` skips opening the browser.
+
+## Shortcuts in each AI tool
+
+| Shortcut | Claude Code | Codex | Gemini CLI |
+|---|---|---|---|
+| Show the queue | `/queue` (`.claude/skills/queue/`) | `$queue` (`.agents/skills/queue/`) | `/queue` (`.gemini/commands/queue.toml`) |
+| Drop a job: Company · Role [reason] | `/drop` | `$drop` | `/drop` |
+| End a search | `/update-queue` | `$update-queue` | `/update-queue` |
+
+Each shortcut only points at the routines in this README and the search runbook, and at `tools/tracker.py`; no rules live in them. The Claude Code and Codex skills are identical copies (a test checks), and the Gemini commands point to the `.agents/skills/` files. Plain words ("show my queue", "drop Example Freight") work the same without them.
+
+## Logging applications and replies
 
 | You say | The agent |
 |---|---|
@@ -66,6 +107,9 @@ python3 tools/tracker.py add-archive applications/FOLDER
 python3 tools/tracker.py add-event "Example Freight · Operations Manager" interview 2026-11-20 --note "Panel with the ops director"
 python3 tools/tracker.py save-email MESSAGES.json --log
 python3 tools/tracker.py board [--fragment]      # the board: tracker/board.html, or the body for a chat
+python3 tools/tracker.py serve [--run RUN] [--port N] [--no-open]   # the board (and RUN's cards) on this computer
+python3 tools/tracker.py update-queue RUN CHOICES.json   # end of a search: choices, save the run, queue
+python3 tools/tracker.py import-queue job-search/runs/RUN/application_queue.json
 ```
 
 `save-email` takes a JSON list of messages with `id`, `threadId`, `sender`, `toRecipients`, `date` (ISO 8601), `subject` and `plaintextBody` (`senderName` optional), the format the Gmail connector's `get_message` returns. Each message gets two added fields: `archive` (the application folder) and `kind` (the event type). An email from another mail service or pasted by you works the same way: the agent writes it in this format with the body unedited, and uses the service's message ID, or a made-up stable ID such as `pasted-2026-11-18-1`, as `id`. Each email is written once, with a short header and the unedited plain-text body; a message already saved in that folder is skipped.

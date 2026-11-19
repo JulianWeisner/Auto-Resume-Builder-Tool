@@ -1,0 +1,31 @@
+# Riley's capability profile (fictional), written from the sample records.
+schema_version: "1.1"
+career_commit: 9ee18e42f6e84c653c6b52917855be81b45706d8
+built_from: "tools/current_view.py on the sample person; reviewed 2026-11-18"
+
+tenure:
+  as_of_rule: "Compute at screening time from the start dates; never store a fixed number."
+  operations: {start: 2018-03, rule: "Operations work at Northwind Logistics from March 2018."}
+  people_management: {rule: "Store team at Summit Bikes; team leadership at Northwind under the Operations Lead functional label from 2019-03. No formal manager title."}
+
+strengths:
+  - id: process-improvement
+    label: Redesigning warehouse processes and measuring the result
+    score: 4
+    record_ids: [NW-EXP-002, NW-OUT-001]
+    limits: "Returns process at one site; the time saving is Riley's recalled figure."
+  - id: operations-reporting
+    label: Building operations reports that managers use to decide
+    score: 4
+    record_ids: [NW-EXP-001, brightway-analyst-2016-EXP-001, brightway-analyst-2016-OUT-001]
+  - id: team-leadership
+    label: Leading a store or shift team day to day
+    score: 3
+    record_ids: [summit-bikes-manager-2014-EXP-001, NW-ROLE-003]
+    limits: "No hiring or budget ownership recorded."
+
+partials:
+  - id: warehouse-certification
+    label: Warehouse practice backed by a certificate
+    score: 2
+    record_ids: [scs-certificate-2020]

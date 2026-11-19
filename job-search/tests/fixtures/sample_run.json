@@ -1,0 +1,295 @@
+{
+ "schema_version": "1.3",
+ "run_id": "fixture-1.3",
+ "run_date": "2026-11-16",
+ "source_commit": "0000000000000000000000000000000000000000",
+ "search_criteria": "career/search-criteria.yaml",
+ "basis": "Synthetic example: one job per status, every schema 1.3 field. Companies and evidence are invented.",
+ "discovered_count": 6,
+ "duplicate_count": 1,
+ "overrides": [],
+ "jobs": [
+  {
+   "id": "fixture:eligible",
+   "provider": "fixture",
+   "provider_job_id": "eligible",
+   "company": "Example Kitchen Co",
+   "title": "Senior Product Manager, Connected Appliances",
+   "posting_url": "https://example.org/jobs/eligible",
+   "location": "New York, NY",
+   "workplace": "Hybrid",
+   "compensation": "$150,000 – $180,000/yr",
+   "posted_date": "2026-11-02",
+   "status": "eligible",
+   "decision": "undecided",
+   "requirements": [
+    {
+     "tag": "Want-1",
+     "quote": "5+ years of product management for connected hardware.",
+     "kind": "want",
+     "competency_id": "connected-product",
+     "score": 4,
+     "mandatory": true,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "direct",
+     "result_quality": "established",
+     "qualification_status": "supported",
+     "defining": true
+    },
+    {
+     "tag": "Want-2",
+     "quote": "Experience owning a product roadmap.",
+     "kind": "want",
+     "competency_id": "roadmap",
+     "score": 3,
+     "mandatory": true,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "direct",
+     "result_quality": "unclear",
+     "qualification_status": "supported"
+    },
+    {
+     "tag": "Nice-1",
+     "quote": "Consumer packaged goods experience is a plus.",
+     "kind": "nice",
+     "competency_id": "cpg",
+     "score": 2,
+     "mandatory": false,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "adjacent",
+     "result_quality": "unclear"
+    },
+    {
+     "tag": "Cond-1",
+     "quote": "Hybrid, New York, NY.",
+     "kind": "condition",
+     "condition_status": "pass",
+     "score": null,
+     "record_ids": [],
+     "evidence_note": "Synthetic fixture condition."
+    }
+   ],
+   "exclusion": null,
+   "card": {
+    "business": "Makes smart countertop appliances for home cooks.",
+    "owns": "The app and firmware roadmap for the oven line.",
+    "responsibilities": [
+     "Own the roadmap from discovery to launch.",
+     "Work daily with hardware and app engineers."
+    ]
+   },
+   "deadline": "2026-12-31",
+   "fit_percent": 80,
+   "functional_fit": 80,
+   "eligibility": "pass",
+   "application_confidence": "high",
+   "confidence_reason": "Synthetic fixture confidence reason.",
+   "strongest_evidence": "Owned a connected-product lifecycle.",
+   "screen": {
+    "critical_gaps": [],
+    "routing": "full_score",
+    "reason": null
+   }
+  },
+  {
+   "id": "fixture:verify",
+   "provider": "fixture",
+   "provider_job_id": "verify",
+   "company": "Example Foods",
+   "title": "Innovation Manager",
+   "posting_url": "https://example.org/jobs/verify",
+   "location": "New York, NY",
+   "workplace": "Hybrid",
+   "compensation": "$150,000 – $180,000/yr",
+   "posted_date": "2026-11-02",
+   "status": "needs_verification",
+   "decision": "undecided",
+   "requirements": [
+    {
+     "tag": "Want-1",
+     "quote": "Experience launching new food products.",
+     "kind": "want",
+     "competency_id": "npd",
+     "score": 3,
+     "mandatory": true,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "direct",
+     "result_quality": "unclear",
+     "qualification_status": "supported"
+    },
+    {
+     "tag": "Want-2",
+     "quote": "Familiarity with FDA labeling.",
+     "kind": "want",
+     "competency_id": "regulatory",
+     "score": 1,
+     "mandatory": true,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "adjacent",
+     "result_quality": "unclear",
+     "qualification_status": "unresolved"
+    },
+    {
+     "tag": "Cond-1",
+     "quote": "Up to 60% travel.",
+     "kind": "condition",
+     "condition_status": "unknown",
+     "score": null,
+     "record_ids": [],
+     "evidence_note": "Synthetic fixture condition."
+    }
+   ],
+   "exclusion": null,
+   "card": {
+    "business": "Packaged snack brand sold in US grocery.",
+    "owns": "New product development for the snack portfolio.",
+    "responsibilities": [
+     "Own the roadmap from discovery to launch.",
+     "Work daily with hardware and app engineers."
+    ]
+   },
+   "primary_gap": "FDA labeling is not recorded.",
+   "fit_percent": 50,
+   "functional_fit": 50,
+   "eligibility": "unresolved",
+   "application_confidence": "medium",
+   "confidence_reason": "Synthetic fixture confidence reason.",
+   "strongest_evidence": "Owned a connected-product lifecycle.",
+   "screen": {
+    "critical_gaps": [
+     "regulatory"
+    ],
+    "routing": "full_score_flagged",
+    "reason": null
+   }
+  },
+  {
+   "id": "fixture:deprioritized",
+   "provider": "fixture",
+   "provider_job_id": "deprioritized",
+   "company": "Example Data Centers",
+   "title": "Hardware Product Manager, Servers",
+   "posting_url": "https://example.org/jobs/deprioritized",
+   "location": "New York, NY",
+   "workplace": "Hybrid",
+   "compensation": "$150,000 – $180,000/yr",
+   "posted_date": "2026-11-02",
+   "status": "deprioritized",
+   "decision": "undecided",
+   "requirements": [
+    {
+     "tag": "Want-1",
+     "quote": "8+ years with data-center server hardware.",
+     "kind": "want",
+     "competency_id": "server-hardware",
+     "score": 0,
+     "mandatory": true,
+     "record_ids": [],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "none",
+     "result_quality": "none",
+     "qualification_status": "unresolved"
+    },
+    {
+     "tag": "Want-2",
+     "quote": "Experience with silicon roadmaps.",
+     "kind": "want",
+     "competency_id": "silicon",
+     "score": 1,
+     "mandatory": true,
+     "record_ids": [
+      "NW-EXP-001"
+     ],
+     "evidence_note": "Synthetic fixture evidence.",
+     "evidence_alignment": "adjacent",
+     "result_quality": "unclear",
+     "qualification_status": "unresolved"
+    }
+   ],
+   "exclusion": null,
+   "fit_percent": null,
+   "functional_fit": null,
+   "eligibility": null,
+   "application_confidence": null,
+   "screen": {
+    "critical_gaps": [
+     "server-hardware",
+     "silicon"
+    ],
+    "routing": "deprioritized",
+    "reason": "Two critical gaps: server hardware and silicon."
+   }
+  },
+  {
+   "id": "fixture:excluded",
+   "provider": "fixture",
+   "provider_job_id": "excluded",
+   "company": "Example Flowers",
+   "title": "Product Manager, Digital Experience",
+   "posting_url": "https://example.org/jobs/excluded",
+   "location": "New York, NY",
+   "workplace": "Hybrid",
+   "compensation": "$70,000 – $90,000/yr",
+   "posted_date": "2026-11-02",
+   "status": "excluded",
+   "decision": "undecided",
+   "requirements": [
+    {
+     "tag": "Cond-1",
+     "quote": "$70,000 – $90,000 per year.",
+     "kind": "condition",
+     "condition_status": "fail",
+     "score": null,
+     "record_ids": [],
+     "evidence_note": "Synthetic fixture condition."
+    }
+   ],
+   "exclusion": {
+    "requirement_quote": "$70,000 – $90,000 per year.",
+    "reason": "Posted pay tops out below $100K.",
+    "basis": "explicit_condition"
+   },
+   "fit_percent": null,
+   "functional_fit": null,
+   "eligibility": "fail",
+   "application_confidence": "low",
+   "confidence_reason": "Posted pay is below the $100K floor."
+  },
+  {
+   "id": "fixture:error",
+   "provider": "fixture",
+   "provider_job_id": "error",
+   "company": "Example Consulting",
+   "title": "Innovation Strategy Executive",
+   "posting_url": "https://example.org/jobs/error",
+   "location": "New York, NY",
+   "workplace": "Hybrid",
+   "compensation": "$150,000 – $180,000/yr",
+   "posted_date": "2026-11-02",
+   "status": "evaluation_error",
+   "decision": "undecided",
+   "requirements": [],
+   "exclusion": null,
+   "fit_percent": null,
+   "functional_fit": null,
+   "eligibility": null,
+   "application_confidence": null,
+   "error_reason": "Description truncated by the provider; no employer posting found."
+  }
+ ]
+}

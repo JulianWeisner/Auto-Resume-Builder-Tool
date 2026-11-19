@@ -164,3 +164,25 @@ Upstream's tracker follows every job from queue to last reply, one event file pe
 | .gitignore, README.md, START.md, tools/README.md | same | Board page ignored; tracker in the status list, the data table and the update command; "show my applications" and pasted replies in START.md |
 
 **Not ported yet:** the search-side tracker steps in agents/job-search.md ("update queue", Drop authorization) and the queue routing row; they come with career informed search.
+
+## 2026-11-18 · upstream d80925b (PRs #22–#40, search parts) · career informed search, the application queue and HiringCafe
+
+The search toolkit, its shared conditions, the queue's local board server and the shortcuts for each AI tool. HiringCafe is the first job source, with setup steps for each AI tool.
+
+| Here | Upstream source | Changes |
+|---|---|---|
+| agents/job-search.md | same | Rewritten for any user and any AI tool: a "Before the first search" check (HiringCafe connected, search criteria filled through an information update, capability profile built), "Showing the cards" for chat, local and cloud sessions, the footer's Session label. Commands and run discipline kept |
+| job-search/ tools, schemas, scoring.md, jd-ingestion.md, README.md, runs/README.md | same | Name removed. `pipeline.py` searches from the criteria's `center` and radius instead of New York, stops with a message while the criteria are empty, and reads the capability profile from career/. `career_ids` is shared with Stage 1 |
+| job-search/hiringcafe-setup.md, .mcp.json, .gemini/settings.json | new | HiringCafe's connector (`https://hiringcafe.com/api/mcp`, no account) for Claude Code, Claude apps, Codex and ChatGPT, Gemini CLI and other tools; Claude Code and Gemini CLI find it in the folder's own settings |
+| tools/conditions.py | same | Measures from the user's `center` ("City, ST" or coordinates) anywhere in the US, not Midtown. Upstream's New York aliases become the user's `metro_aliases` and `partly_inside`. A bare state fails only when every place in it is beyond the radius. New: a workplace type the user does not accept fails |
+| tools/us-places.json.gz, tools/build_us_places.py | tools/metro-places.json, build_metro_places.py | Every US place (39,548 names, ZIP-code centroids from the zipcodes package, MIT) instead of NY, NJ and CT distances from Midtown; 416 KB compressed |
+| tools/evaluation.py | same | `career_repo()`: `ARB_CAREER_REPO` points every tool at another career folder (the tests use the sample person) |
+| career/search-criteria.yaml, career/_templates/capability-profile.yaml | career/search-criteria.yaml, job-search/capability-profile.yaml | An empty criteria file with guidance; a profile template. Both are the user's data. The profile moves into career/ |
+| examples/sample-person/career/search-criteria.yaml, capability-profile.yaml | new | Riley's search in Columbus, Ohio, and a profile built from the sample records |
+| job-search/tests/ | same | Run on the sample person's records and profile and on a made-up New York searcher (fixtures/criteria-nyc.yaml, only the families the tests name). Record IDs renamed to the sample's. The regression set's five public postings kept for intake and L1 |
+| tools/tracker.py, tracker_server.py, tests | same (PRs #39, #40) | As in the tracker port, plus: **changed here first** (upstream may want these): the server answers only requests addressed to 127.0.0.1 or localhost (DNS rebinding); a busy port moves to the next free one with a clear message; the shortcut test skips without `tomllib` (Python before 3.11). Server tests use the synthetic fixture run |
+| .claude/skills, .agents/skills, .gemini/commands, GEMINI.md | same | Name and time zone removed; Git steps only where the copy uses Git. **Changed here first:** a third way to show the queue for cloud sessions (send `board.html`; a 127.0.0.1 address would point at the cloud machine), and Codex's shortcuts written `$queue` (Codex mentions skills with `$`) |
+| agents/evaluation.md, agents/stage-1-evaluate.md | same | The search parts of the standard, the shared conditions checker and the Stage 1 source guard (`jd_ingest.py`) restored |
+| tracker/README.md, AGENTS.md, START.md, README.md, tools/README.md, tools/check_skeleton.py | same | Queue routine, local board and shortcut table; search and queue routing rows; job-search/runs/ and the criteria are user data; Step 3 in START.md; the update command adds job-search and the shortcut folders. The skeleton guard lets verbatim public postings in test fixtures keep the employer's published email address |
+
+**Not ported:** upstream's calibration set (real postings scored against the owner's records and estimates) and the regression set's saved judgments (they cite the owner's records); the agent half of the regression cases is not tested here. Upstream's search criteria and capability profile (personal).

@@ -1,0 +1,39 @@
+# Riley's search criteria (fictional), filled from career/preferences.md: Columbus, Ohio, hybrid or
+# on-site, no relocation, travel up to 25%, operations roles in logistics or retail.
+schema_version: "2.0"
+source: career/preferences.md
+conditions:
+  center: "Columbus, OH"
+  radius_miles: 40
+  metro_aliases: [Columbus metro, Central Ohio]
+  partly_inside: []
+  acceptable_workplaces: [hybrid, onsite, remote]
+  preferred_workplace: hybrid
+  relocation_outside_area: false
+  remote_outside_us: ask
+  travel_percent_max: 25
+  work_authorization: "US citizen; no sponsorship needed for US roles"
+compensation:
+  minimum_annual_usd: null      # Riley left salary blank
+search:
+  target_cards: 10
+  first_batch_multiplier: 1.5
+  max_fetch_multiplier: 3
+  top_up_batch_min: 5
+  max_posting_age_days: 30
+  stale_after_days: 21
+  results_per_query: 10
+  role_families:
+    - {id: operations, tier: core, titles: [operations manager, warehouse operations manager, distribution center manager]}
+    - {id: logistics, tier: strong, titles: [logistics manager, supply chain manager]}
+    - {id: operations-analytics, tier: exploratory, titles: [operations analyst, supply chain analyst]}
+  domains:
+    - {id: grocery, name: grocery and food retail, keywords: grocery}
+    - {id: freight, name: freight and parcel, keywords: freight}
+  title_stopwords: [senior, sr, staff, principal, lead, head, director, manager, vice, president, vp, of, and, the, "&", ii, iii]
+  exclude_employers: []
+providers:
+  hiringcafe:
+    max_posting_age_days: posted_within_days
+    seniority_levels: [Mid Level, Senior Level]
+    domain_industries: {grocery: [Food, Retail], freight: [Transportation]}
