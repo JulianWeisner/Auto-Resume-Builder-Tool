@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Job Review Queue</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+/* Review cards: the job first (business, role, asks), your fit collapsed underneath. Rendered by pipeline.py cards. */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --fg: #18212b; --muted: #5a6776; --line: #d9dfe6;
+  --accent: #1f5f8b; --accent-ink: #ffffff; --ok: #1d7a4c; --ok-bg: #e3f3ea; --warn: #8a5a00; --warn-bg: #fbefd5;
+  --bad: #a3312b; --bad-bg: #f9e2df; --quiet-bg: #eceff2;
+  --f-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161c; --surface: #19212a; --fg: #e4e9ef; --muted: #98a5b3; --line: #2c3743; --accent: #6fb0dc; --accent-ink: #0d1820;
+  --ok: #6fd3a0; --ok-bg: #173226; --warn: #f0c46a; --warn-bg: #3a2e14; --bad: #f19489; --bad-bg: #3c1f1c; --quiet-bg: #222b35;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161c; --surface: #19212a; --fg: #e4e9ef; --muted: #98a5b3; --line: #2c3743; --accent: #6fb0dc; --accent-ink: #0d1820;
+  --ok: #6fd3a0; --ok-bg: #173226; --warn: #f0c46a; --warn-bg: #3a2e14; --bad: #f19489; --bad-bg: #3c1f1c; --quiet-bg: #222b35;
+  color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--f-body); margin: 0; }
+.wrap { max-width: 820px; margin: 0 auto; padding: 28px 16px 64px; display: grid; gap: 18px; }
+h1 { font-size: 1.5rem; margin: 0; }
+.lede, .note { color: var(--muted); margin: 4px 0 0; font-size: 0.9rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; display: grid; gap: 12px; scroll-margin-top: 12px; }
+.card.current { outline: 2px solid var(--accent); outline-offset: 2px; }
+.card.passed { background: var(--quiet-bg); opacity: 0.75; }
+.top { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+.title { font-size: 1.15rem; font-weight: 650; margin: 0; text-wrap: balance; }
+.title a { color: inherit; text-decoration: none; }
+.title a:hover { text-decoration: underline; }
+.company { font-weight: 600; color: var(--accent); }
+.fitbox { text-align: right; flex: none; }
+.fitnum { font-size: 1.4rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.fitlbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.facts { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); font-size: 0.88rem; }
+.facts .late { color: var(--bad); font-weight: 600; }
+.sec { display: grid; gap: 4px; }
+.sec h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0; font-weight: 600; }
+.sec p { margin: 0; max-width: 70ch; }
+.sec ul { margin: 0; padding-left: 1.1em; max-width: 70ch; }
+.sec li { margin-block: 2px; }
+.roleline { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 0.88rem; color: var(--muted); }
+details { border-top: 1px solid var(--line); padding-top: 10px; }
+summary { cursor: pointer; font-weight: 600; font-size: 0.92rem; }
+.fitd { display: grid; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
+.pill { font-size: 0.78rem; font-weight: 600; padding: 1px 9px; border-radius: 999px; white-space: nowrap; }
+.p-ok { background: var(--ok-bg); color: var(--ok); } .p-warn { background: var(--warn-bg); color: var(--warn); } .p-bad { background: var(--bad-bg); color: var(--bad); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: 600 0.88rem var(--f-body); border-radius: 6px; padding: 7px 14px; cursor: pointer; border: 1px solid var(--line);
+  background: var(--surface); color: var(--fg); text-decoration: none; }
+button:focus-visible, .btn:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-open { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button[aria-pressed="true"].b-int { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+button[aria-pressed="true"].b-pass { background: var(--quiet-bg); border-color: var(--muted); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.spacer { flex: 1; }
+footer { font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+@media (max-width: 520px) { .spacer { display: none; } .top { flex-direction: column; } .fitbox { text-align: left; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<div class="wrap">
+  <header>
+    <h1>Job review queue</h1>
+    <p class="lede">Scroll through and mark the jobs that stand out. Leaving a card unmarked is fine; choices can change at any time. Keys: J next, K previous.</p>
+    <p class="note" id="tally"></p>
+    <p class="note" id="dbnote"></p>
+    <p><button id="dl" type="button">Download my choices</button>
+      <span class="note" id="dlnote">A JSON file any AI tool or script can read (pipeline.py decide takes it).</span></p>
+  </header>
+  <main id="cards" style="display:grid;gap:16px"></main>
+  <footer id="foot"></footer>
+</div>
+<script>
+const DATA = /*DATA*/null;
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;"}[c]));
+const list = xs => `<ul>${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+const sec = (h, body) => body ? `<div class="sec"><h3>${h}</h3>${body}</div>` : "";
+const h = DATA.hidden, n = DATA.cards.length;
+$("#tally").textContent = `${n} to review. Not shown: ${h.deprioritized} deprioritized, ` +
+  `${h.evaluation_error} not scored (incomplete, expired or old posting), ${h.excluded} excluded.`;
+$("#foot").textContent = `Run ${DATA.run_id} · ${DATA.run_date} · career records ${DATA.commit} · run status: ${DATA.completion.status}` +
+  (DATA.completion.progress ? ` · ${DATA.completion.progress}` : "");
+if (DATA.completion.status !== "complete") {
+  const warn = document.createElement("p");
+  warn.className = "note"; warn.style.cssText = "color:var(--bad);font-weight:600";
+  warn.textContent = `This run is ${DATA.completion.status}, so some jobs or searches may be missing.` +
+    (DATA.completion.problems.length ? " " + DATA.completion.problems.join("; ") : "");
+  $("#tally").after(warn);
+}
+
+function card(k, i) {
+  const posted = k.posted ? `Posted ${esc(k.posted)}${k.age != null ? ` (${k.age} days ago)` : ""}` : "";
+  const facts = [k.location, k.workplace, k.pay].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join("") +
+    (posted ? `<span>${posted}</span>` : "") + (k.deadline ? `<span class="late">Apply by ${esc(k.deadline)}</span>` : "");
+  const business = [k.business, [k.industry, k.size].filter(Boolean).join(" · ")].filter(Boolean);
+  const roleline = [["Level", k.level], ["Reports to", k.reports_to], ["Team", k.team]]
+    .filter(([, v]) => v).map(([l, v]) => `<span>${l}: ${esc(v)}</span>`).join("");
+  const conf = {high: "p-ok", medium: "p-warn", low: "p-bad"}[k.confidence] || "p-warn";
+  return `<article class="card" id="c${i}" data-id="${esc(k.id)}" tabindex="-1">
+    <div class="top">
+      <div><div class="company">${esc(k.company)}</div>
+        <h2 class="title"><a href="${esc(k.url)}" target="_blank" rel="noopener">${esc(k.title)}</a></h2></div>
+      <div class="fitbox"><div class="fitnum">${k.fit == null ? "–" : k.fit + "%"}</div><div class="fitlbl">${k.label ? esc(k.label) : "Fit"}</div></div>
+    </div>
+    <div class="facts">${facts}</div>
+    ${sec("The business", business.map(x => `<p>${esc(x)}</p>`).join(""))}
+    ${sec("The role", `<p>${esc(k.owns)}</p>${roleline ? `<div class="roleline">${roleline}</div>` : ""}${k.responsibilities.length ? list(k.responsibilities) : ""}`)}
+    ${sec("What they ask for most", k.must_haves.length ? list(k.must_haves) : "")}
+    <details><summary>Your fit</summary><div class="fitd">
+      <div>${k.label
+        ? `<span class="pill ${k.label === "Promising" ? "p-ok" : "p-warn"}">${esc(k.label)}</span>` +
+          (k.requirements_met ? ` <span class="pill p-warn">Requirements met: ${esc(k.requirements_met.met)} of ${esc(k.requirements_met.total)}</span>` : "") +
+          (k.stale ? ` <span class="pill p-bad">Stale posting</span>` : "")
+        : `<span class="pill ${k.status === "eligible" ? "p-ok" : "p-warn"}">${k.status === "eligible" ? "Eligible" : "Needs verification"}</span>`}
+        <span class="pill ${conf}">Confidence: ${esc(k.confidence)}</span></div>
+      ${k.confidence_reason ? `<p style="margin:0">${esc(k.confidence_reason)}</p>` : ""}
+      ${k.evaluation_policy ? `<p>Baseline: ${esc(k.baseline_fit)}% · Adjustment: ${esc(k.adjustment)} points · Final: ${esc(k.fit)}% (${esc(k.evaluation_policy)})</p>${k.adjustment_reason ? `<p>${esc(k.adjustment_reason)}</p>` : ""}` : ""}
+      ${sec("Critical gaps", k.gaps.length ? list(k.gaps) : "<p>None</p>")}
+      ${sec("To verify", k.verify.length ? list(k.verify) : "")}
+      ${sec("Inferred concerns", k.inferred_concerns?.length ? list(k.inferred_concerns) : "")}
+      ${sec("Strongest evidence", k.strongest ? `<p>${esc(k.strongest)}</p>` : "")}
+      ${sec("Main gap", k.gap ? `<p>${esc(k.gap)}</p>` : "")}
+    </div></details>
+    <div class="actions">
+      <a class="btn btn-open" href="${esc(k.url)}" target="_blank" rel="noopener">Open posting</a>
+      <button class="b-int" data-d="interested" aria-pressed="false" disabled>Interested</button>
+      <button class="b-pass" data-d="pass" aria-pressed="false" disabled>Pass</button>
+      <span class="spacer"></span>
+      <button class="nav" data-go="${i - 1}" ${i === 0 ? "disabled" : ""}>Previous</button>
+      <button class="nav" data-go="${i + 1}" ${i === n - 1 ? "disabled" : ""}>Next</button>
+    </div>
+  </article>`;
+}
+$("#cards").innerHTML = DATA.cards.map(card).join("");
+
+const decisions = {};
+// Choices are saved in the artifact's shared storage when it is available (claude.ai), otherwise in this
+// browser. Either way "Download my choices" hands them to any tool as decisions.json.
+let db = null, canWrite = false, current = -1, local = false;
+const LOCAL_KEY = `job-review-choices:${DATA.run_id}:${DATA.selection_key}`;
+function paint(id) {
+  const el = document.querySelector(`[data-id="${CSS.escape(id)}"]`), d = decisions[id] || "undecided";
+  el.classList.toggle("passed", d === "pass");
+  el.querySelector(".b-int").setAttribute("aria-pressed", d === "interested");
+  el.querySelector(".b-pass").setAttribute("aria-pressed", d === "pass");
+  for (const b of el.querySelectorAll("[data-d]")) b.disabled = !canWrite;
+}
+const count = v => Object.values(decisions).filter(x => x === v).length;
+function tally(extra = "") {
+  $("#dbnote").textContent = `${count("interested")} interested · ${count("pass")} passed` + extra;
+}
+function go(i) {
+  const t = $(`#c${i}`);
+  if (!t) return;
+  document.querySelectorAll(".card.current").forEach(x => x.classList.remove("current"));
+  t.classList.add("current"); t.scrollIntoView(); t.focus({preventScroll: true}); current = i;
+}
+function choicesFile() {
+  const all = Object.fromEntries(DATA.cards.map(k => [k.id, decisions[k.id] || "undecided"]));
+  return JSON.stringify({kind: "decisions", run_id: DATA.run_id, run_date: DATA.run_date,
+                         source_commit: DATA.source_commit, selection_key: DATA.selection_key,
+                         saved_on: new Date().toISOString().slice(0, 10), decisions: all,
+                         // Readable on its own: what each card was. Scores and postings live in the run folder.
+                         jobs: Object.fromEntries(DATA.cards.map(k => [k.id, {company: k.company, title: k.title, url: k.url,
+                           label: k.label ?? null, fit: k.fit ?? null, requirements_met: k.requirements_met ?? null}])),
+                         note: "Choices only. The run folder (run.json and artifacts) holds the evaluations; " +
+                               "import with pipeline.py decide, then export the application queue."}, null, 1) + "\n";
+}
+async function download() {
+  const filename = `decisions-${DATA.run_id}.json`, text = choicesFile();
+  const saver = window.claude?.use ? await window.claude.use("downloads").catch(() => null) : null;
+  if (saver) {
+    try { await saver.save({filename, data: text}); $("#dlnote").textContent = `Saved ${filename}.`; }
+    catch (err) { $("#dlnote").textContent = err?.code === "declined" ? "Download cancelled." : "The download did not complete."; }
+    return;
+  }
+  const a = Object.assign(document.createElement("a"),
+    {href: URL.createObjectURL(new Blob([text], {type: "application/json"})), download: filename});
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  $("#dlnote").textContent = `Downloaded ${filename}.`;
+}
+$("#dl").addEventListener("click", download);
+document.addEventListener("keydown", e => {
+  if (e.target.closest("input, textarea") || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === "j") go(current + 1);
+  if (e.key === "k") go(Math.max(current - 1, 0));
+});
+document.addEventListener("click", async e => {
+  const nav = e.target.closest(".nav");
+  if (nav) return go(+nav.dataset.go);
+  const b = e.target.closest("[data-d]");
+  if (!b || !canWrite) return;
+  const id = b.closest(".card").dataset.id, prev = decisions[id];
+  decisions[id] = prev === b.dataset.d ? "undecided" : b.dataset.d;
+  paint(id);
+  if (local) {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(decisions)); }
+  catch { return tally(" · browser storage unavailable; download your choices before closing"); }
+    return tally(" · saved in this browser; download to keep them");
+  }
+  try { await db.collection("decisions").doc(id).set({decision: decisions[id]}); }
+  catch { decisions[id] = prev; paint(id); $("#dbnote").textContent = "That choice was not saved: saving needs edit access."; }
+});
+function useLocal() {
+  local = true; canWrite = true;
+  try { Object.assign(decisions, JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")); } catch {}
+  DATA.cards.forEach(k => paint(k.id));
+  tally(" · saved in this browser; download to keep them");
+}
+(async () => {
+  db = await (window.claude?.use ? window.claude.use("db").catch(() => null) : null);
+  if (!db) return useLocal();
+  const user = await window.claude.use("user").catch(() => null);
+  canWrite = user ? (await user.can("data.write")) !== false : true;
+  db.collection("decisions").onSnapshot(snap => {
+    for (const d of snap.docs) { const v = d.data()?.decision; if (["pass", "interested", "undecided"].includes(v)) decisions[d.id] = v; }
+    DATA.cards.forEach(k => paint(k.id));
+    tally(canWrite ? "" : " · view only");
+  }, () => { $("#dbnote").textContent = "Saved choices are unavailable right now."; });
+  DATA.cards.forEach(k => paint(k.id));
+})();
+</script>
+

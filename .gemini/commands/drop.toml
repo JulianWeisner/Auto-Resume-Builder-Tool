@@ -1,0 +1,5 @@
+description = "Drop a queued job: /drop Company · Role [reason] - see .agents/skills/drop/SKILL.md"
+prompt = """
+Follow .agents/skills/drop/SKILL.md in this repository to drop this queued job (Company · Role, then an optional reason):
+{{args}}
+"""

@@ -7,6 +7,7 @@ shared-2: credit = score / 4. Ported from the upstream project, where it was set
 2026-11-17 and earlier policies were removed.
 """
 import math
+import os
 import re
 from pathlib import Path
 
@@ -169,9 +170,15 @@ def decide(requirements, fit, conditions=(), knocked_out=False, stale=False):
             "stale_posting": bool(stale)}
 
 
+def career_repo():
+    """The folder whose career/ holds the records: this repository, or ARB_CAREER_REPO when set
+    (for example examples/sample-person, to try the tools or run the tests on the made-up sample person)."""
+    return Path(os.environ.get("ARB_CAREER_REPO") or Path(__file__).resolve().parents[1]).resolve()
+
+
 def career_ids(repo=None):
     """Every record ID in the career collections, career/_templates excluded (standard library only)."""
-    root = Path(repo) if repo else Path(__file__).resolve().parents[1]
+    root = Path(repo) if repo else career_repo()
     ids = set()
     for p in (root / "career").rglob("*.md"):
         if "_templates" in p.parts:

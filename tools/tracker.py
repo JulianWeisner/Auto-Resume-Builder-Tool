@@ -10,6 +10,8 @@ Commands:
   tracker.py status [--all]                 Text view: one line per job, grouped by status
   tracker.py board [--fragment] [-o FILE]   The queue board as HTML (tracker/board.html by default;
                                             --fragment prints the body for drawing in a chat)
+  tracker.py serve [--run RUN] [--port N]   The board (and RUN's review cards) at http://127.0.0.1:N,
+                                            where Drop and Update queue save directly
   tracker.py validate                       Check schema, links, hashes and archive coverage
   tracker.py add-archive applications/FOLDER  Record a newly archived application as applied
   tracker.py add-event ID|TEXT TYPE DATE [--source S] [--file F] [--gmail-id G] [--note N]
@@ -21,7 +23,6 @@ Commands:
                                             the queue, save the run under job-search/runs/ and add
                                             its Interested jobs to the tracker
   tracker.py import-queue QUEUE.json        Add a search run's "interested" jobs as queued
-  (update-queue and import-queue need career informed search, which is not in this version yet.)
 
 Dates are in this computer's local time zone. Set TRACKER_TZ to an IANA name
 (for example America/Chicago) where the computer's zone is not yours, such as a cloud session.
@@ -148,6 +149,12 @@ def event_order(ev):
 
 def first_date(entry):
     return min((ev["date"] for ev in entry["events"]), default="9999")
+
+
+def rel(path):
+    """A path as the repository names it, or as is when it lies outside."""
+    path = Path(path).resolve()
+    return str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
 
 
 def sha256(path):
@@ -461,6 +468,7 @@ BOARD_CSS = """
 .tb button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:.5px solid var(--border-strong,#b4b2a9);background:transparent;color:inherit;cursor:pointer}
 .tb button:hover{background:var(--surface-1,#f7f6f2)} .tb a{color:var(--text-accent,#185fa5)}
 .tb .msg{font-size:12px;color:var(--text-muted,#888780)}
+.tb .acts input{font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:.5px solid var(--border-strong,#b4b2a9);background:transparent;color:inherit;width:11rem}
 """
 
 BOARD_JS = """
@@ -469,9 +477,16 @@ b.addEventListener('click',function(e){
  const btn=e.target.closest('button');
  if(btn){const t=btn.dataset.a,m=btn.parentElement.querySelector('.msg');
   if(typeof sendPrompt==='function'){sendPrompt(t);return}
+  if(window.TRACKER_SERVED&&btn.dataset.kind==='drop'){
+   const r=btn.parentElement.querySelector('input');btn.disabled=true;
+   fetch('/api/drop',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({job:btn.dataset.job,reason:r?r.value.trim():''})}).then(function(x){return x.json()}).then(
+    function(j){if(j.ok){m.textContent='Dropped. Saved '+j.file+'; commit it with your next change.';
+     setTimeout(function(){location.reload()},1500)}else{btn.disabled=false;m.textContent=j.error}},
+    function(){btn.disabled=false;m.textContent='The tracker server did not answer. Is tracker.py serve still running?'});return}
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(
-   function(){m.textContent='Copied. Paste it into the chat with your assistant.'},
-   function(){m.textContent='Tell your assistant: '+t});return}
+   function(){m.textContent='Copied. Paste it into the chat with your AI tool.'},
+   function(){m.textContent='Tell your AI tool: '+t});return}
  const h=e.target.closest('.hd');if(!h)return;const c=h.parentElement,was=c.classList.contains('open');
  b.querySelectorAll('.qc.open').forEach(function(x){x.classList.remove('open')});if(!was)c.classList.add('open')});
 })();
@@ -482,7 +497,7 @@ def days_ago(n):
     return "today" if n == 0 else "1 day ago" if n == 1 else f"{n} days ago"
 
 
-def render_board(ledger, today, fragment=False):
+def render_board(ledger, today, fragment=False, served=False):
     esc = html.escape
     rows, stale = queue_rows(ledger, today), stale_after_days()
     applied = sum(1 for e in ledger["applications"] if any(ev["type"] == "applied" for ev in e["events"]))
@@ -506,16 +521,16 @@ def render_board(ledger, today, fragment=False):
         if r["gap"]:
             body.append(f'<div class="k">Main gap</div><div>{esc(r["gap"])}</div>')
         link = f'<a href="{esc(r["url"])}" target="_blank" rel="noopener">Posting</a>' if r["url"] else ""
-        body.append(f'<div class="acts"><button data-a="{esc("Build a résumé for " + name)}">Build résumé</button>'
-                    f'<button data-a="{esc("Drop " + name + " from the queue")}">Drop</button>{link}'
-                    f'<span class="msg"></span></div>')
+        reason = '<input placeholder="Reason (optional)" aria-label="Reason for dropping">' if served else ""
+        job = esc(r["id"])
+        body.append(f'<div class="acts"><button data-kind="build" data-job="{job}" '
+                    f'data-a="{esc("Build a résumé for " + name)}">Build résumé</button>{reason}'
+                    f'<button data-kind="drop" data-job="{job}" data-a="{esc("Drop " + name + " from the queue")}">Drop</button>'
+                    f'{link}<span class="msg"></span></div>')
         cards.append(f'<div class="qc"><div class="hd"><span class="rk">{i}</span><div style="flex:1;min-width:0">'
                      f'<p class="co">{esc(r["company"])}{old}</p><p class="ro">{esc(r["role"])}</p></div>{fit}</div>'
                      f'<div class="bd">{"".join(body)}</div></div>')
-    empty = ('<div class="msg" style="padding:8px 2px">The queue is empty. Run a search to fill it.</div>'
-             if PIPELINE.exists() else
-             '<div class="msg" style="padding:8px 2px">The queue is empty. Queued jobs will come from career '
-             'informed search, which is not in this version of the tool yet.</div>')
+    empty = '<div class="msg" style="padding:8px 2px">The queue is empty. Run a search to fill it.</div>'
     board = (f'<div class="tb"><style>{BOARD_CSS}</style>'
              f'<div class="stats"><div class="stat"><div class="sl">Applied</div><div class="sn">{applied}</div></div>'
              f'<div class="stat"><div class="sl">Queued</div><div class="sn">{len(rows)}</div></div></div>'
@@ -529,8 +544,11 @@ def render_board(ledger, today, fragment=False):
             ".tb{--board-height:70vh}@media(prefers-color-scheme:dark){body{background:#1f1e1d}.tb{--text-primary:#f1efe8;"
             "--text-secondary:#b4b2a9;--text-muted:#888780;--surface-2:#2c2c2a;--surface-1:#262624;--bg-neutral:#2c2c2a;"
             "--border:#444441;--border-strong:#5f5e5a;--bg-warning:#633806;--text-warning:#fac775}}</style></head>"
-            f"<body><div class=\"wrap\">{board}<p class=\"msg\" style=\"font:12px system-ui;color:#888780\">"
-            f"Generated {today} from tracker/events by tools/tracker.py board.</p></div></body></html>\n")
+            + ("<script>window.TRACKER_SERVED=true</script>" if served else "")
+            + f"<body><div class=\"wrap\">{board}<p class=\"msg\" style=\"font:12px system-ui;color:#888780\">"
+            + (f"Live from tracker/events on this computer ({today}). Drop saves here; Build résumé copies the request "
+               "for your AI tool." if served else f"Generated {today} from tracker/events by tools/tracker.py board.")
+            + "</p></div></body></html>\n")
 
 
 def cmd_board(args):
@@ -580,25 +598,27 @@ def cmd_import_queue(args):
 # ------------------------------------------------------------- update-queue
 
 PIPELINE = ROOT / "job-search/tools/pipeline.py"
+RUNS = ROOT / "job-search/runs"
 RUN_INPUTS = {"searches", "details"}  # host-saved inputs; their originals are archived under raw/
 
 
 def cmd_update_queue(args):
     """The user's "update queue": import choices, export, save the run, add Interested jobs to the tracker."""
+    update_queue(Path(args.run), Path(args.choices))
+
+
+def update_queue(run_dir, choices):
     import shutil
     import subprocess
 
-    if not PIPELINE.exists():
-        sys.exit("update-queue needs career informed search (job-search/), which is not in this version of the tool yet")
-
-    run_dir, choices = Path(args.run).resolve(), Path(args.choices).resolve()
+    run_dir, choices = Path(run_dir).resolve(), Path(choices).resolve()
     run_json = run_dir / "run.json"
     if not run_json.exists():
         sys.exit(f"{run_dir} has no run.json; finish the run (assemble, validate, cards) first")
     run_id = json.loads(run_json.read_text())["run_id"]
-    saved = ROOT / "job-search/runs" / run_id
+    saved = RUNS / run_id
     if saved.exists() and saved.resolve() != run_dir:
-        sys.exit(f"{saved.relative_to(ROOT)} already exists; a saved run is never overwritten")
+        sys.exit(f"{rel(saved)} already exists; a saved run is never overwritten")
 
     def pipeline(*a):
         out = subprocess.run([sys.executable, str(PIPELINE), *a], capture_output=True, text=True)
@@ -615,10 +635,11 @@ def cmd_update_queue(args):
         sys.exit("export reports no choices imported; nothing saved")
     if saved.resolve() != run_dir:
         shutil.copytree(run_dir, saved, ignore=lambda d, names: [n for n in names if Path(d) == run_dir and n in RUN_INPUTS])
-    args.queue = str(saved / "application_queue.json")
-    cmd_import_queue(args)
+    cmd_import_queue(argparse.Namespace(queue=str(saved / "application_queue.json")))
     print(f"choices: {decided['counts']}")
-    print("commit: " + " ".join(str(p.relative_to(ROOT)) for p in (saved, EVENTS)))
+    print("commit: " + " ".join(rel(p) for p in (saved, EVENTS)))
+    return {"run_id": run_id, "saved": rel(saved),
+            "counts": decided["counts"]}
 
 
 def main(argv=None):
@@ -628,6 +649,10 @@ def main(argv=None):
     sub.add_parser("validate").set_defaults(fn=cmd_validate)
     s = sub.add_parser("board"); s.add_argument("--fragment", action="store_true"); s.add_argument("-o", "--output")
     s.set_defaults(fn=cmd_board)
+    s = sub.add_parser("serve", help="open the board (and a run's review cards) on this computer, with working buttons")
+    s.add_argument("--port", type=int, default=8765); s.add_argument("--run", help="a finished search-run folder")
+    s.add_argument("--no-open", action="store_true", help="do not open a browser")
+    s.set_defaults(fn=lambda a: __import__("tracker_server").serve(a.port, a.run, not a.no_open))
     s = sub.add_parser("add-event")
     s.add_argument("id", help="tracker ID, or text matching one job's company and role")
     s.add_argument("type", choices=EVENT_TYPES); s.add_argument("date")

@@ -1,0 +1,39 @@
+# Your job-search criteria, read by career informed search (agents/job-search.md) and by the
+# Stage 1 conditions check (tools/conditions.py). career/preferences.md is authoritative; this file
+# is its machine-readable copy. Empty until your first search: the agent fills it with you, one
+# question at a time, from your preferences. Examples are in examples/sample-person/career/.
+schema_version: "2.0"
+source: career/preferences.md
+conditions:
+  center: null                  # where you search from, a US place: "Columbus, OH"
+  radius_miles: null            # straight-line miles from the center for onsite and hybrid roles: 40
+  metro_aliases: []             # names postings use for your whole area, which pass: [NYC, Bay Area]
+  partly_inside: []             # regions only partly inside your radius, which are asked about: [Long Island]
+  acceptable_workplaces: []     # any of hybrid, onsite, remote; empty accepts all three
+  preferred_workplace: null
+  relocation_outside_area: false
+  remote_outside_us: ask        # a remote role based outside the US is asked about
+  travel_percent_max: null      # more travel than this is asked about, never failed: 25
+  work_authorization: null      # judged by the agent from the posting text: "US citizen; no sponsorship needed"
+compensation:                   # search only; Stage 1 shows pay but does not gate on it
+  minimum_annual_usd: null      # a posting fails only when the top of its posted range is below this; no posted pay passes
+search:
+  target_cards: 10              # review cards per run when you name no number (Promising and Stretch both count)
+  first_batch_multiplier: 1.5
+  max_fetch_multiplier: 3
+  top_up_batch_min: 5
+  max_posting_age_days: 30
+  stale_after_days: 21          # older postings move down one label (Promising to Stretch, Stretch to Deprioritize)
+  results_per_query: 10
+  # Each family is a set of job titles searched one by one, plus one remote search of its first title.
+  # tier sets only the reading order (core first), never the score. Titles are search text, not claims about you.
+  role_families: []             # - {id: operations, tier: core, titles: [operations manager, warehouse operations manager]}
+  # Discovery interests, not qualifications: one query per domain.
+  domains: []                   # - {id: grocery, name: grocery and food retail, keywords: grocery}
+  title_stopwords: [senior, sr, staff, principal, lead, head, director, manager, vice, president, vp, of, and, the, "&", ii, iii]
+  exclude_employers: []
+providers:
+  hiringcafe:                   # how the plan maps onto HiringCafe's search_jobs arguments
+    max_posting_age_days: posted_within_days
+    seniority_levels: []        # any of "No Prior Experience Required", "Entry Level", "Mid Level", "Senior Level"
+    domain_industries: {}       # a domain id mapped to HiringCafe industries, used instead of keywords: {grocery: [Food, Retail]}

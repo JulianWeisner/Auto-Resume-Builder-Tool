@@ -10,10 +10,12 @@
 | "cover letter" or *paste the portal's questions* | A cover letter and answers in your own voice |
 | "I applied" | An archive of the posting and the files you sent, recorded in your application tracker |
 | *Paste an employer's reply*, or "show my applications" | The reply logged against that application; a list of where each application stands |
+| "Find me 10 jobs" | Review cards for jobs that fit your career, best fit first, each scored like the verdict card; mark each Interested or Pass |
+| "Update queue", then "show my queue" | Your Interested jobs as a queue, each with **Build résumé** and **Drop** |
 
 The assistant is the interface. The repository is where your career record lives and where the rules are written down, so every assistant follows the same rules and your data stays in your own private copy. Nothing is built until you say yes, and nothing goes to an employer without your approval.
 
-Job search and an application queue are on the way ([roadmap](roadmap/2026-11-18-roadmap.md)). Their review cards and queue board also appear in the conversation where the assistant can draw them, and open as a page in your browser where it cannot.
+The review cards and the queue board are the only screens. They are drawn in the conversation where the assistant can draw them (Claude apps), open as a page in your browser when the assistant runs on your computer (Claude Code, Codex, Gemini CLI), and arrive as a file to open from a cloud session. Job postings come from [HiringCafe](job-search/hiringcafe-setup.md), free and with no account; you connect it to your AI tool once.
 
 **New here? Read [START.md](START.md).** It takes you from an empty copy to your first application.
 
@@ -87,6 +89,8 @@ Early version. What is here today:
 - ✅ **The guided application flow:** paste a posting, get a verdict card with a weighted fit estimate, then a full evaluation (asks-and-stories scoring, storyboard, review before build), a tailored résumé, cover letter and portal answers, a handoff of new facts and an archive of what you submitted.
 - ✅ **One-command résumé build** that renders the PDF, measures its layout and runs the screening-software (ATS) check, with a one-command setup for any computer or AI tool, and a proof report that traces every résumé line back to your records.
 - ✅ **Application tracker:** every application you archive is recorded, with the replies you report or paste (saved unedited) and a status worked out from those events, ready for later analysis.
+- ✅ **Career informed search with HiringCafe:** search criteria filled with you once, then each search plans its queries, reads every full posting, checks your conditions (distance from where you live, workplace, travel, pay) and scores each job with the same rules as the verdict card. Review cards show the Promising and Stretch jobs.
+- ✅ **Application queue:** your Interested jobs on a board, best fit first, with Build résumé and Drop, plus shortcuts for Claude Code, Codex and Gemini CLI.
 - ✅ **A made-up sample person** ([examples/sample-person/](examples/sample-person/README.md)) showing what a filled record looks like.
 
 What comes next is in [ROADMAP.md](ROADMAP.md).
@@ -117,9 +121,11 @@ The tool improves over time. Updates only touch the tool's files, never your dat
 ```bash
 git remote add upstream https://github.com/JulianWeisner/Auto-Resume-Builder-Tool.git   # once, if not already set
 git fetch upstream
-git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools tracker/README.md examples
+git checkout upstream/main -- AGENTS.md START.md CLAUDE.md GEMINI.md schema career/_templates agents templates/README.md templates/resume templates/cover-letter tools tracker/README.md job-search examples .claude/skills .agents/skills .gemini/commands
 git commit -m "Update tool from upstream"
 ```
+
+Two settings files are left out on purpose, because you may have added your own entries: `.mcp.json` and `.gemini/settings.json`. If an update note says they changed, copy the new entries by hand.
 
 [UPSTREAM.md](UPSTREAM.md) lists what changed in each update.
 
@@ -132,13 +138,15 @@ git commit -m "Update tool from upstream"
 | [schema/](schema/experience-schema.md) | How the career record is organized | Tool |
 | [career/](career/README.md) | Your career record: index, story, preferences, vocabulary, contact details and collections of records | **Yours** |
 | [career/_templates/](career/_templates/README.md) | Blank, copyable records | Tool |
-| [agents/](agents/) | The agent's modules: the shared evaluation standard, Stage 1 evaluation, Stage 2 résumé and screening check, Stage 3 letters and answers, handoff, archive, information update, and the writing guides | Tool |
+| [agents/](agents/) | The agent's modules: the shared evaluation standard, career informed search, Stage 1 evaluation, Stage 2 résumé and screening check, Stage 3 letters and answers, handoff, archive, information update, and the writing guides | Tool |
 | [templates/](templates/README.md) | Default résumé and cover-letter templates and style guides | Tool |
 | [templates/custom/](templates/custom/README.md) | Your own templates, built from examples you like | **Yours** |
 | [source-material/](source-material/README.md) | Your CV snapshot, evidence journal and document extracts | **Yours** |
 | [Curriculum-Vitae.md](Curriculum-Vitae.md) | Your working CV | **Yours** |
 | [applications/](applications/README.md) | What you submitted, per application | **Yours** |
-| [tracker/](tracker/README.md) | The application tracker's rules | Tool |
+| [job-search/](job-search/README.md) | The search pipeline, its rules, [HiringCafe setup](job-search/hiringcafe-setup.md) and tests | Tool |
+| [job-search/runs/](job-search/runs/README.md) | Your saved searches: cards, choices and the postings behind them | **Yours** |
+| [tracker/](tracker/README.md) | The application tracker's and queue's rules | Tool |
 | [tracker/events/](tracker/events/README.md) | Your applications' events: applied, replies, interviews | **Yours** |
 | [tools/](tools/README.md) | Scripts the agent runs (Python 3; [setup](tools/README.md#setup-once)) | Tool |
 | [examples/](examples/sample-person/README.md) | A made-up sample career, also used by the tests | Tool |

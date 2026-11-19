@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "jd-artifact.schema.json",
+  "title": "JD Ingestion Artifact",
+  "description": "artifact.json written by job-search/tools/jd_ingest.py next to jd.txt (the normalized posting). The canonical source is not stored separately: it is jd.txt with the recorded insertions removed, and must hash to canonical.sha256. Offsets are half-open [start, end): 'source' in canonical code points, 'bytes' in canonical UTF-8 bytes, 'normalized' in jd.txt code points. On reopen, `jd_ingest.py validate` requires every field except selections to equal a deterministic rebuild from the reconstructed source and the recorded parameters, and recorded selections to equal a rebuild from the recorded map.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "artifact_id",
+    "source",
+    "canonical",
+    "normalization",
+    "normalized",
+    "insertions",
+    "blocks",
+    "lines",
+    "selections",
+    "validation"
+  ],
+  "$defs": {
+    "span": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "block_id": {
+      "type": "string",
+      "pattern": "^U[0-9]{3,}$"
+    }
+  },
+  "properties": {
+    "artifact_type": {
+      "const": "jd_ingest_artifact"
+    },
+    "schema_version": {
+      "const": "1.0"
+    },
+    "artifact_id": {
+      "type": "string",
+      "pattern": "^jd-[0-9a-f]{16}-[0-9a-f]{8}$",
+      "description": "jd-<canonical sha256 prefix>-<normalized sha256 prefix>"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "provenance",
+        "provenance_basis",
+        "completeness"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "hiringcafe",
+            "user_paste",
+            "greenhouse"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "description": "Only fields the caller actually supplied. Absent metadata is omitted, never null or guessed. hiringcafe requires provider_job_id. greenhouse requires board, provider_job_id and response_sha256.",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "properties": {
+            "provider_job_id": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "retrieved_at": {
+              "type": "string",
+              "description": "ISO 8601 with zone"
+            },
+            "response_id": {
+              "type": "string"
+            },
+            "response_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "retrieval_tool": {
+              "type": "string"
+            },
+            "representation": {
+              "type": "string"
+            },
+            "company": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "supplied_at": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            },
+            "board": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string",
+              "description": "Greenhouse posting updated_at"
+            }
+          }
+        },
+        "provenance_basis": {
+          "enum": [
+            "caller_supplied",
+            "user_supplied"
+          ]
+        },
+        "completeness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "complete",
+                "truncated",
+                "unknown",
+                "insufficient"
+              ]
+            },
+            "basis": {
+              "enum": [
+                "provider_marker",
+                "caller_asserted",
+                "too_few_words"
+              ]
+            },
+            "continuation_url": {
+              "type": "string"
+            },
+            "words": {
+              "type": "integer",
+              "description": "insufficient only: word count of a description too short to be a posting"
+            }
+          }
+        },
+        "text_derivation": {
+          "const": "gh-text-1",
+          "description": "greenhouse only: jd_ingest.greenhouse_text derivation of the saved boards-api response (hash in provenance.response_sha256)"
+        }
+      }
+    },
+    "canonical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "utf8_bytes",
+        "code_points"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "utf8_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "code_points": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalizer",
+        "version",
+        "method",
+        "width",
+        "width_unit",
+        "insertion_text",
+        "display_alignment"
+      ],
+      "properties": {
+        "normalizer": {
+          "const": "b5-insert-only"
+        },
+        "version": {
+          "const": "1.0"
+        },
+        "method": {
+          "enum": [
+            "display_blocks+wrap",
+            "line_blocks+wrap",
+            "line_blocks+sentences+wrap"
+          ]
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 20
+        },
+        "width_unit": {
+          "const": "code_points"
+        },
+        "insertion_text": {
+          "const": "\n"
+        },
+        "display_alignment": {
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "aligned",
+                "failed",
+                "not_supplied"
+              ]
+            },
+            "display_blocks_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "block_count": {
+              "type": "integer"
+            },
+            "failure": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "normalized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "sha256",
+        "utf8_bytes",
+        "code_points",
+        "physical_lines"
+      ],
+      "properties": {
+        "file": {
+          "const": "jd.txt"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "utf8_bytes": {
+          "type": "integer"
+        },
+        "code_points": {
+          "type": "integer"
+        },
+        "physical_lines": {
+          "type": "integer"
+        }
+      }
+    },
+    "insertions": {
+      "type": "array",
+      "description": "Every synthetic newline. normalized = source + index; the inserted newline sits before canonical code point 'source'.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "bytes",
+          "normalized",
+          "reason"
+        ],
+        "properties": {
+          "source": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "normalized": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "enum": [
+              "block_boundary",
+              "wrap"
+            ]
+          }
+        }
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "description": "Display-derived (or source-line) logical blocks. A block is not necessarily one semantic requirement.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "source",
+          "bytes",
+          "sha256",
+          "lines",
+          "selectable",
+          "truncated_tail"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/block_id"
+          },
+          "kind": {
+            "enum": [
+              "content",
+              "provider_marker"
+            ]
+          },
+          "source": {
+            "$ref": "#/$defs/span"
+          },
+          "bytes": {
+            "$ref": "#/$defs/span"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "First and last physical line, inclusive"
+          },
+          "selectable": {
+            "type": "boolean"
+          },
+          "truncated_tail": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "lines": {
+      "type": "array",
+      "description": "Physical lines of jd.txt, numbered as jd_key.py numbers them.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "n",
+          "normalized",
+          "source",
+          "bytes",
+          "terminator",
+          "block",
+          "role"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "normalized": {
+            "$ref": "#/$defs/span"
+          },
+          "source": {
+            "$ref": "#/$defs/span"
+          },
+          "bytes": {
+            "$ref": "#/$defs/span"
+          },
+          "terminator": {
+            "enum": [
+              "source",
+              "synthetic",
+              "none"
+            ]
+          },
+          "block": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/block_id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "role": {
+            "enum": [
+              "single",
+              "start",
+              "continuation",
+              "end",
+              "blank"
+            ]
+          }
+        }
+      }
+    },
+    "selections": {
+      "description": "Null until `jd_ingest.py render` succeeds. Then the guarded jd_key map and one item per rendered tag.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "map",
+            "map_sha256",
+            "items",
+            "renderer"
+          ],
+          "properties": {
+            "map": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "map_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "renderer": {
+              "type": "object",
+              "description": "Informational: the jd_key.py used at render time. Not required to match on revalidation.",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tag",
+                  "map_line",
+                  "lines",
+                  "mode",
+                  "blocks",
+                  "split_of",
+                  "source",
+                  "bytes",
+                  "quote",
+                  "quote_sha256",
+                  "rendered_text"
+                ],
+                "properties": {
+                  "tag": {
+                    "type": "string"
+                  },
+                  "map_line": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "mode": {
+                    "enum": [
+                      "whole_blocks",
+                      "span"
+                    ]
+                  },
+                  "blocks": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/block_id"
+                    }
+                  },
+                  "split_of": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/$defs/block_id"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "Set when this is an intentional semantic split of one block"
+                  },
+                  "source": {
+                    "$ref": "#/$defs/span"
+                  },
+                  "bytes": {
+                    "$ref": "#/$defs/span"
+                  },
+                  "quote": {
+                    "type": "string",
+                    "description": "Exact canonical slice source[0]:source[1]"
+                  },
+                  "quote_sha256": {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "rendered_text": {
+                    "type": "string",
+                    "description": "The text jd_key.py render prints for this tag"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "checks"
+      ],
+      "properties": {
+        "status": {
+          "const": "valid"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

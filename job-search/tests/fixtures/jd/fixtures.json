@@ -1,0 +1,63 @@
+{
+ "purpose": "Technical ingestion fixtures for job-search/tools/jd_ingest.py. Not career evidence and not an evaluation of either role.",
+ "fixtures": [
+  {
+   "file": "hiringcafe-n74ybfyjvq7jwsrt.txt",
+   "provider_job_id": "n74ybfyjvq7jwsrt",
+   "company": "Red Ventures",
+   "title": "Director of AI Product Management, Platform",
+   "url": "https://hiringcafe.com/job/director-of-ai-product-management-platform-red-ventures-charlotte-n74ybfyjvq7jwsrt",
+   "retrieval": "HiringCafe MCP get_job_details, 2026-11-15 (date only; no retrieval time recorded)",
+   "representation": "The 'Full description' section of the connector's markdown response, through its truncation marker",
+   "transcription": "Agent-transcribed from the connector response into this file; byte identity with the provider response was not independently verified (hiringcafe.com was not reachable from the session to fetch raw bytes)",
+   "completeness": "truncated by the provider at about 12,000 characters (11995 code points before the marker); the full posting lives on the employer site",
+   "canonical_sha256": "dd1db1a6a53a92a954b8260a8961bb48334bd6b746bd46fb1856580531c79fd2",
+   "utf8_bytes": 12284,
+   "code_points": 12200,
+   "normalized_sha256_w100": "3a30c5492ff838dc0f94acbcf7c5274b33760ac9573e62d3de0be6f90e4fa209",
+   "blocks": 51,
+   "physical_lines": 179
+  },
+  {
+   "file": "hiringcafe-tl8aedp1i1kufbe9.txt",
+   "provider_job_id": "tl8aedp1i1kufbe9",
+   "company": "StubHub",
+   "title": "Director of Product - Marketplace Policy",
+   "url": "https://hiringcafe.com/job/director-of-product-marketplace-policy-stubhub-new-york-city-new-york-tl8aedp1i1kufbe9",
+   "retrieval": "HiringCafe MCP get_job_details, 2026-11-15 (date only; no retrieval time recorded)",
+   "representation": "The 'Full description' section of the connector's markdown response, through its truncation marker",
+   "transcription": "Agent-transcribed from the connector response into this file; byte identity with the provider response was not independently verified (hiringcafe.com was not reachable from the session to fetch raw bytes)",
+   "completeness": "truncated by the provider at about 12,000 characters (11922 code points before the marker); the full posting lives on the employer site",
+   "canonical_sha256": "072d636f28dff99a9eeae49f9083adc35f7bb8b374a53df9189514837d37ff55",
+   "utf8_bytes": 12271,
+   "code_points": 12131,
+   "normalized_sha256_w100": "3fafdfdc68ce28b43b27e7999edc1d5bcbdad227f1e4cdbe0a5017ccf688bad1",
+   "blocks": 84,
+   "physical_lines": 195
+  }
+ ],
+ "b4_reference": {
+  "status": "not_reproduced",
+  "note": "The B2-B4 fixtures (Peloton and a second posting) lived in temporary directories outside the repository and were unavailable. These hashes are the previously reported values, kept for comparison only; the fixtures above are different postings.",
+  "canonical_sha256": {
+   "peloton": "faa6ea7f5965da5ac05c99cedc1c30431ff62b5887ab834ba92b23de966b3adb",
+   "second": "b1fc1914704816dd99aa43d63658dbe9cdb4d9d50bbf1e186b83baf315ddd89d"
+  },
+  "normalized_sha256_a_plus_d": {
+   "peloton": "54d91cfcd7676a75bd32933b94c8a7e4757486d8559cb73e4a24e21cb0ed76ac",
+   "second": "1a42bcbb88fa3ec9037ede8a618982fb1622315503caebd244c2bf308a864ee9"
+  },
+  "reported_counts": {
+   "peloton": {
+    "logical_blocks": 41,
+    "physical_lines": 111
+   },
+   "second": {
+    "logical_blocks": 80,
+    "physical_lines": 90
+   }
+  },
+  "exploratory_tool_revision": "29e0121e069f1cfeb9a0dba366576ebabcca1e12",
+  "jd_key_sha256": "4076dcdc8a0d6eb9ba3ab77d706f2dae12eeb1a3c0322b3ccbaeaf45d6f9b89b"
+ }
+}

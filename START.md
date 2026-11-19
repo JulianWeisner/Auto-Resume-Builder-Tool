@@ -44,7 +44,23 @@ The default résumé and cover letter are clean, single-column layouts that scre
 
 > Read templates/custom/README.md and build me a custom template from my examples.
 
-## Step 3: apply for jobs in three replies
+## Step 3 (optional): find jobs that fit your career
+
+The agent can search for jobs, score each one against your whole record and show you review cards, best fit first. You mark each card Interested or Pass, and your Interested jobs become a queue you work through one résumé at a time.
+
+1. **Connect HiringCafe** to your AI tool, once. It is free and needs no account: [how, for each AI tool](job-search/hiringcafe-setup.md). In Claude Code and Gemini CLI this folder already offers it; approve it when asked.
+2. **Set up your search**, once. Say:
+
+   > Set up my search.
+
+   The agent asks one question at a time: where you search from and how far you will travel, which kinds of workplace you accept, the lowest pay you would consider, and the job titles you want. It saves the answers in `career/search-criteria.yaml`.
+3. **Search.** Say **find me 10 jobs** (or any number). The agent searches, reads each full posting and scores it with the same rules as the verdict card below. You get review cards labelled Promising or Stretch; jobs that fail your conditions or fit poorly are counted but not shown.
+4. **Choose.** Mark each card Interested or Pass, then say **update queue** (send the **Download my choices** file if the agent asks for it). Your Interested jobs join your queue.
+5. **Work the queue.** Say **show my queue**. Each job has **Build résumé**, which starts Step 4 at the résumé, and **Drop**, for one you no longer want.
+
+Where the cards and the queue appear depends on your AI tool: in a Claude app they are drawn in the conversation; in Claude Code, Codex or Gemini CLI on your computer they open as a page in your browser; in a cloud session the agent sends them as a file to open. Shortcuts: `/queue`, `/drop` and `/update-queue` in Claude Code and Gemini CLI, `$queue`, `$drop` and `$update-queue` in Codex.
+
+## Step 4: apply for jobs in three replies
 
 Start a new conversation with your agent in the repository folder:
 
@@ -82,6 +98,8 @@ If you say **build résumé** without asking for the full evaluation, the agent 
 | **proof report** | Whether it can be trusted: each résumé line with the records behind it, the facts confirmed, the screening check and how it was built. Ready in seconds |
 | **handoff** | New facts from the conversation, packaged as proposed updates to your record. Nothing changes yet |
 | **update my record** (with the handoff, or in your own words) | The agent applies the updates to your career record, in a separate conversation |
+| **find me 10 jobs** / **more cards** | Review cards for new jobs that fit your career ([Step 3](#step-3-optional-find-jobs-that-fit-your-career)) |
+| **update queue** / **show my queue** / **drop** *company* | Your chosen jobs join the queue; the queue board; a job taken off the queue |
 | **I applied** | The submitted files are archived in applications/, and the [tracker](tracker/README.md) records the application |
 | **[Company] replied** / **rejected**, or paste the employer's email | The reply is logged in the tracker; a pasted or forwarded email is saved unedited with the application |
 | **show my applications** | Every application and where it stands: applied, acknowledged, in process, rejected and so on |
@@ -91,7 +109,7 @@ Every reply ends with a short footer: **Next** lists the main steps that fit tha
 
 ### Two kinds of session
 
-- **Application session** (the default): evaluates jobs and writes résumés, letters and answers. It reads your record and never changes it. Its only changes are archiving an application after you say **I applied** and logging the replies you report.
+- **Application session** (the default): evaluates jobs and writes résumés, letters and answers. It reads your record and never changes it. Its only changes are archiving an application after you say **I applied**, logging the replies you report, saving a search when you say **update queue** and recording a **Drop**.
 - **Information update session:** adds to or corrects your career record, including filling it the first time and applying a handoff. Start it by saying in words what it may change, for example "apply this handoff to my record".
 
 ## What never happens automatically
@@ -100,7 +118,7 @@ Every reply ends with a short footer: **Next** lists the main steps that fit tha
 - No application is submitted and no employer is contacted.
 - Nothing in your career record changes during an application, or ever unless you ask in words.
 - No skill or job keyword is claimed without evidence in your record.
-- Your data never leaves your copy of the repository.
+- Your data never leaves your copy of the repository. A search sends HiringCafe only job titles, a location and filters, never your record.
 
 ## More
 

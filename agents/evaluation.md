@@ -1,12 +1,14 @@
 # Shared job evaluation standard
 
-Part of the [agent guide](../AGENTS.md). **Load when:** judging how well a job fits the user's record: the Stage 1 fit check, a full evaluation, a comparison of several postings, or the private evaluation done before a résumé build. This is the one scoring and interpretation policy. [Stage 1](stage-1-evaluate.md) holds the workflow steps; career informed search will use this same standard when it arrives, so a job gets the same fit and label wherever it is evaluated.
+Part of the [agent guide](../AGENTS.md). **Load when:** judging how well a job fits the user's record: career informed search, the Stage 1 fit check, a full evaluation, a comparison of several postings, or the private evaluation done before a résumé build. This is the one scoring and interpretation policy. [Search](job-search.md) and [Stage 1](stage-1-evaluate.md) hold the workflow steps, not alternative standards, so a job gets the same fit and label wherever it is evaluated.
 
 ## Source and measurable asks
 
-Keep the original posting unchanged. Build the job-description key with `tools/jd_key.py` ([Stage 1, step 1](stage-1-evaluate.md#preparation-always)): every substantive passage is tagged or skipped with a reason. Select every responsibility, qualification and nice-to-have. Tag stated conditions separately, including a location in the posting's header. Select measurable context and role asks no other tag covers; skip what cannot be measured, with an explicit reason. The key must account for all substantive text, not just the convenient asks. An explicit skip is not permission to discard a difficult measurable ask.
+Keep the original posting unchanged. Where you can run Python, ingest it with `job-search/tools/jd_ingest.py` into a source artifact with stable lines and blocks, then build and render a complete selection and skip map through it (it guards `tools/jd_key.py`; [Stage 1, step 1](stage-1-evaluate.md#preparation-always)). Every substantive passage is tagged or skipped with a reason. Select every responsibility, qualification and nice-to-have. Tag stated conditions separately, including a location in the posting's header. Select measurable context and role asks no other tag covers; skip what cannot be measured, with an explicit reason. The key must account for all substantive text, not just the convenient asks. An explicit skip is not permission to discard a difficult measurable ask.
 
 Split independent AND asks; keep genuine OR alternatives together. Keep every quote unchanged. Merge restatements into one competency while keeping all their tags: a repeated responsibility or qualification is measured once, by its most specific wording. `groups.json` maps a competency ID to its source tags, and every measured non-condition tag appears in exactly one group. Merged restatements get the same evidence rating. Conditions are never merged with scored asks. Classify each ask by [Classifying asks](#classifying-asks).
+
+In search, each requirement carries `source_tags`, a verified primary source quote and reference, and its evidence; `coverage.map_sha256` identifies the guarded map. A full evaluation accounts for every selected tag. A job stopped at the qualification screen may record remaining tags under `coverage.deferred` with a reason; it has no full fit. Condition conflicts and incomplete postings can stop a job before full interpretation (L1). Coverage checks prove accounting and exact sources, not that the interpretation is right.
 
 ## Evidence rubric
 
@@ -47,15 +49,16 @@ Classify every selected ask by these rules before rating it. The tag prefix reco
 
 ## Conditions
 
-Conditions are gates, never part of the fit. Check each condition tag against the user's [career goals and preferences](../career/preferences.md) and mark it `pass` (it matches), `fail` (it conflicts) or `unknown` (the posting or the preferences leave it open).
+Conditions are gates, never part of the fit. Mark each condition tag `pass` (it matches), `fail` (it conflicts) or `unknown` (the posting or the preferences leave it open). Search and Stage 1 use one copy of the rules, the `conditions` block of `career/search-criteria.yaml` (the machine-readable copy of [career goals and preferences](../career/preferences.md)), and one checker, `tools/conditions.py`: search L1 calls it, and Stage 1 runs `python3 tools/conditions.py --location "…" --workplace hybrid [--travel N]` and copies its result into the Cond tag.
 
-- **Location:** an onsite or hybrid role passes when a listed location is inside the area the user accepts. A place outside it fails. A place you cannot locate, or a region only partly inside the area, is unknown: ask.
-- **Remote:** passes when the user accepts remote work and the role is based where the user can work. A remote role based in a country the user's work authorization does not cover is unknown: ask.
-- **Travel:** passes up to the user's stated maximum; more is unknown (ask), never a failure, unless the preferences say otherwise.
-- **Work authorization** and any other stated condition: judged from the posting text against the preferences. A condition that conflicts fails, and the label is Deprioritize.
-- **Pay** is shown when the posting states it. It is not a gate in Stage 1.
+- **Location:** an onsite or hybrid role passes when any listed location is within `radius_miles` of the user's `center`, measured in a straight line to the place's nearest ZIP-code centroid. A US place beyond it fails. A place the list cannot find, or a region only partly inside, is unknown: ask. Names the user listed for their whole area (`metro_aliases`) pass.
+- **Remote:** a US-based or unlocated remote role passes. A remote role based outside the US is unknown (ask), because the recorded work authorization covers US roles.
+- **Workplace:** a type the user does not accept (`acceptable_workplaces`) fails.
+- **Travel:** up to `travel_percent_max` passes; more is unknown (ask), never a failure.
+- **Work authorization** and any other stated condition: judged from the posting text against the preferences. A condition that conflicts fails in both workflows: Stage 1 labels the job Deprioritize; search excludes it, citing the source-verified quote.
+- **Pay** is a search-only filter: L1 fails a posting whose posted range tops out below `minimum_annual_usd`, and a posting without pay passes. Stage 1 shows the posted pay but does not gate on it.
 
-When a preference the check needs is not recorded, mark the condition `unknown` and ask; the answer belongs in a handoff.
+The checker knows US places only. Outside the US, or when the search criteria have no center yet, judge from the preferences and ask when unsure; a preference the check needs that is not recorded becomes a question, and the answer belongs in a handoff.
 
 ## One calculation, one adjustment policy and one label
 
@@ -78,13 +81,15 @@ When a preference the check needs is not recorded, mark the condition `unknown` 
 | **Stretch** | You meet the core competencies but lack some preferred skills, an industry or a confirmation | Final fit 60–74%; or 75%+ moved down by a critical gap, a required ask scored 2 or a stale posting |
 | **Deprioritize** | A poor fit or a long shot | Final fit below 60%; any failed condition; or a Stretch moved down by a stale posting |
 
-A critical gap is a required ask scored 0–1 or contradicted by dated records. A posting is stale when it is more than three weeks old. A label moves down at most one level. The tool computes the label; copy it, never choose it. Whether a company is really hiring cannot be known from a posting, so no label claims it. The user may still choose to pursue any job.
+A critical gap is a required ask scored 0–1 or contradicted by dated records. A posting is stale when it is older than `stale_after_days` in the search criteria (21 days, three weeks, by default). A label moves down at most one level. The tool computes the label; copy it, never choose it. Whether a company is really hiring cannot be known from a posting, so no label claims it. The user may still choose to pursue any job.
 
-The same asks, evidence ratings and documented adjustment always give the same result. A later evaluation of the same job can change when a clarification or deeper evidence changes its inputs; name the changed inputs rather than changing the standard.
+The same asks, evidence ratings and documented adjustment always give the same result, in search and in Stage 1. Search drafts set `adjustment` and `adjustment_reason`, and `pipeline.py result` computes the same fields with the same engine. A later evaluation of the same job can change when a clarification or deeper evidence changes its inputs; name the changed inputs rather than changing the standard.
 
 ## Tool use
 
-Keep private `scores.txt` ratings for every tag, one `TAG SCORE [trait] [RECORD,...]` per line (for example `Want-1 3 NW-EXP-001,NW-OUT-001`; `Cond-1 pass`; `Want-4 0`), and a `groups.json` file when restatements are merged:
+Render the job-description key through `job-search/tools/jd_ingest.py render DIR MAP --save tags.json`, which guards `tools/jd_key.py`; the artifact keeps the map and the verified selections. Where the adapter cannot run, use `jd_key.py render` and do not call the key source-verified.
+
+For Stage 1, keep private `scores.txt` ratings for every tag, one `TAG SCORE [trait] [RECORD,...]` per line (for example `Want-1 3 NW-EXP-001,NW-OUT-001`; `Cond-1 pass`; `Want-4 0`), and a `groups.json` file when restatements are merged:
 
 ```json
 {"delivery": ["Want-1", "Do-3"], "analytics": ["Want-2"], "optional": ["Nice-1"]}

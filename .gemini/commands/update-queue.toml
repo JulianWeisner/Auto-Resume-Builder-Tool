@@ -1,0 +1,5 @@
+description = "End a search: import choices, save the run, queue Interested jobs - see .agents/skills/update-queue/SKILL.md"
+prompt = """
+Follow .agents/skills/update-queue/SKILL.md in this repository. Run folder and choices file, if given:
+{{args}}
+"""

@@ -8,6 +8,7 @@ import copy
 import importlib.util
 import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -106,11 +107,11 @@ class BoardTests(unittest.TestCase):
         self.ledger = tracker.load()
         self.today = tracker.date(2026, 11, 18)
 
-    def test_board_without_search_shows_applied_and_explains_the_empty_queue(self):
+    def test_board_shows_applied_and_explains_the_empty_queue(self):
         frag = tracker.render_board(self.ledger, self.today, fragment=True)
         self.assertFalse(frag.startswith("<!DOCTYPE"))
         self.assertIn('<div class="sl">Applied</div><div class="sn">1</div>', frag)
-        self.assertIn("not in this version of the tool yet", frag)
+        self.assertIn("Run a search to fill it", frag)
 
     def test_queued_jobs_list_and_drop_leaves_the_queue(self):
         led = copy.deepcopy(self.ledger)
@@ -135,11 +136,11 @@ class BoardTests(unittest.TestCase):
     def test_day_wording(self):
         self.assertEqual([tracker.days_ago(n) for n in (0, 1, 5)], ["today", "1 day ago", "5 days ago"])
 
-    def test_update_queue_needs_search(self):
+    def test_update_queue_needs_a_finished_run(self):
         out = subprocess.run([tracker.sys.executable, str(ROOT / "tools/tracker.py"), "update-queue", "run", "c.json"],
                              capture_output=True, text=True)
         self.assertNotEqual(out.returncode, 0)
-        self.assertIn("career informed search", out.stderr)
+        self.assertIn("has no run.json", out.stderr)
 
 
 class EventStoreTests(unittest.TestCase):
@@ -188,6 +189,35 @@ class EventStoreTests(unittest.TestCase):
         job = next(e for e in merged["applications"] if e["id"] == JOB)
         self.assertEqual([ev.get("note") for ev in job["events"] if ev["type"] == "interview"].count("branch a"), 1)
         self.assertEqual(tracker.validate(merged), [])
+
+
+class ShortcutTests(unittest.TestCase):
+    """The shortcuts for Claude Code (.claude/skills), Codex (.agents/skills) and Gemini CLI (.gemini/commands)."""
+    SKILLS = ("queue", "drop", "update-queue")
+
+    def test_claude_and_codex_skills_are_identical(self):
+        for name in self.SKILLS:
+            codex = REPO / ".agents/skills" / name / "SKILL.md"
+            claude = REPO / ".claude/skills" / name / "SKILL.md"
+            self.assertEqual(codex.read_text(), claude.read_text(), name)
+            self.assertIn(f"name: {name}\n", codex.read_text())
+
+    @unittest.skipUnless(importlib.util.find_spec("tomllib"), "tomllib needs Python 3.11 or later")
+    def test_gemini_commands_point_at_the_skills(self):
+        import tomllib
+        for name in self.SKILLS:
+            cmd = tomllib.loads((REPO / ".gemini/commands" / f"{name}.toml").read_text())
+            self.assertIn(f".agents/skills/{name}/SKILL.md", cmd["prompt"])
+            self.assertIn("{{args}}", cmd["prompt"])
+
+    def test_skills_name_real_commands_and_no_person(self):
+        commands = {"board", "serve", "add-event", "update-queue"}
+        text = "".join((REPO / ".agents/skills" / n / "SKILL.md").read_text() for n in self.SKILLS)
+        for cmd in commands:
+            self.assertIn(f"tracker.py {cmd}", text)
+        parser_cmds = set(re.findall(r'add_parser\("([a-z-]+)"', (REPO / "tools/tracker.py").read_text()))
+        self.assertTrue(commands <= parser_cmds)
+        self.assertNotIn("Julian", text)
 
 
 class EmailTests(unittest.TestCase):

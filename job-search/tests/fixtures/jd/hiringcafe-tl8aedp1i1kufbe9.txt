@@ -1,0 +1,109 @@
+StubHub is on a mission to redefine the live event experience on a global scale. Whether someone is looking to attend their first event or their hundredth, we’re here to delight them all the way from the moment they start looking for a ticket until they step through the gate. The same goes for our sellers. From fans selling a single ticket to the promoters of a worldwide stadium tour, we want StubHub to be the safest, most convenient way to offer a ticket to the millions of fans who browse our platform around the world.
+
+About the Team
+
+The Admissions team owns the fan journey from purchase through venue entry. We orchestrate a real-time fulfillment network connecting sellers, partners, and systems to get buyers in reliably and delightfully. When things go wrong, we diagnose and resolve issues quickly through resilient systems, automation, and intelligent interventions that protect the buyer experience and strengthen marketplace trust.
+
+Marketplace Policy sits at the center of some of the most consequential decisions in that ecosystem.
+
+The team determines how StubHub manages risk and resolves situations in which the interests of buyers, sellers, and the business can come into conflict: which inventory should be allowed onto the marketplace, when seller friction is warranted, how responsibility is assigned when fulfillment fails, how legitimate buyer claims are distinguished from policy abuse, and how financial risk should be balanced against growth and customer experience.
+
+Our ambition is not simply to manage these tradeoffs more effectively. It is to expand the frontier, building increasingly intelligent systems that improve buyer trust, reduce unnecessary seller friction, and strengthen marketplace economics at the same time.
+
+About the Role
+
+As Director, Marketplace Policy, you will own StubHub’s strategy for making high-stakes marketplace decisions at scale.
+
+You will establish the frameworks, systems, metrics, and governance that determine how StubHub balances buyer experience, seller experience, marketplace growth, risk, and financial performance. Your portfolio will span areas including listing risk, buyer policy abuse, seller fault attribution, seller charges and non-payment, transaction risk, payment decisioning, and related marketplace policies.
+
+Your mandate is to move StubHub from policies that can rely on manual judgment, fragmented decision-making, or blunt operational controls toward a coherent decision architecture powered by data, machine learning, experimentation, and configurable risk controls.
+
+This is a highly visible leadership role. You will personally own the Marketplace Policy strategy and make recommendations on some of the company's most difficult marketplace tradeoffs. You will work closely with senior leaders across Product, Engineering, Data Science, Operations, Supply, Finance, Customer Experience, Legal, and Compliance while serving as a trusted source of evidence and judgment when there is no obvious answer.
+
+The right leader will combine exceptional analytical and economic judgment with product and systems thinking. They will be comfortable making consequential decisions under uncertainty, explaining those decisions to executives, and maintaining a clear point of view when sophisticated stakeholders disagree.
+
+Location: Hybrid (3 days in office / 2 days remote) – New York, NY or Century City, CA
+
+What You'll Do:
+
+Set the Marketplace Policy Strategy
+• Define the long-term strategy and prioritized roadmap for Marketplace Policy across StubHub.
+• Establish clear principles and decision frameworks for balancing buyer outcomes, seller outcomes, marketplace growth, risk, and P&L performance.
+• Define the metrics and success criteria used to evaluate marketplace policy decisions and system performance.
+• Build alignment among senior leaders around how StubHub should approach different categories of marketplace risk.
+• Identify opportunities for Marketplace Policy to become a source of competitive advantage rather than simply a mechanism for avoiding downside.
+• Develop a clear understanding of long-tail marketplace risks and ensure they are reflected in product and business strategy.
+
+Build Intelligent Marketplace Decision Systems
+• Own the system-level product architecture across listing risk, policy abuse, transaction risk, payment decisioning, seller fault, seller charges, and related policy systems.
+• Partner with Engineering and Data Science to develop high-quality machine learning and decisioning capabilities that improve the precision of marketplace interventions.
+• Design systems that continuously improve as new data, marketplace behavior, and outcomes become available.
+• Replace broad or manual controls with scalable systems capable of making differentiated decisions across events, sellers, buyers, transactions, and risk profiles.
+• Ensure policies and models work together as a coherent architecture rather than as independent point solutions.
+• Create clear mechanisms for measuring false positives, false negatives, customer consequences, and financial consequences across major decision systems.
+
+Create Precise Risk Controls
+• Give executive leadership clear, responsive levers for increasing or decreasing risk exposure for particular events, time periods, customer segments, or marketplace conditions.
+• Build frameworks that make the financial and customer consequences of changing those controls explicit.
+• Develop early-warning mechanisms and monitoring for emerging marketplace risks.
+• Lead the policy response to unusually large, complex, or high-risk events and cohorts.
+• Ensure the business can respond quickly to changing conditions without defaulting to blunt controls that unnecessarily constrain supply or degrade customer experience.
+
+Make Buyer and Seller Decisions More Transparent
+• Establish clear, explainable frameworks for determining responsibility when transactions do not go as planned.
+• Lead the evolution of seller fault attribution, buyer compensation, policy abuse detection, seller charges, and related marketplace rules.
+• Improve consistency in how similar cases are treated across products, geographies, and operational workflows.
+• Design policies and systems that make important marketplace decisions understandable to internal teams and, where appropriate, buyers and sellers.
+• Build configurable decision frameworks that can evolve without requiring major operational or technical intervention each time policy changes.
+
+Own the Economics of Marketplace Policy
+• Develop a rigorous understanding of how marketplace policy drives transaction losses, customer compensation, seller behavior, conversion, supply, retention, and other economic outcomes.
+• Partner closely with Finance, Analytics, Operations, and Data Science to develop forecasts, measurement frameworks, and investment priorities.
+• Make explicit recommendations about when StubHub should accept additional risk, introduce friction, change policy, or invest in new capabilities.
+• Quantify both the immediate financial consequences and longer-term marketplace effects of major policy decisions.
+• Help the organization make more precise tradeoffs when financial targets require changes to marketplace behavior.
+
+Lead High-Stakes Cross-Functional Decisions
+• Serve as the single-threaded leader for complex Marketplace Policy questions in which multiple senior stakeholders have legitimate but competing objectives.
+• Develop the evidence, analysis, and recommendation when a decision requires a material change in StubHub’s approach to marketplace risk.
+• Present decisions and recommendations clearly to senior and executive leadership.
+• Create clarity around decision rights, governance, escalation paths, and ownership across Product, Operations, Engineering, Data Science, Finance, Supply, Legal, Compliance, and Customer Experience.
+• Influence the company’s overall risk appetite by making the available tradeoffs, consequences, and control mechanisms explicit.
+• Maintain a strong and defensible point of view while remaining willing to update decisions as new evidence emerges.
+
+Expand the Marketplace Frontier
+• Identify opportunities where better policy and decision systems can simultaneously improve buyer trust, seller participation, and marketplace economics.
+• Explore how stronger identity, behavioral understanding, risk modeling, and differentiated treatment of marketplace participants can unlock new capabilities.
+• Identify unique supply or marketplace dynamics where policy innovation can create strategic advantage.
+• Build a multi-year view of how increasingly sophisticated marketplace intelligence can create non-linear improvements in StubHub’s business.
+
+What Success Looks Like
+
+Within your first 12–18 months:
+• High-stakes marketplace decisions are governed by clear frameworks with broad alignment across senior leadership rather than being made primarily through one-off judgment.
+• Major policy and risk decisions increasingly rely on high-quality predictive models, experimentation, and measurable decision systems.
+• StubHub has materially more precise tools for controlling marketplace risk without unnecessarily constraining supply or harming customer experience.
+• Leadership can understand and adjust the level of risk StubHub is willing to take across important events, customer segments, and marketplace conditions.
+• Buyer and seller policy decisions—including fault attribution, compensation, charges, and non-payment—are more consistent, explainable, and adaptable.
+• The company can clearly measure the customer, seller, operational, and financial consequences of changing major marketplace policies.
+• Marketplace Policy has a credible multi-year strategy for creating business value beyond loss avoidance.
+• Emerging and long-tail marketplace risks are quantified, monitored, and incorporated into strategic decision-making.
+• StubHub is demonstrably expanding the tradeoff frontier between buyer trust, seller experience, growth, and financial performance.
+
+What You’ve Done:
+• 10+ years of experience across product management, marketplace strategy, risk, trust and safety, fintech, fraud, payments, operations technology, decision science, or another systems-intensive environment.
+• Personally owned a high-stakes risk, policy, or decisioning system where false positives and false negatives created meaningful customer, commercial, and financial consequences.
+• Demonstrated success designing or scaling decision systems that materially influence customer, marketplace, or platform behavior.
+• Exceptional analytical and economic judgment, with the ability to reason rigorously about incentives, expected value, risk, and second-order effects.
+• Strong product and systems thinking, with experience designing how models, rules, policies, workflows, and human judgment interact within a complex operating system.
+• Deep fluency with data and quantitative decision-making; comfortable partnering closely with Data Science on predictive models, experimentation, measurement, and model performance.
+• Experience making consequential decisions in ambiguous environments where sophisticated stakeholders have competing objectives.
+• Proven ability to communicate contested recommendations to senior executives, build alignment, and hold a well-supported position under pressure.
+• Strong commercial and financial judgment, including experience owning or materially influencing a P&L, loss line, risk portfolio, or comparable business outcome.
+• Experience working across Product, Engineering, Data Science, Operations, Finance, Legal, Compliance, and commercial teams.
+• Ability to move fluidly between long-term strategy and detailed work on an individual model, decision rule, policy, workflow, or experiment.
+
+What We Offer:
+• Accelerated Growth Environment: An environment designed for swift skill and knowledge enhancement, where yo
+
+…(truncated — read the full posting at https://hiringcafe.com/job/director-of-product-marketplace-policy-stubhub-new-york-city-new-york-tl8aedp1i1kufbe9?utm_source=claude&utm_medium=llm-app&utm_campaign=mcp)

@@ -5,14 +5,15 @@ The public tool repository must contain the tool and an EMPTY career skeleton,
 never anyone's career data. This check enforces that:
 
   1. Data areas (career/ except career/_templates/, source-material/,
-     applications/, tracker/events/, templates/custom/, Curriculum-Vitae.md) contain only the skeleton files listed
+     applications/, job-search/runs/, tracker/events/, templates/custom/, Curriculum-Vitae.md) contain only the skeleton files listed
      in SKELETON_FILES. Any other file there fails: records, CVs, PDFs, archives.
   2. Skeleton pages contain no fenced YAML records.
   3. career/contact.json has every contact value empty.
   4. No text file anywhere contains an email address, phone number or LinkedIn
      profile URL (example.com, example.org and noreply addresses, and the
      fictional 555-0100 to 555-0199 phone range, are allowed; the sample person
-     in examples/ uses them).
+     in examples/ uses them). Public job postings kept verbatim as test fixtures
+     (PUBLIC_POSTINGS) may contain the employer's published email address.
   5. Optional private denylist: one term per line (names, employers, record ID
      prefixes). Read from --denylist PATH, the ARB_DENYLIST environment variable,
      or .private-denylist.txt at the repository root (git-ignored). Matching is
@@ -33,7 +34,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DATA_AREAS = ["career", "source-material", "applications", "tracker/events", "templates/custom"]
+DATA_AREAS = ["career", "source-material", "applications", "job-search/runs", "tracker/events", "templates/custom"]
 DATA_FILES = ["Curriculum-Vitae.md"]
 TEMPLATES = "career/_templates"
 
@@ -45,6 +46,7 @@ SKELETON_FILES = {
     "career/preferences.md",
     "career/vocabulary.md",
     "career/contact.json",
+    "career/search-criteria.yaml",
     "career/experience/records.md",
     "career/education/records.md",
     "career/additional/records.md",
@@ -54,6 +56,7 @@ SKELETON_FILES = {
     "source-material/documents/README.md",
     "applications/README.md",
     "tracker/events/README.md",
+    "job-search/runs/README.md",
     "templates/custom/README.md",
 }
 
@@ -61,6 +64,9 @@ TEXT_SUFFIXES = {".md", ".txt", ".json", ".yml", ".yaml", ".py", ".html", ".css"
 SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv"}
 
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}")
+# Test fixtures that hold public job postings verbatim (the source guard needs them unchanged).
+# An employer's published address inside them is not anyone's contact detail; phone numbers are still checked.
+PUBLIC_POSTINGS = ("job-search/tests/fixtures/jd/", "job-search/tests/regression/raw/")
 ALLOWED_EMAIL = re.compile(r"(@example\.(com|org)$|^noreply@)", re.I)
 PHONE = re.compile(r"(?<![\w.])(\+?\d{1,2}[\s.-])?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}(?![\w])")
 LINKEDIN = re.compile(r"linkedin\.com/in/[A-Za-z0-9_-]+", re.I)
@@ -128,8 +134,11 @@ def main(argv):
         if in_data_area(path) and path.endswith(".md") and re.search(r"^```ya?ml\b", text, re.M):
             errors.append(f"{path}: contains a YAML record block; skeleton pages hold guidance only.")
 
+        public_posting = path.startswith(PUBLIC_POSTINGS)
         for n, line in enumerate(text.splitlines(), 1):
             for m in EMAIL.finditer(line):
+                if public_posting:
+                    break  # employers' published addresses inside verbatim public postings
                 if not ALLOWED_EMAIL.search(m.group(0)):
                     errors.append(f"{path}:{n}: email address")
             for m in PHONE.finditer(line):

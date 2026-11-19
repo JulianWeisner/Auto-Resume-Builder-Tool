@@ -1,0 +1,105 @@
+# Test fixture: a made-up searcher in New York City, 50 miles, with only the role families and domains
+# the search tests name. Not anyone's real criteria.
+schema_version: '2.0'
+source: test fixture
+conditions:
+  center: Midtown Manhattan
+  center_lat: 40.7549
+  center_lon: -73.984
+  radius_miles: 50
+  metro_aliases:
+  - nyc
+  - new york city
+  - manhattan
+  - queens
+  - the bronx
+  - bronx
+  - brooklyn
+  - staten island
+  - new york metro
+  - new york metropolitan area
+  - greater new york
+  - new york city metropolitan area
+  - tri-state area
+  - westchester
+  - westchester county
+  partly_inside:
+  - long island
+  - new jersey
+  - connecticut
+  - new york state
+  acceptable_workplaces:
+  - hybrid
+  - onsite
+  - remote
+  preferred_workplace: hybrid
+  relocation_outside_area: false
+  remote_outside_us: ask
+  travel_percent_max: 50
+  work_authorization: US citizen; no sponsorship needed for US roles
+compensation:
+  minimum_annual_usd: 100000
+search:
+  target_cards: 20
+  first_batch_multiplier: 1.5
+  max_fetch_multiplier: 3
+  top_up_batch_min: 5
+  max_posting_age_days: 30
+  stale_after_days: 21
+  results_per_query: 10
+  role_families:
+  - id: hardware-product
+    tier: core
+    titles:
+    - consumer hardware product manager
+    - smart home product manager
+  - id: culinary-product
+    tier: core
+    titles:
+    - culinary product manager
+    - research chef
+  - id: chief-of-staff
+    tier: strong
+    titles:
+    - chief of staff
+    - business operations manager
+  - id: product-management
+    tier: broad
+    titles:
+    - product manager
+    - senior product manager
+  domains:
+  - id: food-beverage-cpg
+    name: food and beverage CPG
+    keywords: food beverage
+  - id: connected-devices
+    name: connected devices and IoT
+    keywords: IoT
+  title_stopwords:
+  - senior
+  - sr
+  - staff
+  - principal
+  - lead
+  - head
+  - director
+  - manager
+  - vice
+  - president
+  - vp
+  - of
+  - and
+  - the
+  - '&'
+  - ii
+  - iii
+  exclude_employers: []
+providers:
+  hiringcafe:
+    max_posting_age_days: posted_within_days
+    seniority_levels:
+    - Mid Level
+    - Senior Level
+    domain_industries:
+      food-beverage-cpg:
+      - Food
