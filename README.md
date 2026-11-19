@@ -93,7 +93,7 @@ Early version. What is here today:
 - ✅ **Application queue:** your Interested jobs on a board, best fit first, with Build résumé and Drop, plus shortcuts for Claude Code, Codex and Gemini CLI.
 - ✅ **A made-up sample person** ([examples/sample-person/](examples/sample-person/README.md)) showing what a filled record looks like.
 
-What comes next is in [ROADMAP.md](ROADMAP.md).
+What comes next is in the latest [roadmap snapshot](roadmap/2026-11-18-evening-roadmap.md). Earlier plans stay in [ROADMAP.md](ROADMAP.md) and [roadmap/](roadmap/), never rewritten.
 
 ## Get your own private copy
 
